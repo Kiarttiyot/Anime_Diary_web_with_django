@@ -1,0 +1,17 @@
+{%extends 'app_general/components/base.html'%}
+{%block site_title%}Anime |{{anime.title}}{%endblock%}
+{%block content%}
+{%if anime is not None%}
+<div style="background-color: rgb(206, 230, 242);">
+    <h2><a href="{% url  'anime' anime.id %}">{{anime.title}}</a><br></h2>
+    <p>Score = 10/{{anime.score}} </p>
+        {%if anime.status%}
+            <p>***** ดูจบแล้ว *****</p>
+        {%endif%}
+    <p>ลงวันที่ {{anime.Date_post|date:'j N Y'}}</p>
+    <p>{{anime.story}}</p>
+</div>
+{%else%}
+    <p>ไม่เจออนิเมะนี้</p>
+{%endif%}
+{%endblock%}
