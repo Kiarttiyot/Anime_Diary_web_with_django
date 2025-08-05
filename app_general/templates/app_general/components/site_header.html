@@ -20,6 +20,6 @@
     </form>
     {%else%}
         <a class="menu-items" href="{% url 'login' %}">login</a>
-        <a href="#" class="menu-items">register</a>
+        <a href="{% url 'register'%}" class="menu-items">register</a>
     {%endif%}
 </header>
