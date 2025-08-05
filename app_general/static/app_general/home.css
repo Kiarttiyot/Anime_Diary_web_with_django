@@ -1,0 +1,22 @@
+.btn-log{
+  width: 120px;
+  height: 40px;
+  cursor: pointer;
+  background-color: aquamarine;
+  position: absolute;
+  top: 40%;
+  left: 40%;
+}
+.btn-reg{
+  background-color: green;
+  cursor: pointer;
+  position: absolute;
+  right: 40%;
+  top: 40%;
+  width: 120px;
+  height: 40px;
+}
+button {
+    border: none;
+    outline: none;
+}

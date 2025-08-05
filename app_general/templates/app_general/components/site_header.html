@@ -1,7 +1,25 @@
-<header style="background-color: gray;">
-        <h1>   
-            <a href="{% url 'home'%}">AnimeDiary</a>
-            <a href="{% url 'myanimes'%}">MyDiary</a>
-        </h1>
-    
+{%load static%}
+<head>
+    <link rel="stylesheet" href="{% static 'app_general/main.css'%}">
+    <link rel="stylesheet" href="{% static 'app_general/nav.css'%}">
+</head>
+<header class="top-header">
+    {% csrf_token %}
+    <a href="{% url 'home' %}" class="menu-logo">
+        <span class="logoA">Ani</span><span class="logoD">meDiary</span>
+    </a>
+    <a href="{% url 'home'%}" class="menu-items">Home</a>
+    <a href="{% url 'myanimes'%}" class="menu-items">MyDiary</a>
+    {%if user.is_authenticated %}
+        <a href="#" class="menu-items">{{user.username}}</a>
+        <form method="post" action="{% url 'logout' %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit"  style="background:none; border:none; padding:0; color:white; cursor:pointer;">
+            logout
+        </button>
+    </form>
+    {%else%}
+        <a class="menu-items" href="{% url 'login' %}">login</a>
+        <a href="#" class="menu-items">register</a>
+    {%endif%}
 </header>

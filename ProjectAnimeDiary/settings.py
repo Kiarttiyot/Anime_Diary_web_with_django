@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_extensions',
     'app_general.apps.AppGeneralConfig',
-    'app_myanimes.apps.AppMyanimesConfig'
+    'app_myanimes.apps.AppMyanimesConfig',
+    'app_users.apps.AppUsersConfig',
     
 ]
 
@@ -128,3 +129,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#Auth
+
+LOGIN_REDIRECT_URL = "home"
+LOGOUT_REDIRECT_URL = 'home'

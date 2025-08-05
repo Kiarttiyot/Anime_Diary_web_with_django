@@ -2,15 +2,19 @@
 {% load static %}
 {%block site_title%}home{%endblock%}
 {%block content%}
-    <div>
-        <h1>Anime list</h1>
-    </div>
+<link rel="stylesheet" href="{% static 'app_general/main.css'%}">
+<link rel="stylesheet" href="{% static 'app_general/normalize.css'%}">
+<link rel="stylesheet" href="{% static 'app_general/home.css'%}">
 <section>
-    <h4>อธิบายอะไรสักหน่อย</h4>
+    <div style="text-align: center;">
+        <img src="{%static 'app_general/okabe.jpg'%}" class="room-home">
+        <button class="btn-log">loging</button>
+        <button class="btn-reg">register</button>
+    </div>
+        <h4>อธิบายอะไรสักหน่อย</h4>
     <div>
-        <!-- <div><img src="{%static 'app_general/dandadan.jpg'%}"></div> -->
         <p>Anime about smething</p>
-        
     </div>
 </section>
+
 {%endblock%}

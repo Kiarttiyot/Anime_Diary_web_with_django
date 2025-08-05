@@ -347,11 +347,3 @@ template {
 [hidden] {
   display: none;
 }
-body{
-  padding: 0;
-  margin: 0;
-}
-header{
-  
-  padding: 1rem;                
-}
