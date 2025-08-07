@@ -6,7 +6,7 @@
 <header class="top-header">
     {% csrf_token %}
     <a href="{% url 'home' %}" class="menu-logo">
-        <span class="logoA">Ani</span><span class="logoD">meDiary</span>
+        <span class="logoA">Anime</span><span class="logoD">Diary</span>
     </a>
     <a href="{% url 'home'%}" class="menu-items">Home</a>
     <a href="{% url 'myanimes'%}" class="menu-items">MyDiary</a>
@@ -22,4 +22,7 @@
         <a class="menu-items" href="{% url 'login' %}">login</a>
         <a href="{% url 'register'%}" class="menu-items">register</a>
     {%endif%}
+    
+    
+
 </header>

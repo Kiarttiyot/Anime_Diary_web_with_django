@@ -1,20 +1,50 @@
-{%extends 'app_general/components/base.html'%}
+{% extends 'app_general/components/base.html' %}
 {% load static %}
-{%block site_title%}home{%endblock%}
-{%block content%}
-<link rel="stylesheet" href="{% static 'app_general/main.css'%}">
-<link rel="stylesheet" href="{% static 'app_general/normalize.css'%}">
-<link rel="stylesheet" href="{% static 'app_general/home.css'%}">
-<section>
-    <div style="text-align: center;">
-        <img src="{%static 'app_general/okabe.jpg'%}" class="room-home">
-        <button class="btn-log">loging</button>
-        <button class="btn-reg">register</button>
+{% block site_title %}Anime Diary{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'app_general/home.css' %}">
+
+<header class="site-header">
+    <h1>Anime Diary</h1>
+    <p>Share your experiences watching anime.</p>
+</header>
+
+<!-- Banner -->
+<div class="banner">
+    <img src="{% static 'app_general/okabe.jpg' %}" alt="Anime Banner">
+    <div class="banner-text">
+        <p class="special-font">
+            <span class="anime-text"> AboutAnime</span></p>
+        <p class="special-font">
+            <span class="diary-text">Diary</span>
+        </p>
     </div>
-        <h4>อธิบายอะไรสักหน่อย</h4>
-    <div>
-        <p>Anime about smething</p>
+</div>
+
+
+<!-- Card Section -->
+<section class="anime-cards">
+    <div class="card">
+        <img src="{% static 'app_general/Screenshot2.png' %}" alt="Anime 1">
+        <p>นี่คือตัวอย่างเรื่องที่น่าสนใจมาก ๆ สำหรับคุณ</p>
+    </div>
+    <div class="card">
+        <img src="{% static 'app_general/Screenshot1.png' %}" alt="Anime 2">
+        <p>ผู้สร้างรับประกันความสนุก อย่าพลาดชมเรื่องนี้</p>
+    </div>
+    <div class="card">
+        <img src="{% static 'app_general/Screenshot3.png' %}" alt="Anime 3">
+        <p>ปลุกจินตนาการไปกับตัวละครสุดเข้มข้น</p>
     </div>
 </section>
 
-{%endblock%}
+<!-- Buttons -->
+<div class="action-buttons">
+    <button class="btn-register">REGISTER</button>
+    <button class="btn-login">Login</button>
+</div>
+
+<!-- Footer -->
+
+
+{% endblock %}
