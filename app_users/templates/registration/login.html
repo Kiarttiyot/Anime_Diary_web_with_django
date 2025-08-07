@@ -1,4 +1,5 @@
 {%extends 'app_general/components/base.html'%}
+
 {%block site_title%}about{%endblock%}
 {%block content%}
     <div>
@@ -12,5 +13,7 @@
                 <button type="submit"> Login </button>
             </p>
         </form>
+        {%load socialaccount %}
+        <a href="{%provider_login_url 'google'%}">Login Google</a>
     </div>
 {%endblock%}
