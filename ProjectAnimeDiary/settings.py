@@ -26,8 +26,7 @@ SECRET_KEY = 'django-insecure-hihrboyzj+pm_%f$tn2lv)1(jake2c#!084vbp2ymkpin^25)#
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-# ต้องมีเพื่อให้ allauth ทำงาน
-SITE_ID = 2
+
 
 # Application definition
 
@@ -43,13 +42,6 @@ INSTALLED_APPS = [
     'app_myanimes.apps.AppMyanimesConfig',
     'app_users.apps.AppUsersConfig',
     
-    # Allauth dependencies
-    'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
-    
 ]
 
 MIDDLEWARE = [
@@ -60,9 +52,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
-    # ✅ เพิ่ม middleware ของ allauth
-    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'ProjectAnimeDiary.urls'
@@ -74,8 +63,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',  # ✅ ต้องมี!
+                'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -91,16 +79,12 @@ WSGI_APPLICATION = 'ProjectAnimeDiary.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'mysql.connector.django',
         'NAME': 'my_anime_diary',
         'USER':'root',
         'PASSWORD':'12345678',
         'HOST':'127.0.0.1',
         'PORT': '3306',
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-    
-        },
     }
 }
 
@@ -160,5 +144,3 @@ LOGOUT_REDIRECT_URL = '/'
 # settings.py
 
 DEBUG = True
-
-SOCIALACCOUNT_ADAPTER = 'app_general.adapter.MySocialAccountAdapter'
