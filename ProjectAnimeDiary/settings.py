@@ -160,3 +160,5 @@ LOGOUT_REDIRECT_URL = '/'
 # settings.py
 
 DEBUG = True
+
+SOCIALACCOUNT_ADAPTER = 'app_general.adapter.MySocialAccountAdapter'
