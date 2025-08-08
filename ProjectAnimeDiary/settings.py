@@ -51,7 +51,12 @@ ROOT_URLCONF = 'ProjectAnimeDiary.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # เผื่อไว้ถ้าจะมี template global
+        'DIRS': [   BASE_DIR / 'templates',
+                    BASE_DIR / 'app_general' / 'templates',
+                    BASE_DIR / 'app_myanimes' / 'templates',
+                    BASE_DIR / 'app_users' / 'templates',
+                 
+                 ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -109,3 +114,17 @@ LOGOUT_REDIRECT_URL = 'home'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_REQUIRED = True
+
+# Social account providers
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        },
+        'OAUTH_PKCE_ENABLED': True,
+    }
+}
