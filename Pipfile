@@ -8,6 +8,7 @@ django = "*"
 django-extensions = "*"
 ipython = "*"
 mysql-connector-python = "*"
+mysqlclient = "*"
 
 [dev-packages]
 
