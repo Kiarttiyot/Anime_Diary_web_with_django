@@ -1,0 +1,17 @@
+
+{% load static %}
+
+{% block content %}
+<div class="logout-page" style="text-align:center; padding:40px;">
+    <h1>Logout</h1>
+    <p>คุณแน่ใจหรือไม่ว่าต้องการออกจากระบบ?</p>
+
+    <form method="post" action="{% url 'account_logout' %}">
+        {% csrf_token %}
+        <button type="submit" style="padding:10px 20px; background:#e74c3c; color:white; border:none; border-radius:5px;">
+            ยืนยันออกจากระบบ
+        </button>
+        <a href="/" style="margin-left:10px;">ยกเลิก</a>
+    </form>
+</div>
+{% endblock %}
