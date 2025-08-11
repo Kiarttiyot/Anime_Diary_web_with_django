@@ -84,36 +84,6 @@
         .btn-google:hover {
             background: #c33d2e;
         }
-        /* ปุ่ม GitHub */
-        .btn-github {
-            display: block;
-            background: #333;
-            color: white;
-            text-align: center;
-            padding: 12px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .btn-github:hover {
-            background: #000;
-        }
-        /* ปุ่ม default สำหรับ provider อื่น */
-        .btn-default {
-            display: block;
-            background: #555;
-            color: white;
-            text-align: center;
-            padding: 12px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .btn-default:hover {
-            background: #444;
-        }
         .links {
             text-align: center;
             margin-top: 15px;
@@ -161,19 +131,9 @@
     {% if socialaccount_providers %}
         <div class="divider"><span>หรือ</span></div>
         {% for provider in socialaccount_providers %}
-            {% if provider.id == 'google' %}
-                <a class="btn-google" href="{% provider_login_url provider.id %}">
-                    เข้าสู่ระบบด้วย {{ provider.name }}
-                </a>
-            {% elif provider.id == 'github' %}
-                <a class="btn-github" href="{% provider_login_url provider.id %}">
-                    เข้าสู่ระบบด้วย {{ provider.name }}
-                </a>
-            {% else %}
-                <a class="btn-default" href="{% provider_login_url provider.id %}">
-                    เข้าสู่ระบบด้วย {{ provider.name }}
-                </a>
-            {% endif %}
+            <a class="btn-google" href="{% provider_login_url provider.id %}">
+                เข้าสู่ระบบด้วย {{ provider.name }}
+            </a>
         {% endfor %}
     {% endif %}
 </div>
