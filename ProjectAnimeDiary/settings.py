@@ -31,8 +31,6 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    'allauth.socialaccount.providers.github',
-    'allauth.socialaccount.providers.facebook', 
 ]
 
 MIDDLEWARE = [
@@ -128,27 +126,5 @@ SOCIALACCOUNT_PROVIDERS = {
             'access_type': 'online',
         },
         'OAUTH_PKCE_ENABLED': True,
-    },
-    'github': {
-        'SCOPE': [
-            'user',
-            'user:email',
-        ],
-    },
-     'facebook': {
-        'METHOD': 'oauth2',
-        'SCOPE': ['email', 'public_profile'],
-        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
-        'FIELDS': [
-            'id',
-            'email',
-            'name',
-            'first_name',
-            'last_name',
-            'picture.type(large)',
-        ],
-        'VERIFIED_EMAIL': True,
-        'VERSION': 'v18.0'  # ใช้ version ล่าสุดของ Graph API
     }
 }
-SOCIALACCOUNT_QUERY_EMAIL = True
