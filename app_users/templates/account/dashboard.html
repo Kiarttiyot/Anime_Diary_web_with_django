@@ -1,16 +1,9 @@
+{% extends 'app_general/components/base.html' %}
 
 {% load static %}
-
 {% block content %}
-<div class="signup-container" style="max-width:400px; margin:auto; padding:30px; background:#fff; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.1);">
-    <h1 style="text-align:center; margin-bottom:20px;">สมัครสมาชิก</h1>
-
-    <form method="post" action="{% url 'account_signup' %}">
-        {% csrf_token %}
+{% csrf_token %}
+    <h1>Dash Board</h1>
        
 
-    <p style="text-align:center; margin-top:15px;">
-        มีบัญชีอยู่แล้ว? <a href="{% url 'account_login' %}">เข้าสู่ระบบ</a>
-    </p>
-</div>
 {% endblock %}

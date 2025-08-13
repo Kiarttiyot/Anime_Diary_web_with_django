@@ -22,3 +22,4 @@ def subscription(request):
     return render(request,'app_general/subscription_form.html',context)
 def subscription_thankyou(request):
     return render(request,'app_general/subscription_thankyou.html')
+

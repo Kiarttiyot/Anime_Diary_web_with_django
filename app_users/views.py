@@ -1,5 +1,8 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django.http import HttpRequest, HttpResponse
 
-# Create your views here.
-def custom_login(request):
-    return render(request, 'account/loging.html')
+
+@login_required
+def dashboard(request: HttpRequest):
+    return render(request,"account/dashboard.html")

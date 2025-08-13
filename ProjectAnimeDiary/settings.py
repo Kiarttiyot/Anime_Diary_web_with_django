@@ -110,7 +110,7 @@ AUTHENTICATION_BACKENDS = (
 # URLs หลัง login/logout
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
-
+LOGIN_URL = 'login'
 # Optional allauth settings
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_AUTHENTICATION_METHOD = 'username'

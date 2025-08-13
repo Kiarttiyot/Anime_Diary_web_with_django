@@ -138,7 +138,10 @@
         <div style="color: red; margin-bottom: 10px;">กรุณาตรวจสอบข้อมูลอีกครั้ง</div>
     {% endif %}
 
-    <form method="post" action="{% url 'account_login' %}">
+    <form method="post" action="{% url 'login' %}">
+        {% if request.GET.next %}
+            <input type="hidden" name="next" value="{{request.GET.next}}">
+        {% endif %}
         {% csrf_token %}
         {{ form.login.label_tag }}
         {{ form.login }}
