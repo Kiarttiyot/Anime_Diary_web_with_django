@@ -1,0 +1,183 @@
+{% load i18n %}
+{% load account socialaccount %}
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>{% trans "เข้าสู่ระบบ" %}</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f7f9fc;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 420px;
+            margin: 50px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+            margin-top: 15px;
+            display: block;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        .checkbox {
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 12px;
+            background-color: #4285f4;
+            border: none;
+            color: white;
+            font-size: 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .btn-primary:hover {
+            background-color: #3367d6;
+        }
+        .divider {
+            margin: 25px 0;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            line-height: 0.1em;
+        }
+        .divider span {
+            background: #fff;
+            padding: 0 10px;
+            color: #888;
+            font-size: 0.9rem;
+        }
+        /* ปุ่ม Google */
+        .btn-google {
+            display: block;
+            background: #db4437;
+            color: white;
+            text-align: center;
+            padding: 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .btn-google:hover {
+            background: #c33d2e;
+        }
+        /* ปุ่ม GitHub */
+        .btn-github {
+            display: block;
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .btn-github:hover {
+            background: #000;
+        }
+        /* ปุ่ม default สำหรับ provider อื่น */
+        .btn-default {
+            display: block;
+            background: #555;
+            color: white;
+            text-align: center;
+            padding: 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .btn-default:hover {
+            background: #444;
+        }
+        .links {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+        .links a {
+            color: #4285f4;
+            text-decoration: none;
+        }
+        .links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>{% trans "เข้าสู่ระบบ" %}</h1>
+
+    {% if form.errors %}
+        <div style="color: red; margin-bottom: 10px;">กรุณาตรวจสอบข้อมูลอีกครั้ง</div>
+    {% endif %}
+
+    <form method="post" action="{% url 'account_login' %}">
+        {% csrf_token %}
+        {{ form.login.label_tag }}
+        {{ form.login }}
+
+        {{ form.password.label_tag }}
+        {{ form.password }}
+
+        <div class="checkbox">
+            {{ form.remember }}
+            {{ form.remember.label_tag }}
+        </div>
+
+        <button class="btn-primary" type="submit">{% trans "เข้าสู่ระบบ" %}</button>
+    </form>
+
+    <div class="links">
+        <a href="{% url 'account_reset_password' %}">{% trans "ลืมรหัสผ่าน?" %}</a><br>
+        {% blocktrans %}ยังไม่มีบัญชี? <a href="{{ signup_url }}">สมัครสมาชิก</a>{% endblocktrans %}
+    </div>
+
+    {% get_providers as socialaccount_providers %}
+    {% if socialaccount_providers %}
+        <div class="divider"><span>หรือ</span></div>
+        {% for provider in socialaccount_providers %}
+            {% if provider.id == 'google' %}
+                <a class="btn-google" href="{% provider_login_url provider.id %}">
+                    เข้าสู่ระบบด้วย {{ provider.name }}
+                </a>
+            {% elif provider.id == 'github' %}
+                <a class="btn-github" href="{% provider_login_url provider.id %}">
+                    เข้าสู่ระบบด้วย {{ provider.name }}
+                </a>
+            {% else %}
+                <a class="btn-default" href="{% provider_login_url provider.id %}">
+                    เข้าสู่ระบบด้วย {{ provider.name }}
+                </a>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+</div>
+</body>
+</html>
