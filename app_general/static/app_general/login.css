@@ -1,0 +1,174 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f7f9fc;
+    margin: 0;
+    padding: 0;
+}
+.vl {
+  border-left: 2px solid gray;
+  height: 500px;
+  position: absolute;
+  left: 50%;
+  margin-left: -3px;
+  top: 50px;
+}
+.container {
+    max-width: 420px;
+    margin: 50px ;
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);;
+    position: relative;
+    left: 10%;
+}
+.blockright {
+    max-width: 420px;
+    margin: 50px auto;
+    padding: 25px;
+    border-radius: 10px;
+    background-color: #f7f9fc;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    right: 20%;
+    top: 50px;
+}
+.blocklang {
+    max-width: 420px;
+    margin: 50px auto;
+    padding: 25px;
+    border-radius: 10px;
+}
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+label {
+    font-weight: bold;
+    margin-top: 15px;
+    display: block;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.checkbox {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.forget{
+    position: absolute;
+    right: 25px;
+    top: 56%;
+    
+}
+
+/* ปุ่มหลัก */
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    background-color: #db4437;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.btn-primary:hover {
+    background-color: #3367d6;
+}
+
+/* Divider */
+.divider {
+    margin: 25px 0;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    line-height: 0.1em;
+}
+
+.divider span {
+    background: #fff;
+    padding: 0 10px;
+    color: #888;
+    font-size: 0.9rem;
+}
+
+/* ปุ่ม Google */
+.btn-google {
+    display: block;
+    background: #db4437;
+    color: white;
+    text-align: center;
+    padding: 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.btn-google:hover {
+    background: #c33d2e;
+}
+
+/* ปุ่ม GitHub */
+.btn-github {
+    display: block;
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.btn-github:hover {
+    background: #000;
+}
+
+/* ปุ่ม Default สำหรับ provider อื่น */
+.btn-default {
+    display: block;
+    background: #555;
+    color: white;
+    text-align: center;
+    padding: 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.btn-default:hover {
+    background: #444;
+}
+
+/* ลิงก์เพิ่มเติม */
+.links {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 0.9rem;
+}
+
+.links a {
+    color: #4285f4;
+    text-decoration: none;
+}
+
+.links a:hover {
+    text-decoration: underline;
+}

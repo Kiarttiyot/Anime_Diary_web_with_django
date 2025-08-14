@@ -3,7 +3,7 @@
 {% load static %}
 {% block content %}
 {% csrf_token %}
-    <h1>Dash Board</h1>
+    <h1>Dash Board {{ user.username }}</h1>
        
 
 {% endblock %}
