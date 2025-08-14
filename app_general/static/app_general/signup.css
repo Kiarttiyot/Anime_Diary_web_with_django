@@ -1,0 +1,188 @@
+/* พื้นหลังรวม */
+body {
+    /*background-color: #0a0d2e;*/
+    background-color: #0a0d2e; /* น้ำเงินเข้ม */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #fff;
+    
+}
+
+.header {
+    text-align: center;
+    margin-top: 70px;
+    
+}
+
+.container-flex{
+    margin-top: 50px;
+}
+
+/* กล่องฟอร์ม */
+.signup-container {
+    max-width: 400px;
+    margin: 60px auto;
+    padding: 30px;
+    background-color: #11143b; /* น้ำเงินเข้มกว่า */
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.4);   
+    
+}
+
+/* หัวข้อ */
+.signup-container h1 {
+    /*text-align: center;*/
+    margin-bottom: 25px;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+/* ช่องกรอก */
+.signup-container input[type="text"],
+.signup-container input[type="email"],
+.signup-container input[type="password"] {
+    width: 350px;
+    padding: 16px;
+    margin-top: 15px;
+    border: none;
+    /*border-radius: 5px;*/
+    background: #fff;
+    color: #333;
+    font-size: 14px;
+}
+
+/* ปุ่มสมัคร */
+.signup-container button {
+    
+    width: 150px;
+    padding: 16px;
+    background: #e74c3c; /* แดง */
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    /*border-radius: 5px;*/
+    margin-top: 15px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.signup-container button:hover {
+    background: #c0392b;
+}
+
+/* ลิงก์เข้าสู่ระบบ */
+.signup-container p {
+    /*text-align: center;*/
+    margin-top: 20px;
+}
+
+.signup-container a {
+    color: #e01717;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.signup-container a:hover {
+    text-decoration: underline;
+}
+
+
+
+.blocklang {
+    /*text-align: center;*/
+    margin-top: 20px;
+}
+
+.blocklang{
+    max-width: 400px;
+    margin: 60px auto;
+    padding: 30px;
+    background-color: #11143b; /* น้ำเงินเข้มกว่า */
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    
+}
+
+/* เส้นแบ่งตรงกลาง */
+.center-line {
+    width: 2px;               /* ความหนาของเส้น */
+    background-color: #8a8a8a;   /* สีเส้น */
+    margin: 0 20px;           /* ระยะห่างซ้าย-ขวากับกล่อง */
+}
+
+/* ให้เส้นเต็มความสูงของ container-flex */
+.container-flex {
+    display: flex;
+    align-items: stretch;     /* ให้เส้นและกล่องสูงเท่ากัน */
+}
+
+
+.divider {
+    font-size: 26px;
+   
+}
+.btn-google {
+    display: block;
+    background: #ff5243;
+    color: white;
+    text-align: center;
+    padding: 12px;
+/*    border-radius: 6px;*/
+    text-decoration: none;
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-top: 15px;
+}
+
+.btn-google:hover {
+    background: #c33d2e;
+}
+
+/* ปุ่ม GitHub */
+.btn-github {
+    display: block;
+    background: #6780ff;
+    color: white;
+    text-align: center;
+    padding: 12px;
+  /*  border-radius: 6px;*/
+    text-decoration: none;  
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-top: 40px;
+}
+/* wrapper flex container */
+.container-flex {
+    display: flex;
+    justify-content: center; /* จัดกึ่งกลางหน้า */
+    gap: 40px; /* ระยะห่างระหว่างกล่อง */
+    margin-top: 40px;
+    flex-wrap: wrap; /* ให้มือถือหรือจอเล็กๆ ซ้อนลง */
+}
+
+.signup-container,
+.blocklang {
+    margin: 0; /* เอา auto ออก */
+    flex: 1;
+    max-width: 400px;
+}
+
+.signup-container.hidden-frame,
+.blocklang.hidden-frame {
+    background: transparent;   /* ลบพื้นหลัง */
+    border: none;              /* ลบขอบ */
+    box-shadow: none;          /* ลบเงา */
+}
+.box {
+    background-color: #0a0d2e;
+    color: #ffffff;
+    padding: 70px 0;
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+}
+.space{
+    background-color: #0a0d2e;
+    color: #ffffff;
+    padding: 30px 0;
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+}

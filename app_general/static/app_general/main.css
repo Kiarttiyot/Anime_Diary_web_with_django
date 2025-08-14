@@ -1,4 +1,5 @@
 /* mitr-300 - latin */
+
 @font-face {
   font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
   font-family: 'Mitr';
@@ -14,13 +15,13 @@
   font-weight: 400;
   src: url('fonts/mitr-v12-latin-regular.woff2') format('woff2'); 
 }
-
+/*
 html{
     font-family: 'Mitr',sans-serif;
 }
 .top-header{
   background-color: black;
-  height: 84px;
+  height: 42px;
   width: 100%;
   padding: 10px;
 
@@ -58,4 +59,4 @@ html{
     padding: 20px;
     text-decoration: none;
     font-weight: bold;
-}
+}*/

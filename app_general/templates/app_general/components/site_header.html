@@ -1,12 +1,11 @@
 {%load static%}
 {%load socialaccount %}
 <head>
-    <link rel="stylesheet" href="{% static 'app_general/main.css'%}">
-    <link rel="stylesheet" href="{% static 'app_general/nav.css'%}">
+    <link rel="stylesheet" href="{% static 'app_general/header.css'%}">
 </head>
 <header class="top-header">
     <a href="{% url 'home' %}" class="menu-logo">
-        <span class="logoA">Ani</span><span class="logoD">meDiary</span>
+        <span class="logoA">Anime</span><span class="logoD">Diary</span>
     </a>
     <a href="{% url 'home'%}" class="menu-items">Home</a>
     <a href="{% url 'myanimes'%}" class="menu-items">MyDiary</a>
@@ -17,8 +16,8 @@
     <a  class="menu-items" href="{% url 'dashboard' %}">{{ user.username }}!</a>
     <a class="menu-items"  href="{% url 'account_logout' %}">Logout</a>
   {% else %}
-    <a  class="menu-items" href="{% url 'account_login' %}">Login</a> |
-    <a  class="menu-items" href="{% url 'account_signup' %}">Sign Up</a> |
-  {% endif %} class="menu-item" 
+    <a  class="menu-items" href="{% url 'account_login' %}">Login</a> 
+    <a  class="menu-items" href="{% url 'account_signup' %}">Sign Up</a> 
+  {% endif %}
     
 </header>
