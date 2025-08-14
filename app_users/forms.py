@@ -1,14 +1,14 @@
 # # app_users/forms.py
-# from django import forms
-# from django.contrib.auth.forms import AuthenticationForm
-
-# class CustomLoginForm(AuthenticationForm):
-#     # คุณสามารถเพิ่ม field หรือแก้ไข widget ได้ตรงนี้
-#     username = forms.CharField(
-#         label='ชื่อผู้ใช้',
-#         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'กรอกชื่อผู้ใช้'})
-#     )
-#     password = forms.CharField(
-#         label='รหัสผ่าน',
-#         widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'กรอกรหัสผ่าน'})
-#     )
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from app_users.models import Profile
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ("first_name","last_name")
+        
+class ExtendedProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ('address','phone')
