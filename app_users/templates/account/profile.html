@@ -1,0 +1,38 @@
+{% extends 'app_general/components/base.html' %}
+
+{% load static %}
+{% block content %}
+{% csrf_token %}
+    <h1>Dash Board {{ user.username }}</h1>
+    <h5>ข้อมูลผู้ใช้</h5>
+     <form method="post" action="{% url 'profile' %}">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div style="margin-bottom:15px;">
+            {{ form.first_name.label_tag }}
+            {{ form.first_name }}
+            {{ form.first_name.errors }}
+        </div>
+         <div style="margin-bottom:15px;">
+            {{ form.last_name.label_tag }}
+            {{ form.last_name }}
+            {{ form.last_name.errors }}
+        </div>
+        <div style="margin-bottom:15px;">
+            {{ extended_form.address.label_tag }}
+            {{ extended_form.address }}
+            {{ extended_form.address.errors }}
+        </div>
+        <div style="margin-bottom:15px;">
+            {{ extended_form.phone.label_tag }}
+            {{ extended_form.phone }}
+            {{ extended_form.phone.errors }}
+        </div>
+
+        <button type="submit" >
+           Save
+        </button>
+    </form>  
+
+{% endblock %}
+            
