@@ -1,7 +1,7 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: #fff;
+    background: #ffffff;
 }
 /* โหลดฟอนต์ Monoton */
 @font-face {
@@ -111,6 +111,8 @@ body {
 .btn-login {
     padding: 20px 40px;
     margin: 5px;
+
+button {
     border: none;
     border-radius: 6px;
     cursor: pointer;
@@ -144,4 +146,4 @@ body {
 }
 
 
-
+}
