@@ -1,143 +1,23 @@
 {% load i18n %}
 {% load account socialaccount %}
+{% load static %}
 
+<link rel="stylesheet" href="{% static 'app_general/login.css' %}">
 <!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <title>{% trans "เข้าสู่ระบบ" %}</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #f7f9fc;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 420px;
-            margin: 50px auto;
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #333;
-        }
-        label {
-            font-weight: bold;
-            margin-top: 15px;
-            display: block;
-        }
-        input[type="text"], input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin-top: 6px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-        }
-        .checkbox {
-            margin-top: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .btn-primary {
-            width: 100%;
-            padding: 12px;
-            background-color: #4285f4;
-            border: none;
-            color: white;
-            font-size: 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-        .btn-primary:hover {
-            background-color: #3367d6;
-        }
-        .divider {
-            margin: 25px 0;
-            text-align: center;
-            border-bottom: 1px solid #ddd;
-            line-height: 0.1em;
-        }
-        .divider span {
-            background: #fff;
-            padding: 0 10px;
-            color: #888;
-            font-size: 0.9rem;
-        }
-        /* ปุ่ม Google */
-        .btn-google {
-            display: block;
-            background: #db4437;
-            color: white;
-            text-align: center;
-            padding: 12px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .btn-google:hover {
-            background: #c33d2e;
-        }
-        /* ปุ่ม GitHub */
-        .btn-github {
-            display: block;
-            background: #333;
-            color: white;
-            text-align: center;
-            padding: 12px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .btn-github:hover {
-            background: #000;
-        }
-        /* ปุ่ม default สำหรับ provider อื่น */
-        .btn-default {
-            display: block;
-            background: #555;
-            color: white;
-            text-align: center;
-            padding: 12px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .btn-default:hover {
-            background: #444;
-        }
-        .links {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 0.9rem;
-        }
-        .links a {
-            color: #4285f4;
-            text-decoration: none;
-        }
-        .links a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    <title>Login</title>
 </head>
 <body>
-<div class="container">
-    <h1>{% trans "เข้าสู่ระบบ" %}</h1>
+
+    <h1>Login</h1>
 
     {% if form.errors %}
         <div style="color: red; margin-bottom: 10px;">กรุณาตรวจสอบข้อมูลอีกครั้ง</div>
     {% endif %}
-
+    <div class="vl"></div>
+<div class="container">
     <form method="post" action="{% url 'login' %}">
         {% if request.GET.next %}
             <input type="hidden" name="next" value="{{request.GET.next}}">
@@ -153,15 +33,19 @@
             {{ form.remember }}
             {{ form.remember.label_tag }}
         </div>
+        <a href="{% url 'account_reset_password' %}" class="forget">{% trans "ลืมรหัสผ่าน?" %}</a><br>
 
         <button class="btn-primary" type="submit">{% trans "เข้าสู่ระบบ" %}</button>
     </form>
 
+</div>
+<div class="blockright">
     <div class="links">
-        <a href="{% url 'account_reset_password' %}">{% trans "ลืมรหัสผ่าน?" %}</a><br>
-        {% blocktrans %}ยังไม่มีบัญชี? <a href="{{ signup_url }}">สมัครสมาชิก</a>{% endblocktrans %}
+        <h1>Dont't Have An Account?</h1>
+        <button class="btn-primary" type="submit">{% trans "สมัครสมาชิก" %}</button>
     </div>
-
+</div>
+<div class="blocklang">
     {% get_providers as socialaccount_providers %}
     {% if socialaccount_providers %}
         <div class="divider"><span>หรือ</span></div>

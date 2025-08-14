@@ -1,1 +1,4 @@
-app_myanimes/__pycache__/
+# Ignore Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
