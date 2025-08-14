@@ -1,5 +1,5 @@
 django
 django-allauth
 django-extensions
-PyJWT
 requests
+PyJWT
