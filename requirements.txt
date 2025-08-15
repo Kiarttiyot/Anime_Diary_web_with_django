@@ -3,3 +3,5 @@ django-allauth
 django-extensions
 requests
 PyJWT
+python-dotenv
+cryptography>=43
