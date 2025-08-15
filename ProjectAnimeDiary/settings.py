@@ -1,20 +1,41 @@
 from pathlib import Path
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-hihrboyzj+pm_%f$tn2lv)1(jake2c#!084vbp2ymkpin^25)#'
-DEBUG = True
-ALLOWED_HOSTS = ['*']
+# ---- Core envs ----
+SECRET_KEY = os.getenv('SECRET_KEY', 'replace-me')
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-# allauth ต้องการ
-SITE_ID = 2
+# ALLOWED_HOSTS: อ่านจาก .env (คั่นด้วยคอมมา), ถ้า DEBUG หรือไม่ตั้งค่า → เติม host ที่ใช้บ่อยบน Docker
+hosts_env = os.getenv('ALLOWED_HOSTS', '')
+ALLOWED_HOSTS = [h.strip() for h in hosts_env.split(',') if h.strip()]
 
-# แอปทั้งหมด
+if DEBUG or not ALLOWED_HOSTS:
+    ALLOWED_HOSTS += ["localhost", "127.0.0.1", "0.0.0.0"]
+
+# กันซ้ำ
+ALLOWED_HOSTS = list(dict.fromkeys(ALLOWED_HOSTS))
+
+# CSRF (สำหรับ dev บน 8000)
+csrf_env = os.getenv('CSRF_TRUSTED_ORIGINS', '')
+CSRF_TRUSTED_ORIGINS = [o.strip() for o in csrf_env.split(',') if o.strip()]
+if (DEBUG and not CSRF_TRUSTED_ORIGINS):
+    CSRF_TRUSTED_ORIGINS = [
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
+    ]
+
+# ---- Django / allauth ----
+SITE_ID = int(os.getenv('SITE_ID', '2'))  # ถ้าใช้ค่า default ให้ตั้งเป็น 1 หรือสร้าง Site id=2 ให้ตรงโดเมนที่ใช้
+
 INSTALLED_APPS = [
     # Django default apps
     'django.contrib.admin',
     'django.contrib.auth',
-    
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -25,7 +46,7 @@ INSTALLED_APPS = [
     'app_myanimes.apps.AppMyanimesConfig',
     'app_users.apps.AppUsersConfig',
 
-    # allauth dependencies
+    # allauth
     'django.contrib.sites',
     'allauth',
     'allauth.account',
@@ -43,7 +64,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    # allauth middleware
+    # allauth
     'allauth.account.middleware.AccountMiddleware',
 ]
 
@@ -52,12 +73,12 @@ ROOT_URLCONF = 'ProjectAnimeDiary.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [   BASE_DIR / 'templates',
-                    BASE_DIR / 'app_general' / 'templates',
-                    BASE_DIR / 'app_myanimes' / 'templates',
-                    BASE_DIR / 'app_users' / 'templates',
-                 
-                 ],
+        'DIRS': [
+            BASE_DIR / 'templates',
+            BASE_DIR / 'app_general' / 'templates',
+            BASE_DIR / 'app_myanimes' / 'templates',
+            BASE_DIR / 'app_users' / 'templates',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -72,15 +93,33 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ProjectAnimeDiary.wsgi.application'
 
-# ใช้ SQLite ในการพัฒนา
+# ---- Database (SQLite for dev) ----
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite',
     }
+    # MySQL ตัวอย่าง:
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': os.getenv('DB_NAME'),
+    #     'USER': os.getenv('DB_USER'),
+    #     'PASSWORD': os.getenv('DB_PASSWORD'),
+    #     'HOST': os.getenv('DB_HOST'),
+    #     'PORT': os.getenv('DB_PORT'),
+    # }
+    # Postgres ตัวอย่าง:
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': os.getenv('DB_NAME'),
+    #     'USER': os.getenv('DB_USER'),
+    #     'PASSWORD': os.getenv('DB_PASSWORD'),
+    #     'HOST': os.getenv('DB_HOST'),
+    #     'PORT': os.getenv('DB_PORT'),
+    # }
 }
 
-# Password validators
+# ---- Password validators ----
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -88,50 +127,45 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# Language & Timezone
+# ---- i18n / tz ----
 LANGUAGE_CODE = 'th'
 TIME_ZONE = 'Asia/Bangkok'
 USE_I18N = True
 USE_TZ = True
 
-# Static files
+# ---- Static / Media ----
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']  # ถ้าคุณมีโฟลเดอร์ static
+# ใช้ถ้ามีโฟลเดอร์ static ฝั่ง source; ถ้าไม่มี จะเป็น [] อัตโนมัติ
+STATICFILES_DIRS = [BASE_DIR / 'static'] if (BASE_DIR / 'static').exists() else []
+# จุดรวม collectstatic (entrypoint จะเรียก)
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# Default primary key
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# allauth settings
+# ---- allauth ----
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',  # default
     'allauth.account.auth_backends.AuthenticationBackend',  # allauth
 )
 
-# URLs หลัง login/logout
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'
-# Optional allauth settings
+
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 ACCOUNT_EMAIL_REQUIRED = True
 
-# Social account providers
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
-        'SCOPE': [
-            'profile',
-            'email',
-        ],
-        'AUTH_PARAMS': {
-            'access_type': 'online',
-        },
+        'SCOPE': ['profile', 'email'],
+        'AUTH_PARAMS': {'access_type': 'online'},
         'OAUTH_PKCE_ENABLED': True,
     },
     'github': {
-        'SCOPE': [
-            'user',
-            'user:email',
-        ],
-    }
+        'SCOPE': ['user', 'user:email'],
+    },
 }

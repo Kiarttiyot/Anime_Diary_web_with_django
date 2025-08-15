@@ -1,0 +1,11 @@
+services:
+  web:
+    build: .
+    container_name: django_app
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    restart: unless-stopped
