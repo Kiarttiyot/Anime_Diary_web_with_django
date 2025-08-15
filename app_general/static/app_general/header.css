@@ -1,0 +1,64 @@
+/* โครงสร้างหลักของ Navbar */
+.top-header {
+    background-color: #06081d; /* น้ำเงินเข้ม */
+    display: flex;
+    align-items: center;
+    padding: 15px 40px;
+    justify-content: flex-start;
+    gap: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+}
+
+/* โลโก้ Anime Diary */
+.menu-logo {
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.logoA {
+    color: #e74c3c; /* แดงสด */
+}
+
+.logoD {
+    color: #fff;
+}
+
+/* ลิงก์เมนู */
+.menu-items {
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Hover Effect */
+.menu-items:hover {
+    background-color: #e74c3c; /* แดง */
+    color: #fff;
+}
+
+/* ปุ่ม Login / Sign Up ให้ดูเด่นขึ้น */
+/*.menu-items:last-child {
+    background-color: #3498db; 
+    font-weight: bold;
+}
+
+.menu-items:last-child:hover {
+    background-color: #2980b9;
+}*/
+
+
+/* ทำให้ Navbar ติดบนสุดเวลาสกอลล์ */
+.top-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.menu-items:nth-child(2) { /* ลิงก์ลำดับ 6 */
+    margin-left: 25%; /* ดันไปสุดขวา */
+}
+

@@ -1,45 +1,88 @@
-
+{% extends 'app_general/components/base.html' %}
+{% load i18n %}
+{% load account socialaccount %}
 {% load static %}
 
 {% block content %}
-<div class="signup-container" style="max-width:400px; margin:auto; padding:30px; background:#fff; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.1);">
-    <h1 style="text-align:center; margin-bottom:20px;">สมัครสมาชิก</h1>
 
-    <form method="post" action="{% url 'account_signup' %}">
-        {% csrf_token %}
-        {{ form.non_field_errors }}
+<link rel="stylesheet" href="{% static 'app_general/signup.css' %}">
 
-        <div style="margin-bottom:15px;">
-            {{ form.username.label_tag }}
-            {{ form.username }}
-            {{ form.username.errors }}
-        </div>
-
-        <div style="margin-bottom:15px;">
-            {{ form.email.label_tag }}
-            {{ form.email }}
-            {{ form.email.errors }}
-        </div>
-
-        <div style="margin-bottom:15px;">
-            {{ form.password1.label_tag }}
-            {{ form.password1 }}
-            {{ form.password1.errors }}
-        </div>
-
-        <div style="margin-bottom:15px;">
-            {{ form.password2.label_tag }}
-            {{ form.password2 }}
-            {{ form.password2.errors }}
-        </div>
-
-        <button type="submit" style="width:100%; padding:10px; background:#3498db; color:white; border:none; border-radius:5px;">
-            สมัครสมาชิก
-        </button>
-    </form>
-
-    <p style="text-align:center; margin-top:15px;">
-        มีบัญชีอยู่แล้ว? <a href="{% url 'account_login' %}">เข้าสู่ระบบ</a>
-    </p>
+<div class="header">
+    <h1>Sign Up</h1>
+    <a>Welcome to the official Animediary.</a>
 </div>
+
+<div class="space"></div>
+
+<!-- wrapper flex container -->
+<div class="container-flex">
+
+    <!-- กล่องฟอร์มสมัครสมาชิก -->
+    <div class="signup-container hidden-frame">
+        <h1 class="divider"><span>Sign Up</span></h1>
+
+        <form method="post" action="{% url 'account_signup' %}">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+            <div class="form-group">
+                <!-- {{ form.username.label_tag }} -->
+                {{ form.username }}
+                {{ form.username.errors }}
+            </div>
+
+            <div class="form-group">
+                <!--{{ form.email.label_tag }}-->
+                {{ form.email }}
+                {{ form.email.errors }}
+            </div>
+
+            <div class="form-group">
+                <!--{{ form.password1.label_tag }}-->
+                {{ form.password1 }}
+                {{ form.password1.errors }}
+            </div>
+
+            <div class="form-group">
+                
+                {{ form.password2 }}
+                {{ form.password2.errors }}
+            </div>
+
+            <button type="submit" class="btn-submit">
+                LOGIN NOW
+            </button>
+        </form>
+
+        <p class="login-link">
+            Already have an account? <a href="{% url 'account_login' %}">Log In!</a>
+        </p>
+    </div>
+
+    <div class="center-line"></div>
+    <!-- กล่อง Social Login -->
+    <div class="blocklang hidden-frame">
+        {% get_providers as socialaccount_providers %}
+        {% if socialaccount_providers %}
+            <h1 class="divider"><span>Login With</span></h1>
+            {% for provider in socialaccount_providers %}
+                {% if provider.id == 'google' %}
+                    <a class="btn-google" href="{% provider_login_url provider.id %}">
+                        sing in whit {{ provider.name }}
+                    </a>
+                {% elif provider.id == 'github' %}
+                    <a class="btn-github" href="{% provider_login_url provider.id %}">
+                        sing in whit {{ provider.name }}
+                    </a>
+                {% else %}
+                    <a class="btn-default" href="{% provider_login_url provider.id %}">
+                        เข้าสู่ระบบด้วย {{ provider.name }}
+                    </a>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </div>
+    
+</div>
+ <div class="box"></div>
 {% endblock %}
