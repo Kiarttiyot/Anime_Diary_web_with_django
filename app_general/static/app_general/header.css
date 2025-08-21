@@ -17,7 +17,7 @@
 }
 
 .logoA {
-    color: #e74c3c; /* แดงสด */
+    color: #ff3366; /* แดงสด */
 }
 
 .logoD {
@@ -36,7 +36,7 @@
 
 /* Hover Effect */
 .menu-items:hover {
-    background-color: #e74c3c; /* แดง */
+    background-color: #ff3366; /* แดง */
     color: #fff;
 }
 
