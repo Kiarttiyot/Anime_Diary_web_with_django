@@ -10,6 +10,9 @@ ipython = "*"
 mysql-connector-python = "*"
 mysqlclient = "*"
 django-allauth = "*"
+python-dotenv = "*"
+dotenv = "*"
+djongo = "*"
 
 [dev-packages]
 
