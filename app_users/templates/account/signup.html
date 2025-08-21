@@ -8,8 +8,11 @@
 <link rel="stylesheet" href="{% static 'app_general/signup.css' %}">
 
 <div class="header">
-    <h1>Sign Up</h1>
-    <a>Welcome to the official Animediary.</a>
+    <img src="{% static 'app_general/demon-slayer.jpg' %}" alt="Anime Banner">
+    <div class="header-sing">
+        <h1>Sign Up</h1>
+        <a>Welcome to the official Animediary.</a>
+    </div>
 </div>
 
 <div class="space"></div>
@@ -21,24 +24,24 @@
     <div class="signup-container hidden-frame">
         <h1 class="divider"><span>Sign Up</span></h1>
 
-        <form method="post" action="{% url 'account_signup' %}">
+        <!--<form method="post" action="{% url 'account_signup' %}">
             {% csrf_token %}
             {{ form.non_field_errors }}
 
             <div class="form-group">
-                <!-- {{ form.username.label_tag }} -->
-                {{ form.username }}
+                <!-- {{ form.username.label_tag }} --       
+                {{ form.username }}     
                 {{ form.username.errors }}
             </div>
 
             <div class="form-group">
-                <!--{{ form.email.label_tag }}-->
+                <!--{{ form.email.label_tag }}--
                 {{ form.email }}
                 {{ form.email.errors }}
             </div>
 
             <div class="form-group">
-                <!--{{ form.password1.label_tag }}-->
+                <!--{{ form.password1.label_tag }}--
                 {{ form.password1 }}
                 {{ form.password1.errors }}
             </div>
@@ -52,8 +55,30 @@
             <button type="submit" class="btn-submit">
                 LOGIN NOW
             </button>
-        </form>
+        </form>-->
+        <form method="post" action="{% url 'account_signup' %}">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <input type="text" name="username" placeholder="Username" required>        
+            </div>
+            
+            <div class="form-group">
+                <input type="email" name="email" placeholder="Email Address" required>
+            </div>
+            
+            <div class="form-group">
+                <input type="password" name="password" placeholder="Password" required>
+            </div>
+            
+            <div class="form-group">
+                <input type="password" name="password_confirm" placeholder="Confirm Password" required>
+            </div>
 
+            <button type="submit" class="btn-submit">
+                LOGIN NOW
+            </button>
+        </form>
         <p class="login-link">
             Already have an account? <a href="{% url 'account_login' %}">Log In!</a>
         </p>
@@ -68,12 +93,16 @@
             {% for provider in socialaccount_providers %}
                 {% if provider.id == 'google' %}
                     <a class="btn-google" href="{% provider_login_url provider.id %}">
-                        sing in whit {{ provider.name }}
+                        <img src="{% static 'app_general/google.png' %}" alt="">
+                        <span>Sign in with Google</span>
+                        <!--sing in whit {{ provider.name }}*/-->
                     </a>
                 {% elif provider.id == 'github' %}
                     <a class="btn-github" href="{% provider_login_url provider.id %}">
-                        sing in whit {{ provider.name }}
+                        <img src="{% static 'app_general/github.png' %}" alt="">
+                        <span>Sign in with GitHub</span>
                     </a>
+
                 {% else %}
                     <a class="btn-default" href="{% provider_login_url provider.id %}">
                         เข้าสู่ระบบด้วย {{ provider.name }}
