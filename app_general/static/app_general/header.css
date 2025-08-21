@@ -50,6 +50,14 @@
     height: 20px; /* ขนาดของไอคอนค้นหา */
 }
 
+.user-icon img {
+    width: 20px; /* ขนาดของไอคอนค้นหา */
+    height: 20px; /* ขนาดของไอคอนค้นหา */
+    margin-left: 10px; /* เว้นระยะห่างระหว่างไอคอน */
+    transition: transform 0.3s ease; /* เพิ่มเอฟเฟกต์การขยายเมื่อโฮเวอร์ */
+
+}
+
 /* โลโก้ Anime Diary */
 .menu-logo {
     font-size: 24px;
@@ -101,5 +109,9 @@
 
 .menu-items:nth-child(2) { /* ลิงก์ลำดับ 6 */
     margin-left: 25%; /* ดันไปสุดขวา */
+}
+
+.menu-items:nth-child(6) { /* ลิงก์ลำดับ 7 */
+    margin-left: 25px; /* เว้นระยะห่างจากลิงก์ก่อนหน้า */
 }
 
