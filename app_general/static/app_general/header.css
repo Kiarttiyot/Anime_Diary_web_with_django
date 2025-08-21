@@ -9,6 +9,47 @@
     box-shadow: 0 2px 10px rgba(0,0,0,0.4);
 }
 
+.search-form {
+    display: flex;
+    align-items: center;
+    background-color: #ffffff; /* สีพื้นหลังช่องค้นหา */
+    border-radius: 50px;
+    overflow: hidden; /* ซ่อนส่วนที่เกินขอบ */
+    height: 30px; /* ความสูงของช่องค้นหา */
+}
+
+.search-input {
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    color: #000000;
+    outline: none; /* เอาเส้นขอบออกเมื่อถูกโฟกัส */
+    padding-left: 10px;
+}
+
+/* Placeholder สีจางๆ */
+.search-input::placeholder {
+    color: #aaa;
+    opacity: 1; /* ทำให้ placeholder มองเห็นได้ชัดเจน */
+    font-style: italic; /* ทำให้ placeholder เป็นตัวเอียง */
+    font-size: 14px; /* ขนาดตัวอักษรของ placeholder */
+    padding-left: 10px; /* เว้นระยะห่างจากขอบซ้าย */
+}
+
+.search-button {
+    background-color: transparent;
+    border: none;
+    color: #aaa;
+    padding: 10px;
+    display: flex;
+    cursor: pointer;
+}
+
+.search-button img {
+    width: 20px; /* ขนาดของไอคอนค้นหา */
+    height: 20px; /* ขนาดของไอคอนค้นหา */
+}
+
 /* โลโก้ Anime Diary */
 .menu-logo {
     font-size: 24px;

@@ -19,5 +19,11 @@
     <a  class="menu-items" href="{% url 'account_login' %}">Login</a> 
     <a  class="menu-items" href="{% url 'account_signup' %}">Sign Up</a> 
   {% endif %}
-    
+  <form class="search-form" action="/search-users/" method="get">
+        <input type="text" class="search-input" name="q" placeholder="search...">
+        <button type="submit" class="search-button">
+            <img src="{% static 'app_general/search.png' %}" alt="Search">
+        </button>
+  </form>
+   
 </header>
