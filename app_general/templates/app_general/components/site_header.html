@@ -29,10 +29,10 @@
       <img src="{% static 'app_general/user (1).png' %}" alt="">
     </li>-->
   {% if user.is_authenticated %}
-    <form class="search-form" action="/search-users/" method="get">
-        <input type="text" class="search-input" name="q" placeholder="search...">
+    <form class="search-form" action="{% url 'search_user' %}" method="get">
+      <input type="text" class="search-input" name="q" placeholder="search...">
         <button type="submit" class="search-button">
-            <img src="{% static 'app_general/search.png' %}" alt="Search">
+          <img src="{% static 'app_general/search.png' %}" alt="Search">
         </button>
     </form>
     <a href="{% url 'dashboard' %}" class="user-icon">
@@ -41,12 +41,12 @@
     <a class="menu-items" href="{% url 'dashboard' %}">{{ user.username }}!</a>
     <a class="menu-items" href="{% url 'account_logout' %}">Logout</a>
 {% else %}
-    <form class="search-form" action="/search-users/" method="get">
-        <input type="text" class="search-input" name="q" placeholder="search...">
+    <form class="search-form" action="{% url 'search_user' %}" method="get">
+      <input type="text" class="search-input" name="q" placeholder="search...">
         <button type="submit" class="search-button">
-            <img src="{% static 'app_general/search.png' %}" alt="Search">
+          <img src="{% static 'app_general/search.png' %}" alt="Search">
         </button>
-    </form>
+    </form> 
     <a href="{% url 'dashboard' %}" class="user-icon">
         <img src="{% static 'app_general/user.png' %}" alt="User Profile">
     </a>
