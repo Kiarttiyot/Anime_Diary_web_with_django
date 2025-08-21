@@ -3,8 +3,38 @@
 {% load static %}
 {% block content %}
 {% csrf_token %}
-    <h1>Dash Board {{ user.username }}</h1>
-       
+
+<link rel="stylesheet" href="{% static 'app_general/dashboard.css' %}">
+    <div class="dashboard">
+    <!-- Header -->
+    <div class="profile-header">
+        <img src="{% static 'app_general/Screenshot2.png' %}" alt="Profile Picture" class="profile-pic">
+        <div class="profile-info">
+            <h2>{{ user.username }}</h2>
+            <p>{{ user.profile.bio }}</p>
+            <div class="stats">
+                <span><b>{{ posts.count }}</b> posts</span>
+            </div>
+            
+            
+        </div>
+    </div>
+    
+    <!-- Posts Grid -->
+    <div class="posts-grid">
+        {% for post in posts %}
+            <div class="post-item">
+                <a href="{% url 'post_detail' post.id %}">
+                    <img src="{{ post.image.url }}" alt="Post">
+                </a>
+            </div>
+        {% empty %}
+            <p>No posts yet.</p>
+        {% endfor %}
+    </div>
+    <div class="space"></div>
+</div>
+
 
 {% endblock %}
             

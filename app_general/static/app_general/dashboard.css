@@ -1,0 +1,54 @@
+.dashboard {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.profile-pic {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-info h2 {
+    margin: 0;
+}
+
+.stats {
+    margin: 10px 0;
+}
+
+.btn {
+    padding: 6px 12px;
+    background: #0095f6;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.logout {
+    background: red;
+}
+
+.posts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+}
+
+.post-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.space{
+    height: 524px;
+}
