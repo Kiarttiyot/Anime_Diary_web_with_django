@@ -1,0 +1,57 @@
+{%extends 'app_general/components/base.html'%}
+{%block site_title%}about{%endblock%}
+{%block content%}
+{% load static %}
+<link rel="stylesheet" href="{% static 'app_general/about_us.css' %}">
+
+
+
+    <header class="page-header">
+        <img src="{% static 'app_general/dandadan-character.jpg' %}" alt="Anime Banner">
+        <div class="header-title">
+            <span class="Anime">Anime</span><span class="Diary">Diary</span>
+            <p>The team that created and developed the AnimeDiary website</p>
+        </div>
+    </header>
+    <!--<div class="border-bottom"></div>-->
+    <div class="space"></div>
+    </div>
+    </div>
+    <main class="team-section">
+        <div class="member-card">
+            <img src="{% static 'app_general/Screenshot1.png' %}" alt="รูปโปรไฟล์สมาชิก 1" class="member-photo">
+            <h2 class="member-name">Khang</h2>
+            <p class="member-role">ตำแหน่ง: Full-stark</p>
+            <p class="member-bio">ชอบอนิเมะตูดใหญ่</p>
+        </div>
+
+        <div class="member-card">
+            <img src="{% static 'app_general/Screenshot3.png' %}" alt="รูปโปรไฟล์สมาชิก 2" class="member-photo">
+            <h2 class="member-name">Tonliw</h2>
+            <p class="member-role">ตำแหน่ง: นักพัฒนา Front-end</p>
+            <p class="member-bio">...</p>
+        </div>
+
+        <div class="member-card">
+            <img src="{% static 'app_general/Screenshot2.png' %}" alt="รูปโปรไฟล์สมาชิก 3" class="member-photo">
+            <h2 class="member-name">Mode</h2>
+            <p class="member-role">ตำแหน่ง: นักพัฒนา Back-end</p>
+            <p class="member-bio">เหมียวว~~</p>
+        </div>
+    
+        <div class="member-card">
+            <img src="{% static 'app_general/Rezero.jpg' %}" alt="รูปโปรไฟล์สมาชิก 4" class="member-photo">
+            <h2 class="member-name">Bai Tong</h2>
+            <p class="member-role">ตำแหน่ง: UI/UX Designer</p>
+            <p class="member-bio">อ่านนิยายเกย์</p>
+        </div>
+
+        <div class="member-card">
+            <img src="{% static 'app_general/dandadan.jpg' %}" alt="รูปโปรไฟล์สมาชิก 5" class="member-photo">
+            <h2 class="member-name">Gum</h2>
+            <p class="member-role">ตำแหน่ง: Taster</p>
+            <p class="member-bio">ติดแฟนมาก</p>
+        </div>
+    </main>
+    <div class="space2"></div>
+{%endblock%}
