@@ -11,6 +11,10 @@ from django.shortcuts import redirect, render
 def dashboard(request: HttpRequest):
     return render(request,"account/dashboard.html")
 
+@login_required
+def dashboard(request: HttpRequest):
+    return render(request,"account/mydashboard.html")
+
 def search_user(request):
     q = request.GET.get("q")
     if q:

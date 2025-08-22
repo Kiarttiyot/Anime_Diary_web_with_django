@@ -35,7 +35,7 @@
           <img src="{% static 'app_general/search.png' %}" alt="Search">
         </button>
     </form>
-    <a href="{% url 'dashboard' %}" class="user-icon">
+    <a href="{% url 'mydashboard' %}" class="user-icon">
         <img src="{% static 'app_general/user.png' %}" alt="User Profile">
     </a>
     <a class="menu-items" href="{% url 'dashboard' %}">{{ user.username }}!</a>
@@ -47,7 +47,7 @@
           <img src="{% static 'app_general/search.png' %}" alt="Search">
         </button>
     </form> 
-    <a href="{% url 'dashboard' %}" class="user-icon">
+    <a href="{% url 'mydashboard' %}" class="user-icon">
         <img src="{% static 'app_general/user.png' %}" alt="User Profile">
     </a>
     <!--<a class="menu-items" href="{% url 'account_login' %}">Login</a>
