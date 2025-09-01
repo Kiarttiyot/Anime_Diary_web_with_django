@@ -13,9 +13,11 @@
     display: flex;
     align-items: center;
     background-color: #ffffff; /* สีพื้นหลังช่องค้นหา */
-    border-radius: 50px;
+    border-radius: 50px;    
+    position: absolute;
     overflow: hidden; /* ซ่อนส่วนที่เกินขอบ */
     height: 30px; /* ความสูงของช่องค้นหา */
+    margin-left: 54%;
 }
 
 .search-input {
@@ -33,6 +35,7 @@
     opacity: 1; /* ทำให้ placeholder มองเห็นได้ชัดเจน */
     font-style: italic; /* ทำให้ placeholder เป็นตัวเอียง */
     font-size: 14px; /* ขนาดตัวอักษรของ placeholder */
+    
     padding-left: 10px; /* เว้นระยะห่างจากขอบซ้าย */
 }
 
@@ -49,13 +52,26 @@
     width: 20px; /* ขนาดของไอคอนค้นหา */
     height: 20px; /* ขนาดของไอคอนค้นหา */
 }
+.search-button:hover img {
+    transform: scale(1.1); /* ขยายไอคอนเมื่อโฮเวอร์ */
+    transition: transform 0.3s ease; /* เพิ่มเอฟเฟกต์การขยายเมื่อโฮเวอร์ */
+}
 
+.user-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer; /* เปลี่ยนเคอร์เซอร์เมื่อโฮเวอร์ */
+    margin-left: auto; /* ดันไปสุดขวา */
+}
 .user-icon img {
     width: 20px; /* ขนาดของไอคอนค้นหา */
     height: 20px; /* ขนาดของไอคอนค้นหา */
     margin-left: 10px; /* เว้นระยะห่างระหว่างไอคอน */
     transition: transform 0.3s ease; /* เพิ่มเอฟเฟกต์การขยายเมื่อโฮเวอร์ */
-
+}
+.user-icon:hover img {
+    transform: scale(1.3); /* ขยายไอคอนเมื่อโฮเวอร์ */
 }
 
 /* โลโก้ Anime Diary */
@@ -81,6 +97,7 @@
     padding: 8px 12px;
     border-radius: 4px;
     transition: background 0.3s ease, color 0.3s ease;
+    white-space: nowrap;
 }
 
 /* Hover Effect */
@@ -110,8 +127,19 @@
 .menu-items:nth-child(2) { /* ลิงก์ลำดับ 6 */
     margin-left: 25%; /* ดันไปสุดขวา */
 }
-
-.menu-items:nth-child(6) { /* ลิงก์ลำดับ 7 */
-    margin-left: 25px; /* เว้นระยะห่างจากลิงก์ก่อนหน้า */
+.menu-items:nth-child(7) { /* ลิงก์ลำดับ 6 */
+    margin-left: auto; /* ดันไปสุดขวา */
 }
 
+.menu-item-log {
+    color: #ffffff; /* แดงสด */
+    text-decoration: none;
+    font-size: 16px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+.menu-item-log:hover {
+    background-color: #ff3366; /* แดง */
+    color: #fff;
+}

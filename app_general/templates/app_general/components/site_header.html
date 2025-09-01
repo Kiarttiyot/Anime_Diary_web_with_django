@@ -36,20 +36,22 @@
         </button>
     </form>
     <a href="{% url 'mydashboard' %}" class="user-icon">
-        <img src="{% static 'app_general/user.png' %}" alt="User Profile">
+        <img src="{% static 'app_general/person.png' %}" alt="User Profile">
     </a>
-    <a class="menu-items" href="{% url 'dashboard' %}">{{ user.username }}!</a>
-    <a class="menu-items" href="{% url 'account_logout' %}">Logout</a>
+    <!--<a class="menu-items" href="{% url 'dashboard' %}">{{ user.username }}!</a>-->
+    <a class="menu-item-log" href="{% url 'account_logout' %}">Logout</a>
 {% else %}
     <form class="search-form" action="{% url 'search_user' %}" method="get">
       <input type="text" class="search-input" name="q" placeholder="search...">
         <button type="submit" class="search-button">
           <img src="{% static 'app_general/search.png' %}" alt="Search">
         </button>
-    </form> 
-    <a href="{% url 'mydashboard' %}" class="user-icon">
+    </form>
+    <a  class="menu-items" href="{% url 'account_login' %}">Login</a>
+    <a  class="menu-items" href="{% url 'account_signup' %}">Sign Up</a> 
+    <!--<a href="{% url 'mydashboard' %}" class="user-icon">
         <img src="{% static 'app_general/user.png' %}" alt="User Profile">
-    </a>
+    </a>-->
     <!--<a class="menu-items" href="{% url 'account_login' %}">Login</a>
     <a class="menu-items" href="{% url 'account_signup' %}">Sign Up</a>-->
 {% endif %}
