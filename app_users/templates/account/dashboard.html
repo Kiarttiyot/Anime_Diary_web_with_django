@@ -2,39 +2,67 @@
 
 {% load static %}
 {% block content %}
-{% csrf_token %}
 
 <link rel="stylesheet" href="{% static 'app_general/dashboard.css' %}">
-    <div class="dashboard">
+
+<div class="dashboard">
+
     <!-- Header -->
     <div class="profile-header">
         <img src="{% static 'app_general/Screenshot2.png' %}" alt="Profile Picture" class="profile-pic">
         <div class="profile-info">
-            <h2>{{ user_profile.username }}</h2>
-            <p>{{ user.profile.bio }}</p>
+            <h2>Dashboard: {{ profile_user.username }}</h2>
+            {% if profile_user.profile.bio %}
+                <p>{{ profile_user.profile.bio }}</p>
+            {% endif %}
             <div class="stats">
                 <span><b>{{ posts.count }}</b> posts</span>
             </div>
-            
-            
         </div>
+        {% if request.user == profile_user %}
+            
+            <a href="{% url 'create_post' %}" class="btn">
+                <img src="{% static 'app_general/plus.png' %}" alt="สร้างโพสต์" style="width:25px;height:25px;"  >
+            </a>
+        {% endif %}
     </div>
+
+    <!-- ปุ่มโพสต์ (เฉพาะเจ้าของ) -->
     
+
+    <hr>
+
     <!-- Posts Grid -->
+    <h3>โพสต์ของ {{ profile_user.username }}</h3>
     <div class="posts-grid">
         {% for post in posts %}
             <div class="post-item">
-                <a href="{% url 'post_detail' post.id %}">
-                    <img src="{{ post.image.url }}" alt="Post">
-                </a>
+                {% if post.content %}
+                    <p>{{ post.content }}</p>
+                {% endif %}
+                {% if post.image %}
+                    <img src="{{ post.image.url }}" alt="Post" style="max-width:300px; margin-top:5px;">
+                {% endif %}
+                <small>{{ post.created_at }}</small>
             </div>
         {% empty %}
-            <p>No posts yet.</p>
+            <p>ยังไม่มีโพสต์</p>
         {% endfor %}
     </div>
+
     <div class="space"></div>
 </div>
 
+<!-- JavaScript สำหรับ toggle -->
+<script>
+const toggleButton = document.getElementById('toggle-post-form');
+const postForm = document.getElementById('post-form-container');
+
+if (toggleButton) {
+    toggleButton.addEventListener('click', () => {
+        postForm.classList.toggle('hidden');
+    });
+}
+</script>
 
 {% endblock %}
-            
