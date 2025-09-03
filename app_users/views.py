@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from app_users.forms import UserProfileForm,ExtendedProfileForm
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect, render
+from .models import Post
+from .forms import PostForm
 
 @login_required
 def dashboard(request: HttpRequest):
@@ -13,7 +15,7 @@ def dashboard(request: HttpRequest):
 
 @login_required
 def dashboard(request: HttpRequest):
-    return render(request,"account/mydashboard.html")
+    return render(request,"account/dashboard.html")
 
 def search_user(request):
     q = request.GET.get("q")
@@ -53,3 +55,44 @@ def profile(request:HttpRequest):
         
     }
     return render(request,"account/profile.html",context)
+
+@login_required
+def create_post(request):
+    if request.method == "POST":
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
+            return redirect("my_dashboard")
+    else:
+        form = PostForm()
+    return render(request, "account/create_post.html", {"form": form})
+
+@login_required
+def dashboard(request, username=None):
+    if username:
+        profile_user = get_object_or_404(User, username=username)
+    else:
+        profile_user = request.user
+
+    # ดึงโพสต์ของ user
+    posts = Post.objects.filter(user=profile_user).order_by('-created_at')
+
+    form = None
+    if profile_user == request.user:  # เฉพาะของตัวเอง
+        if request.method == "POST":
+            form = PostForm(request.POST, request.FILES)
+            if form.is_valid():
+                new_post = form.save(commit=False)
+                new_post.user = request.user
+                new_post.save()
+                return redirect("my_dashboard")  # กลับมาหน้า dashboard ตัวเอง
+        else:
+            form = PostForm()
+
+    return render(request, "account/dashboard.html", {
+        "profile_user": profile_user,
+        "posts": posts,
+        "form": form,
+    })

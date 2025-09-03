@@ -8,5 +8,8 @@ urlpatterns = [
     path('profile/',view=views.profile, name='profile'),
     path("search-users/", views.search_user, name="search_user"),  
     path("dashboard/<str:username>/", views.dashboard_view, name="dashboard"),
-    path('mydashboard/',view=views.dashboard,name='mydashboard'),
+    
+    path("dashboard/", views.dashboard, name="my_dashboard"),  # ของตัวเอง
+    path("dashboard/<str:username>/", views.dashboard, name="dashboard"),  # ของคนอื่น
+    path("create-post/", views.create_post, name="create_post"),  # หน้าโพสต์ใหม่
 ]
