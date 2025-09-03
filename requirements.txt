@@ -3,5 +3,9 @@ django-allauth
 django-extensions
 requests
 PyJWT
-python-dotenv
-cryptography>=43
+djangorestframework
+gunicorn
+psycopg2-binary
+dotenv
+cryptography
+Pillow

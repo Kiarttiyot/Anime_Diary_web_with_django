@@ -10,17 +10,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY', 'replace-me')
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-# ALLOWED_HOSTS: อ่านจาก .env (คั่นด้วยคอมมา), ถ้า DEBUG หรือไม่ตั้งค่า → เติม host ที่ใช้บ่อยบน Docker
+# ALLOWED_HOSTS
 hosts_env = os.getenv('ALLOWED_HOSTS', '')
 ALLOWED_HOSTS = [h.strip() for h in hosts_env.split(',') if h.strip()]
 
 if DEBUG or not ALLOWED_HOSTS:
     ALLOWED_HOSTS += ["localhost", "127.0.0.1", "0.0.0.0"]
 
-# กันซ้ำ
 ALLOWED_HOSTS = list(dict.fromkeys(ALLOWED_HOSTS))
 
-# CSRF (สำหรับ dev บน 8000)
+# CSRF
 csrf_env = os.getenv('CSRF_TRUSTED_ORIGINS', '')
 CSRF_TRUSTED_ORIGINS = [o.strip() for o in csrf_env.split(',') if o.strip()]
 if (DEBUG and not CSRF_TRUSTED_ORIGINS):
@@ -30,10 +29,9 @@ if (DEBUG and not CSRF_TRUSTED_ORIGINS):
     ]
 
 # ---- Django / allauth ----
-SITE_ID = int(os.getenv('SITE_ID', '2'))  # ถ้าใช้ค่า default ให้ตั้งเป็น 1 หรือสร้าง Site id=2 ให้ตรงโดเมนที่ใช้
+SITE_ID = int(os.getenv('SITE_ID', '2'))
 
 INSTALLED_APPS = [
-    # Django default apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,12 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # Custom apps
     'app_general.apps.AppGeneralConfig',
     'app_myanimes.apps.AppMyanimesConfig',
     'app_users.apps.AppUsersConfig',
 
-    # allauth
     'django.contrib.sites',
     'allauth',
     'allauth.account',
@@ -64,7 +60,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    # allauth
     'allauth.account.middleware.AccountMiddleware',
 ]
 
@@ -83,7 +78,7 @@ TEMPLATES = [
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
-                'django.template.context_processors.request',  # allauth ต้องใช้
+                'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -93,30 +88,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ProjectAnimeDiary.wsgi.application'
 
-# ---- Database (SQLite for dev) ----
+# ---- Database ----
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite',
     }
-    # MySQL ตัวอย่าง:
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME': os.getenv('DB_NAME'),
-    #     'USER': os.getenv('DB_USER'),
-    #     'PASSWORD': os.getenv('DB_PASSWORD'),
-    #     'HOST': os.getenv('DB_HOST'),
-    #     'PORT': os.getenv('DB_PORT'),
-    # }
-    # Postgres ตัวอย่าง:
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     'NAME': os.getenv('DB_NAME'),
-    #     'USER': os.getenv('DB_USER'),
-    #     'PASSWORD': os.getenv('DB_PASSWORD'),
-    #     'HOST': os.getenv('DB_HOST'),
-    #     'PORT': os.getenv('DB_PORT'),
-    # }
 }
 
 # ---- Password validators ----
@@ -135,9 +112,7 @@ USE_TZ = True
 
 # ---- Static / Media ----
 STATIC_URL = 'static/'
-# ใช้ถ้ามีโฟลเดอร์ static ฝั่ง source; ถ้าไม่มี จะเป็น [] อัตโนมัติ
 STATICFILES_DIRS = [BASE_DIR / 'static'] if (BASE_DIR / 'static').exists() else []
-# จุดรวม collectstatic (entrypoint จะเรียก)
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = '/media/'
@@ -147,8 +122,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ---- allauth ----
 AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',  # default
-    'allauth.account.auth_backends.AuthenticationBackend',  # allauth
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 )
 
 LOGIN_REDIRECT_URL = 'home'
@@ -156,8 +131,10 @@ LOGOUT_REDIRECT_URL = 'home'
 LOGIN_URL = 'login'
 
 ACCOUNT_EMAIL_VERIFICATION = 'none'
-ACCOUNT_AUTHENTICATION_METHOD = 'username'
-ACCOUNT_EMAIL_REQUIRED = True
+
+# ✅ ใช้รูปแบบใหม่ (วิธี 2: login ได้ทั้ง username + email)
+ACCOUNT_LOGIN_METHODS = {"username", "email"}
+ACCOUNT_SIGNUP_FIELDS = ["username*", "email*", "password1*", "password2*"]
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
