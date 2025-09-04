@@ -19,6 +19,5 @@ class Profile(models.Model):
     phone = models.CharField(max_length=15, default="", blank=True)
     profile_image = models.ImageField(upload_to='profile_images/', default='default.png')
     favorite_genres = models.CharField(max_length=255, default="", blank=True)  # แนวอนิเมะที่ชอบ
-
     def __str__(self):
         return self.user.username

@@ -5,7 +5,7 @@
 {% csrf_token %}
     <h1>Dash Board {{ user.username }}</h1>
     <h5>ข้อมูลผู้ใช้</h5>
-     <form method="post" action="{% url 'profile' %}">
+     <form method="post" action="{% url 'profile' %}" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.non_field_errors }}
         <div style="margin-bottom:15px;">
@@ -29,7 +29,9 @@
             {{ extended_form.phone.errors }}
         </div>
         <div style="margin-bottom:15px;">
-            {{extended_form.profile_image}}
+            {{ extended_form.profile_image.label_tag }}
+            {{ extended_form.profile_image }}
+            {{ extended_form.profile_image.errors }}
         </div>
         <button type="submit" >
            Save
@@ -37,4 +39,3 @@
     </form>  
 
 {% endblock %}
-            

@@ -8,6 +8,7 @@ from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect, render
 from .models import Post
 from .forms import PostForm
+from app_users.models import Profile
 
 @login_required
 def dashboard(request: HttpRequest):
@@ -35,26 +36,22 @@ def dashboard_view(request, username):
 
 @login_required
 def profile(request:HttpRequest):
-    #POST
+    profile, created = Profile.objects.get_or_create(user=request.user)
     if request.method == 'POST':
-        form = UserProfileForm(request.POST,instance=request.user)
-        extended_form = ExtendedProfileForm(request.POST)
+        form = UserProfileForm(request.POST, instance=request.user)
+        extended_form = ExtendedProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid() and extended_form.is_valid():
             form.save()
-            profile = extended_form.save(commit=False)
-            profile.user = request.user
-            profile.save()
+            extended_form.save()
             return HttpResponseRedirect(reverse('profile'))
     else:
-        form = UserProfileForm()
-        extended_form = ExtendedProfileForm()
-    #GET
+        form = UserProfileForm(instance=request.user)
+        extended_form = ExtendedProfileForm(instance=profile)
     context = {
-        "form":form,
-        "extended_form":extended_form
-        
+        "form": form,
+        "extended_form": extended_form
     }
-    return render(request,"account/profile.html",context)
+    return render(request, "account/profile.html", context)
 
 @login_required
 def create_post(request):
