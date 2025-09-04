@@ -4,46 +4,126 @@ body {
     margin: 0;
     padding: 0;
 }
-.vl {
-  border-left: 2px solid gray;
-  height: 500px;
-  position: absolute;
-  left: 50%;
-  margin-left: -3px;
-  top: 50px;
-}
-.container {
-    max-width: 420px;
-    margin: 50px ;
-    background: white;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);;
-    position: relative;
-    left: 10%;
-}
-.blockright {
-    max-width: 420px;
-    margin: 50px auto;
-    padding: 25px;
-    border-radius: 10px;
-    background-color: #f7f9fc;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    position: absolute;
-    right: 20%;
-    top: 50px;
-}
-.blocklang {
-    max-width: 420px;
-    margin: 50px auto;
-    padding: 25px;
-    border-radius: 10px;
-}
-h1 {
+.header {
     text-align: center;
     margin-bottom: 20px;
-    color: #333;
+    color: white;
 }
+.header {
+    position: relative;
+    text-align: center;
+}
+.header img {
+    width: 100%;
+    max-height: 250px;
+    object-fit: cover;
+    filter: brightness(0.2);
+    
+}
+.header-sing {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+.container-flex{
+    margin-top: 50px;
+}
+.Login-container {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 30px;
+    background-color: #11143b; /* น้ำเงินเข้มกว่า */
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.4);   
+    
+}
+
+/* หัวข้อ */
+.Login-container h1 {
+    /*text-align: center;*/
+    margin-bottom: 25px;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+/* ช่องกรอก */
+.Login-container input[type="text"],
+.Login-container input[type="email"],
+.Login-container input[type="password"] {
+    width: 350px;
+    padding: 16px;
+    margin-top: 15px;
+    border: none;
+    /*border-radius: 5px;*/
+    background: #fff;
+    color: #333;
+    font-size: 14px;
+}
+
+/* ปุ่มสมัคร */
+.Login-container button {
+    width: 150px;
+    padding: 16px;
+    background: #e74c3c; /* แดง */
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    /*border-radius: 5px;*/
+    margin-top: 15px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.Login-container button:hover {
+    background: #a53225;
+}
+
+/* ลิงก์เข้าสู่ระบบ */
+.Login-container p {
+    /*text-align: center;*/
+    margin-top: 20px;
+}
+
+.Login-container a {
+    color: #e01717;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.Login-container a:hover {
+    text-decoration: underline;
+}
+
+.blocklang {
+    /*text-align: center;*/
+    margin-top: 20px;
+}
+
+.blocklang{
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 30px;
+    background-color: #11143b; /* น้ำเงินเข้มกว่า */
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    
+}
+
+/* เส้นแบ่งตรงกลาง */
+.center-line {
+    width: 1px;               /* ความหนาของเส้น */
+    background-color: #8a8a8a;   /* สีเส้น */
+    margin: 0 20px;           /* ระยะห่างซ้าย-ขวากับกล่อง */
+}
+
+/* ให้เส้นเต็มความสูงของ container-flex */
+.container-flex {
+    display: flex;
+    align-items: stretch;     /* ให้เส้นและกล่องสูงเท่ากัน */
+}
+
 
 label {
     font-weight: bold;
@@ -67,12 +147,7 @@ input[type="password"] {
     align-items: center;
     gap: 8px;
 }
-.forget{
-    position: absolute;
-    right: 25px;
-    top: 56%;
-    
-}
+
 
 /* ปุ่มหลัก */
 .btn-primary {
@@ -93,51 +168,65 @@ input[type="password"] {
 
 /* Divider */
 .divider {
-    margin: 25px 0;
+    margin: 50px 0;
     text-align: center;
-    border-bottom: 1px solid #ddd;
-    line-height: 0.1em;
+    font-size: 26px;
 }
 
-.divider span {
-    background: #fff;
-    padding: 0 10px;
-    color: #888;
-    font-size: 0.9rem;
-}
 
 /* ปุ่ม Google */
+
 .btn-google {
-    display: block;
-    background: #db4437;
+    display: flex;
+    gap: 10px;
+    background: #ff5243;
     color: white;
     text-align: center;
     padding: 12px;
-    border-radius: 6px;
+/*    border-radius: 6px;*/
     text-decoration: none;
     font-weight: bold;
     margin-bottom: 10px;
+    margin-top: 15px;
+    padding-left: 30px
 }
 
 .btn-google:hover {
     background: #c33d2e;
 }
+.btn-google img {
+    width: 25px;
+    height: 25px;
+    object-fit: contain;
+    margin-right: 60px; 
+}
 
 /* ปุ่ม GitHub */
 .btn-github {
-    display: block;
-    background: #333;
-    color: white;
-    text-align: center;
+    display: flex;              /* ทำให้ปุ่มเป็น flex */
+    align-items: center;        /* จัดกลางแนวตั้ง */
+    /*justify-content: center;*/   /* จัดกลางแนวนอน */
+    gap: 10px;
+          /* ระยะห่างระหว่างไอคอนกับข้อความ */
+    
+    background: #ffffff;
+    color: rgb(0, 0, 0);
     padding: 12px;
-    border-radius: 6px;
-    text-decoration: none;
     font-weight: bold;
     margin-bottom: 10px;
+    margin-top: 40px;
+    text-decoration: none;
+    padding-left: 30px
 }
-
 .btn-github:hover {
-    background: #000;
+    background: #ffffffcf;
+}
+/* ไอคอนในปุ่ม */
+.btn-github img {
+    width: 25px;
+    height: 25px;
+    object-fit: contain;
+    margin-right: 60px; 
 }
 
 /* ปุ่ม Default สำหรับ provider อื่น */
@@ -160,15 +249,30 @@ input[type="password"] {
 /* ลิงก์เพิ่มเติม */
 .links {
     text-align: center;
-    margin-top: 15px;
+    margin-top: 100px;
     font-size: 0.9rem;
 }
 
 .links a {
-    color: #4285f4;
+    color: white;
     text-decoration: none;
 }
 
 .links a:hover {
     text-decoration: underline;
+}
+
+
+.Login-container.hidden-frame,
+.blocklang.hidden-frame {
+    background: transparent;   /* ลบพื้นหลัง */
+    border: none;              /* ลบขอบ */
+    box-shadow: none;          /* ลบเงา */
+}
+.box {
+    background-color: #0a0d2e;
+    color: #ffffff;
+    padding: 70px 0;
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
 }
