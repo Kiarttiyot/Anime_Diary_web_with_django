@@ -35,7 +35,7 @@
           <img src="{% static 'app_general/search.png' %}" alt="Search">
         </button>
     </form>
-    <a href="{% url 'mydashboard' %}" class="user-icon">
+    <a href="{% url 'dashboard' %}" class="user-icon">
         <img src="{% static 'app_general/person.png' %}" alt="User Profile">
     </a>
     <!--<a class="menu-items" href="{% url 'dashboard' %}">{{ user.username }}!</a>-->
@@ -49,10 +49,6 @@
     </form>
     <a  class="menu-items" href="{% url 'account_login' %}">Login</a>
     <a  class="menu-items" href="{% url 'account_signup' %}">Sign Up</a> 
-    <!--<a href="{% url 'mydashboard' %}" class="user-icon">
-        <img src="{% static 'app_general/user.png' %}" alt="User Profile">
-    </a>-->
-    <!--<a class="menu-items" href="{% url 'account_login' %}">Login</a>
-    <a class="menu-items" href="{% url 'account_signup' %}">Sign Up</a>-->
+    
 {% endif %}
 </header> 

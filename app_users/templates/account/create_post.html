@@ -1,0 +1,15 @@
+{% extends 'app_general/components/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="dashboard">
+    <h2>สร้างโพสต์ใหม่</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <textarea name="content" placeholder="เขียนอะไรสักหน่อย..." rows="4"></textarea>
+        <input type="file" name="image" accept="image/*">
+        <button type="submit" class="btn">โพสต์</button>
+    </form>
+</div>
+
+{% endblock %}
