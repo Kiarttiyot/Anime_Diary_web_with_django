@@ -270,7 +270,7 @@ input[type="password"] {
     box-shadow: none;          /* ลบเงา */
 }
 .box {
-    background-color: #0a0d2e;
+    background-color: #f7f9fc;
     color: #ffffff;
     padding: 70px 0;
     text-align: center;

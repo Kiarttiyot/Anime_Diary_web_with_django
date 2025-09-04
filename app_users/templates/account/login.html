@@ -25,21 +25,21 @@
         <div style="color: red; margin-bottom: 10px;">กรุณาตรวจสอบข้อมูลอีกครั้ง</div>
     {% endif %}
     <div class="Login-container hidden-frame">
-            <div class="divider"><span>Login</span></div>
+            <h1><div class="divider"><span>Login</span></div></h1>
             <form method="post" action="{% url 'login' %}">
                 {% if request.GET.next %}
                     <input type="hidden" name="next" value="{{request.GET.next}}">
                 {% endif %}
                 {% csrf_token %}
-                {{ form.login.label_tag }}
+
                 {{ form.login }}
 
-                {{ form.password.label_tag }}
+
                 {{ form.password }}
 
                 <div class="checkbox">
                     {{ form.remember }}
-                    {{ form.remember.label_tag }}
+
                 </div>
                 <a href="{% url 'account_reset_password' %}" class="forget">{% trans "ลืมรหัสผ่าน?" %}</a><br>
 
