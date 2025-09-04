@@ -12,6 +12,7 @@
         <img src="{{ profile_user.profile.profile_image.url }}" alt="Profile Picture" class="profile-pic">
         <div class="profile-info">
             <h2>Dashboard: {{ profile_user.username }}</h2>
+            <button ><a href="{%url 'profile'%}">edit profile</a></button>
             {% if profile_user.profile.bio %}
                 <p>{{ profile_user.profile.bio }}</p>
             {% endif %}

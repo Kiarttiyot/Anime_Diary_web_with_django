@@ -43,7 +43,7 @@ def profile(request:HttpRequest):
         if form.is_valid() and extended_form.is_valid():
             form.save()
             extended_form.save()
-            return HttpResponseRedirect(reverse('profile'))
+            return HttpResponseRedirect(reverse('dashboard'))
     else:
         form = UserProfileForm(instance=request.user)
         extended_form = ExtendedProfileForm(instance=profile)
