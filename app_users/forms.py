@@ -13,7 +13,7 @@ class UserProfileForm(forms.ModelForm):
 class ExtendedProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ('address','phone')
+        fields = ('address','phone','profile_image')
         
 
 class PostForm(forms.ModelForm):
