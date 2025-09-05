@@ -1,96 +1,93 @@
 {% extends 'app_general/components/base.html' %}
-
 {% load static %}
+
 {% block content %}
 
 <link rel="stylesheet" href="{% static 'app_general/dashboard.css' %}">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
 <div class="dashboard">
 
-    <!-- Header -->
-    <div class="profile-header">
-        <img src="{{ profile_user.profile.profile_image.url }}" alt="Profile Picture" class="profile-pic">
-        <div class="profile-info">
-            <h2>Dashboard: {{ profile_user.username }}</h2>
-            
-            {% if profile_user.profile.address %}
-            {% endif %}
-            <div class="stats">
-                <span><b>{{ posts.count }}</b> posts</sp    an>
-            </div>
-            
+  <!-- Header -->
+  <div class="profile-header">
+
+    {% if profile_user.profile and profile_user.profile.profile_image %}
+      <img src="{{ profile_user.profile.profile_image.url }}" alt="Profile Picture" class="profile-pic">
+    {% else %}
+      <img src="{% static 'app_general/default-avatar.png' %}" alt="Profile Picture" class="profile-pic">
+    {% endif %}
+
+    <div class="profile-info">
+      <h2>Dashboard: {{ profile_user.username }}</h2>
+
+      {# ถ้ามี address ค่อยแสดง #}
+      {% if profile_user.profile and profile_user.profile.address %}
+        <p>{{ profile_user.profile.address }}</p>
+      {% endif %}
+
+      <div class="stats">
+        <span><b>{{ posts.count }}</b> posts</span>
+      </div>
+    </div>
+
+    {% if request.user == profile_user %}
+      <div class="btn-group" style="display:flex; gap:8px;">
+        <a href="{% url 'create_post' %}" class="btn">
+          <img src="{% static 'app_general/plus.png' %}" alt="สร้างโพสต์" style="width:25px;height:25px;vertical-align:middle;">
+          <span style="margin-left:6px;">สร้างโพสต์</span>
+        </a>
+        <a href="{% url 'profile' %}" class="btn">edit profile</a>
+      </div>
+    {% endif %}
+  </div>
+
+  <hr>
+
+  <!-- Posts Grid -->
+  <div class="posts-grid">
+    {% for post in posts %}
+      <a href="{% url 'post_detail' post.pk %}" class="post-link">
+        <div class="post-item">
+          {% if post.name %}
+            <h4>{{ post.name }}</h4>
+          {% endif %}
+
+          {% if post.image %}
+            <img src="{{ post.image.url }}" alt="Post" style="max-width:300px;">
+          {% endif %}
+
+          <div style="padding: 10px;"></div>
+
+          {% if post.state %}
+            <p>สถานะ: {{ post.state }}</p>
+          {% endif %}
+
+          <div class="rating" aria-label="คะแนน {{ post.score }}/10">
+            {# ให้คะแนน 0–10 แปลงเป็นดาว 0–5 (รองรับครึ่งดาว) #}
+            {% for _ in "12345" %}
+              {% with threshold=forloop.counter|add:forloop.counter %}
+              {% with half=threshold|add:"-1" %}
+                {% if post.score >= threshold %}
+                  <i class="fa-solid fa-star"></i>
+                {% elif post.score == half %}
+                  <i class="fa-solid fa-star-half-stroke"></i>
+                {% else %}
+                  <i class="fa-regular fa-star"></i>
+                {% endif %}
+              {% endwith %}
+              {% endwith %}
+            {% endfor %}
+            <span class="rating-text">{{ post.score }}/10</span>
+          </div>
+
+          <small>{{ post.created_at|date:"Y-m-d H:i" }}</small>
         </div>
-        {% if request.user == profile_user %}
-
-            <a href="{% url 'create_post' %}" class="btn">
-               
-                <img src="{% static 'app_general/plus.png' %}" alt="สร้างโพสต์" style="width:25px;height:25px;"  >
-                <button ><a href="{%url 'profile'%}">edit profile</a></button>
-            </a>
-        {% endif %}
-    </div>
-    <p>{{ profile_user.profile.address }}</p>
-    <!-- ปุ่มโพสต์ (เฉพาะเจ้าของ) -->
-    
-
-    <hr>
-
-    <!-- Posts Grid -->
-    <div class="posts-grid">
-        {% for post in posts %}
-            <a href="{% url 'post_detail' post.pk %}" class="post-link">
-                <div class="post-item">
-                    {% if post.name %}
-                        <h4>{{ post.name }}</h4>
-                    {% endif %}
-                    {% if post.image %}
-                        <img src="{{ post.image.url }}" alt="Post" style="max-width:300px;">
-                    {% endif %}
-                    <div class="spaceeiei" style="padding: 10px;"></div>
-                    {% if post.state %}
-                        <p>สถานะ: {{ post.state }}</p>
-                    {% endif %}
-
-                    <div class="rating" aria-label="คะแนน {{ post.score }}/10">
-                        {% for _ in "12345" %}
-                            {% with threshold=forloop.counter|add:forloop.counter %}
-                            {% with half=threshold|add:"-1" %}
-                                {% if post.score >= threshold %}
-                                    <i class="fa-solid fa-star"></i>
-                                {% elif post.score == half %}
-                                    <i class="fa-solid fa-star-half-stroke"></i>
-                                {% else %}
-                                    <i class="fa-regular fa-star"></i>
-                                {% endif %}
-                            {% endwith %}
-                            {% endwith %}
-                        {% endfor %}
-                        <span class="rating-text">{{ post.score }}/10</span>
-                    </div>
-
-                    
-                    <small>{{ post.created_at }}</small>
-                </div>
-            </a>
-        {% empty %}
-            <p>ยังไม่มีโพสต์</p>
-        {% endfor %}
-    </div>
-
-
+      </a>
+    {% empty %}
+      <p>ยังไม่มีโพสต์</p>
+    {% endfor %}
+  </div>
 
 </div>
-
-<!-- JavaScript สำหรับ toggle -->
-<script>
-const toggleButton = document.getElementById('toggle-post-form');
-const postForm = document.getElementById('post-form-container');
-
-if (toggleButton) {
-    toggleButton.addEventListener('click', () => {
-        postForm.classList.toggle('hidden');
-    });
-}
-</script>
 
 {% endblock %}
