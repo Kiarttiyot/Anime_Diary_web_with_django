@@ -34,6 +34,13 @@
                     {% if post.content %}
                         <p>{{ post.content }}</p>
                     {% endif %}
+                    <div class="comments">
+                    <h4>Comments:</h4>
+                    {% for comment in post.comments.all %}
+                        <div class="comment">
+                        <strong>{{ comment.user.username }}:</strong> {{ comment.content }}
+                        </div>
+                    {% empty %}
                         <p>No comments yet.</p>
                     {% endfor %}
                     <form method="post" action="{% url 'add_comment' post.id %}">
