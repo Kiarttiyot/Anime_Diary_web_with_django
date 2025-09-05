@@ -19,8 +19,7 @@ def subscription(request):
     else:
         form = SubscriptionClassForms()
     context = {'form':form}
-    return render(request,'app_general/subscription_form.html',context)
-def subscription_thankyou(request):
-    return render(request,'app_general/subscription_thankyou.html')
+    return render(request,'app_general/subscription.html',context)
+
 def about_us(request):
     return render(request, 'app_general/about_us.html')
