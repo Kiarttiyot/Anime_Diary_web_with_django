@@ -93,3 +93,7 @@ def dashboard(request, username=None):
         "posts": posts,
         "form": form,
     })
+
+def post_detail(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    return render(request, "account/post_detail.html", {"post": post})

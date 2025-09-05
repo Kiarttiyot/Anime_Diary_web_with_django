@@ -1,0 +1,41 @@
+{% extends 'app_general/components/base.html' %}
+
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+  <div class="box">
+    <h3>โพสต์ของ {{ profile_user.username }}</h3>
+    {% if post.name %}
+        <h4>{{ post.name }}</h4>
+        {% endif %}
+                    {% if post.image %}
+                        <img src="{{ post.image.url }}" alt="Post" style="max-width:300px;">
+                    {% endif %}
+                    {% if post.state %}
+                        <p>สถานะ: {{ post.state }}</p>
+                    {% endif %}
+
+                    <div class="rating" aria-label="คะแนน {{ post.score }}/10">
+                        {% for _ in "12345" %}
+                            {% with threshold=forloop.counter|add:forloop.counter %}
+                            {% with half=threshold|add:"-1" %}
+                                {% if post.score >= threshold %}
+                                    <i class="fa-solid fa-star"></i>
+                                {% elif post.score == half %}
+                                    <i class="fa-solid fa-star-half-stroke"></i>
+                                {% else %}
+                                    <i class="fa-regular fa-star"></i>
+                                {% endif %}
+                            {% endwith %}
+                            {% endwith %}
+                        {% endfor %}
+                        <span class="rating-text">{{ post.score }}/10</span>
+                    </div>
+                    {% if post.content %}
+                        <p>{{ post.content }}</p>
+                    {% endif %}
+                    
+    </div>
+  </div>
+</div>
+{% endblock %}

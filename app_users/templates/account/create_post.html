@@ -83,9 +83,11 @@
                 <label class="form-label">สถานะ</label>
                 {{ form.state }}
             </div>
-           <!-- Score -->
+
+            <!-- Score -->
             <div class="mb-3">
             <label class="form-label">ให้คะแนน</label>
+
             <!-- แถวแสดงดาว -->
             <div id="star-rating" class="d-flex gap-1" style="cursor: pointer; font-size: 2rem; color: gold;">
                 <i class="fa-regular fa-star star" data-value="2"></i>
@@ -94,29 +96,53 @@
                 <i class="fa-regular fa-star star" data-value="8"></i>
                 <i class="fa-regular fa-star star" data-value="10"></i>
             </div>
+
             <!-- Hidden input ไว้เก็บค่า -->
             {{ form.score }}
+            </div>
+
             <script>
-            const stars = document.querySelectorAll("#star-rating .star");
-            const scoreInput = document.getElementById("id_score");
-            stars.forEach((star, index) => {
-                star.addEventListener("click", () => {
-                let value = star.getAttribute("data-value");
-                scoreInput.value = value;
-                // อัปเดต UI ดาว
-                stars.forEach(s => {
-                    s.classList.remove("fa-solid");
-                    s.classList.add("fa-regular");
+                const stars = document.querySelectorAll("#star-rating .star");
+                const scoreInput = document.getElementById("id_score");
+
+                stars.forEach((star, index) => {
+                star.addEventListener("mousemove", (e) => {
+                    // หาครึ่งซ้าย/ขวา
+                    const rect = star.getBoundingClientRect();
+                    const isLeft = e.clientX - rect.left < rect.width / 2;
+                    const value = isLeft ? (index * 2 + 1) : (index * 2 + 2);
+
+                    highlightStars(value);
                 });
+
+                star.addEventListener("click", (e) => {
+                    const rect = star.getBoundingClientRect();
+                    const isLeft = e.clientX - rect.left < rect.width / 2;
+                    const value = isLeft ? (index * 2 + 1) : (index * 2 + 2);
+
+                    scoreInput.value = value; // เก็บค่า 1–10
+                });
+                });
+
+                // ฟังก์ชันเปลี่ยน UI ดาว
+                function highlightStars(value) {
                 stars.forEach((s, i) => {
-                    if (i <= index) {
-                    s.classList.remove("fa-regular");
-                    s.classList.add("fa-solid");
+                    const starValue = (i + 1) * 2;
+                    s.classList.remove("fa-solid", "fa-star-half-stroke", "fa-regular", "fa-star");
+
+                    if (value >= starValue) {
+                    s.classList.add("fa-solid", "fa-star"); // เต็ม
+                    } else if (value === starValue - 1) {
+                    s.classList.add("fa-solid", "fa-star-half-stroke"); // ครึ่ง
+                    } else {
+                    s.classList.add("fa-regular", "fa-star"); // ว่าง
                     }
                 });
-                });
-            });
-            </script>
+                }
+                </script>
+
+
+
             <!--<div class="spaceeiei" style="padding: 10px;"></div>-->
             <!-- Buttons -->
             <div class="d-flex justify-content-between mt-4">
