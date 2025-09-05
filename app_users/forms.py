@@ -3,7 +3,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from app_users.models import Profile
-from .models import Post
+from .models import Post, Comment
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
@@ -25,4 +25,12 @@ class PostForm(forms.ModelForm):
                 "rows": 3,
                 "placeholder": "เขียนอะไรสักหน่อย..."
             }),
+        }
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+        widgets = {
+            'content': forms.TextInput(attrs={'placeholder': 'Add a comment...'})
         }

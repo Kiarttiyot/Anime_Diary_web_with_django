@@ -5,20 +5,18 @@ from django.http.response import HttpResponse
 from app_myanimes.models import myanime
 from .models import Subscription
 from app_general.forms import SubscriptionForms,SubscriptionClassForms
+from app_users.models import Post
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 def home(request):
     return render(request, 'app_general/home.html')
 def about(request):
     return render(request,'app_general/about.html')
+
+@login_required
 def subscription(request):
-    if request.method == "POST":
-        form = SubscriptionClassForms(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('subscription_thankyou'))      
-    else:
-        form = SubscriptionClassForms()
-    context = {'form':form}
+    all_posts = Post.objects.all().order_by('-created_at')
+    context = { 'all_posts': all_posts}
     return render(request,'app_general/subscription.html',context)
 
 def about_us(request):
