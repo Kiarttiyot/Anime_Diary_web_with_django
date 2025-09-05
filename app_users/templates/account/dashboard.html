@@ -16,7 +16,7 @@
             {% if profile_user.profile.address %}
             {% endif %}
             <div class="stats">
-                <span><b>{{ posts.count }}</b> posts</sp    an>
+                <span><b>{{ posts.count }}</b> posts</span>
             </div>
             
         </div>
@@ -26,23 +26,29 @@
                
                 <img src="{% static 'app_general/plus.png' %}" alt="สร้างโพสต์" style="width:25px;height:25px;"  >
                 <button ><a href="{%url 'profile'%}">edit profile</a></button>
+                <!-- Remove the incorrect delete button from header -->
+                
             </a>
         {% endif %}
     </div>
     <p>{{ profile_user.profile.address }}</p>
     <!-- ปุ่มโพสต์ (เฉพาะเจ้าของ) -->
     
-
     <hr>
 
     <!-- Posts Grid -->
+     
+    
+
     <div class="posts-grid">
         {% for post in posts %}
             <a href="{% url 'post_detail' post.pk %}" class="post-link">
                 <div class="post-item">
+                    
                     {% if post.name %}
                         <h4>{{ post.name }}</h4>
                     {% endif %}
+                    
                     {% if post.image %}
                         <img src="{{ post.image.url }}" alt="Post" style="max-width:300px;">
                     {% endif %}
@@ -70,6 +76,16 @@
 
                     
                     <small>{{ post.created_at }}</small>
+                    {% if request.user == profile_user %}
+                        <form action="{% url 'post_delete' post.pk %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                        <form action="{% url 'post_archive' post.pk %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-warning">Archive/Unarchive</button>
+                        </form>
+                    {% endif %}
                 </div>
             </a>
         {% empty %}

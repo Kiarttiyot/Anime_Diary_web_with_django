@@ -19,6 +19,7 @@ class Post(models.Model):
         choices=STATE_CHOICES,
         default="watching"  # ค่าเริ่มต้น
     )
+    is_archived = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.user.username}: {self.content[:30]}"

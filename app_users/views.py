@@ -9,6 +9,7 @@ from django.shortcuts import redirect, render
 from .models import Post, Comment
 from .forms import PostForm, CommentForm
 from app_users.models import Profile
+from django.contrib import messages
 
 @login_required
 def dashboard(request: HttpRequest):
@@ -74,7 +75,7 @@ def dashboard(request, username=None):
         profile_user = request.user
 
     # ดึงโพสต์ของ user
-    posts = Post.objects.filter(user=profile_user).order_by('-created_at')
+    posts = Post.objects.filter(user=profile_user, is_archived=False).order_by('-created_at')
 
     form = None
     if profile_user == request.user:  # เฉพาะของตัวเอง
@@ -104,7 +105,32 @@ def add_comment(request, post_id):
             comment.post = post
             comment.user = request.user
             comment.save()
+            messages.success(request, "Your comment was added!")
     return redirect('post_detail', pk=post.pk)
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     return render(request, "account/post_detail.html", {"post": post})
+
+@login_required
+def post_delete(request, pk):
+    post = get_object_or_404(Post, pk=pk, user=request.user)  # ลบได้เฉพาะของตัวเอง
+    post.delete()
+    messages.success(request, "ลบโพสต์เรียบร้อยแล้ว")
+    return redirect("my_dashboard")
+
+
+@login_required
+def post_archive(request, pk):
+    post = get_object_or_404(Post, pk=pk, user=request.user)
+    post.is_archived = not post.is_archived  # toggle
+    post.save()
+    if post.is_archived:
+        messages.info(request, "โพสต์ถูกเก็บแล้ว")
+    else:
+        messages.info(request, "โพสต์ถูกยกเลิกการเก็บแล้ว")
+    return redirect("my_dashboard")
+
+@login_required
+def archive_list(request):
+    posts = Post.objects.filter(user=request.user, is_archived=True).order_by('-created_at')
+    return render(request, "account/archive_list.html", {"posts": posts})

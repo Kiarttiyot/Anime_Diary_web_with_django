@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+    <h3>โพสต์ที่เก็บไว้ของ {{ profile_user.username }}</h3>
+
+    <div class="posts-grid">
+        {% for post in posts %}
+            <div class="post-item">
+                {% if post.name %}
+                    <h4>{{ post.name }}</h4>
+                {% endif %}
+
+                {% if post.image %}
+                    <img src="{{ post.image.url }}" alt="Post" class="post-image">
+                {% endif %}
+
+                {% if post.state %}
+                    <p>สถานะ: {{ post.state }}</p>
+                {% endif %}
+
+                <div class="rating" aria-label="คะแนน {{ post.score }}/10">
+                    {% for _ in "12345" %}
+                        {% with threshold=forloop.counter|add:forloop.counter %}
+                        {% with half=threshold|add:"-1" %}
+                            {% if post.score >= threshold %}
+                                <i class="fa-solid fa-star"></i>
+                            {% elif post.score == half %}
+                                <i class="fa-solid fa-star-half-stroke"></i>
+                            {% else %}
+                                <i class="fa-regular fa-star"></i>
+                            {% endif %}
+                        {% endwith %}
+                        {% endwith %}
+                    {% endfor %}
+                    <span class="rating-text">{{ post.score }}/10</span>
+                </div>
+
+                {% if post.content %}
+                    <p>{{ post.content }}</p>
+                {% endif %}
+                <small>{{ post.created_at }}</small>
+
+                <div class="post-actions mt-2">
+                    <!-- ปุ่มคืนโพสต์ (unarchive) -->
+                    <form method="post" action="{% url 'unarchive_post' post.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-outline-primary">ย้ายกลับ</button>
+                    </form>
+
+                    <!-- ปุ่มลบถาวร -->
+                    <form method="post" action="{% url 'delete_post' post.id %}" onsubmit="return confirm('ลบโพสต์นี้ถาวร?');">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-outline-danger">ลบ</button>
+                    </form>
+                </div>
+            </div>
+        {% empty %}
+            <p>ยังไม่มีโพสต์ที่เก็บไว้</p>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+.posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+.post-item {
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 15px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.post-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+.rating {
+    color: gold;
+    font-size: 1.2rem;
+}
+.post-actions form {
+    display: inline-block;
+    margin-right: 8px;
+}
+</style>
+{% endblock %}
