@@ -29,15 +29,11 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ["name", "content", "image", "state", "score"]
         widgets = {
-            "content": forms.Textarea(attrs={
-                "rows": 3,
-                "placeholder": "เขียนอะไรสักหน่อย...",
-                
-                "name": forms.TextInput(attrs={"placeholder": "ชื่อโพสต์"}),
-                "content": forms.Textarea(attrs={"rows": 3, "placeholder": "เพิ่มคำบรรยาย..."}),
-                "state": forms.Select(),
-                "score": forms.NumberInput(attrs={"type": "hidden"}),
-                }),
+            "content": forms.Textarea(attrs={"rows": 3,"placeholder": "เพิ่มคำบรรยาย...",}),
+            "name": forms.TextInput(attrs={"placeholder": "ชื่อโพสต์"}),
+            "state": forms.Select(),
+            "score": forms.NumberInput(attrs={"type": "hidden"}),
+            
         }
     def clean_image(self):
         image = self.cleaned_data.get("image")

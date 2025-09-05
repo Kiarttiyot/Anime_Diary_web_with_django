@@ -12,4 +12,6 @@ urlpatterns = [
     path("dashboard/<str:username>/", views.dashboard, name="dashboard"),  # ของคนอื่น
     path("create-post/", views.create_post, name="create_post"),  # หน้าโพสต์ใหม่
     path("post/<int:pk>/", views.post_detail, name="post_detail"),
+    path("post/<int:pk>/delete/", views.post_delete, name="post_delete"),
+    path("post/<int:pk>/archive/", views.post_archive, name="post_archive"),
 ]
