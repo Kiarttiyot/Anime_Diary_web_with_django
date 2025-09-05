@@ -104,7 +104,7 @@ def add_comment(request, post_id):
             comment.post = post
             comment.user = request.user
             comment.save()
-    return redirect('subscription')
+    return redirect(reverse('home'))
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     return render(request, "account/post_detail.html", {"post": post})

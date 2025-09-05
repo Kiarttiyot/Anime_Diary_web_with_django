@@ -9,15 +9,11 @@ from app_users.models import Post
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 def home(request):
-    return render(request, 'app_general/home.html')
-def about(request):
-    return render(request,'app_general/about.html')
-
-@login_required
-def subscription(request):
     all_posts = Post.objects.all().order_by('-created_at')
     context = { 'all_posts': all_posts}
-    return render(request,'app_general/subscription.html',context)
+    return render(request, 'app_general/home.html',context)
+def about(request):
+    return render(request,'app_general/about.html')
 
 def about_us(request):
     return render(request, 'app_general/about_us.html')
