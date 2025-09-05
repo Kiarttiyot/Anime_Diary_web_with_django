@@ -6,6 +6,19 @@ class Post(models.Model):
     content = models.TextField(blank=True)  # ข้อความ optional
     image = models.ImageField(upload_to="post_images/", blank=True, null=True)  # รูป optional
     created_at = models.DateTimeField(auto_now_add=True)
+    name = models.CharField(max_length=100, blank=True, null=True)
+    score = models.IntegerField(default=0)
+    
+    STATE_CHOICES = [
+        ("watching", "Watching"),
+        ("finished", "Finished")
+    ]
+
+    state = models.CharField(
+        max_length=20,
+        choices=STATE_CHOICES,
+        default="watching"  # ค่าเริ่มต้น
+    )
 
     def __str__(self):
         return f"{self.user.username}: {self.content[:30]}"
