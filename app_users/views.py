@@ -6,8 +6,8 @@ from django.contrib.auth.models import User
 from app_users.forms import UserProfileForm,ExtendedProfileForm
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect, render
-from .models import Post
-from .forms import PostForm
+from .models import Post, Comment
+from .forms import PostForm, CommentForm
 from app_users.models import Profile
 
 @login_required
@@ -93,3 +93,15 @@ def dashboard(request, username=None):
         "posts": posts,
         "form": form,
     })
+
+@login_required
+def add_comment(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.user = request.user
+            comment.save()
+    return redirect('subscription')
