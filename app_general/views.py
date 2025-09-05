@@ -17,3 +17,4 @@ def about(request):
 
 def about_us(request):
     return render(request, 'app_general/about_us.html')
+
