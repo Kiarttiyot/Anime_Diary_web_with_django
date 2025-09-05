@@ -1,11 +1,30 @@
-{% extends "base.html" %}
+{% extends 'app_general/components/base.html' %}
 {% load static %}
-
 {% block content %}
+<h2>คลังโพสต์</h2>
+<div class="posts-grid">
+    {% for post in posts %}
+        <div class="post-item">
+            {% if post.image %}
+                <img src="{{ post.image.url }}" alt="Post">
+            {% endif %}
+            <p>{{ post.content }}</p>
+            <small>{{ post.created_at }}</small>
+
+            <!-- ปุ่มยกเลิกเก็บ -->
+            <a href="{% url 'post_unarchive' post.pk %}" 
+               class="btn btn-secondary btn-sm">
+               ยกเลิกเก็บ
+            </a>
+        </div>
+    {% empty %}
+        <p>ยังไม่มีโพสต์ที่เก็บ</p>
+    {% endfor %}
+</div>
 <div class="container mt-4">
     <h3>โพสต์ที่เก็บไว้ของ {{ profile_user.username }}</h3>
 
-    <div class="posts-grid">
+    <!--<div class="posts-grid">
         {% for post in posts %}
             <div class="post-item">
                 {% if post.name %}
@@ -43,13 +62,13 @@
                 <small>{{ post.created_at }}</small>
 
                 <div class="post-actions mt-2">
-                    <!-- ปุ่มคืนโพสต์ (unarchive) -->
+                    <!-- ปุ่มคืนโพสต์ (unarchive) --
                     <form method="post" action="{% url 'unarchive_post' post.id %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-sm btn-outline-primary">ย้ายกลับ</button>
                     </form>
 
-                    <!-- ปุ่มลบถาวร -->
+                    <!-- ปุ่มลบถาวร --
                     <form method="post" action="{% url 'delete_post' post.id %}" onsubmit="return confirm('ลบโพสต์นี้ถาวร?');">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-sm btn-outline-danger">ลบ</button>
@@ -59,8 +78,7 @@
         {% empty %}
             <p>ยังไม่มีโพสต์ที่เก็บไว้</p>
         {% endfor %}
-    </div>
-</div>
+    </div>-->
 
 <style>
 .posts-grid {

@@ -27,6 +27,7 @@
                
                 <img src="{% static 'app_general/plus.png' %}" alt="สร้างโพสต์" style="width:25px;height:25px;"  >
                 <button ><a href="{%url 'profile'%}">edit profile</a></button>
+                <button ><a href="{%url 'archive_list'%}">archive_list</a></button>
                 <!-- Remove the incorrect delete button from header -->
                 
             </a>
@@ -46,17 +47,32 @@
             <a href="{% url 'post_detail' post.pk %}" class="post-link">
                 <div class="post-item">
                     
-                    {% if post.name %}
-                        <h4>{{ post.name }}</h4>
-                    {% endif %}
-                    
+                 
                     {% if post.image %}
                         <img src="{{ post.image.url }}" alt="Post" style="max-width:300px;">
                     {% endif %}
                     <div class="spaceeiei" style="padding: 10px;"></div>
-                    {% if post.state %}
-                        <p>สถานะ: {{ post.state }}</p>
-                    {% endif %}
+                    <!-- Meta -->
+                    <div class="post-meta">
+                        <span class="like-btn" onclick="toggleLike('{{ post.pk }}')">
+                            {% if post.is_liked %}
+                                <i class="fa-solid fa-heart" style="color:red;"></i>
+                            {% else %}
+                                <i class="fa-regular fa-heart"></i>
+                            {% endif %}
+                            <span id="like-count-{{ post.pk }}">{{ post.likes.count }}</span>
+                        </span>
+                        <span><i class="fa-regular fa-comment"></i> {{ post.comments.count }}</span>
+                    </div>
+
+                    <!-- State -->
+                    <div class="post-state">
+                        {% if post.state %}
+                            <p>{{ post.state }}</p>
+                        {% endif %}
+                    </div>
+
+                    
 
                     <div class="rating" aria-label="คะแนน {{ post.score }}/10">
                         {% for _ in "12345" %}
@@ -77,7 +93,7 @@
 
                     
                     <small>{{ post.created_at }}</small>
-                    {% if request.user == profile_user %}
+                    <!--{% if request.user == profile_user %}
                         <form action="{% url 'post_delete' post.pk %}" method="post" style="display:inline;">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-danger">Delete</button>
@@ -86,16 +102,56 @@
                             {% csrf_token %}
                             <button type="submit" class="btn btn-warning">Archive/Unarchive</button>
                         </form>
-                    {% endif %}
+                    {% endif %}-->
                 </div>
             </a>
         {% empty %}
             <p>ยังไม่มีโพสต์</p>
         {% endfor %}
     </div>
-
-
-
 </div>
+<script>
+function toggleLike(postId) {
+    fetch(`/post/${postId}/like/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({})
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById(`like-count-${postId}`).textContent = data.like_count;
 
+        const icon = document.querySelector(`.like-btn[onclick="toggleLike('${postId}')"] i`);
+        if (data.liked) {
+            icon.classList.remove('fa-regular');
+            icon.classList.add('fa-solid');
+            icon.style.color = 'red';
+        } else {
+            icon.classList.remove('fa-solid');
+            icon.classList.add('fa-regular');
+            icon.style.color = '';
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+// ฟังก์ชันดึง CSRF token
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            cookie = cookie.trim();
+            if (cookie.startsWith(name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>
 {% endblock %}
