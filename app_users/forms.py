@@ -20,6 +20,7 @@ class ExtendedProfileForm(forms.ModelForm):
                 'accept': 'image/*',  # จำกัดให้เลือกแค่รูป
                 'style': 'display:none;'  # ซ่อนแทนการบังคับด้วย JS
             }),
+            #'address': forms.TextInput(attrs={'placeholder': 'ที่อยู่'}),
         }
         
 
