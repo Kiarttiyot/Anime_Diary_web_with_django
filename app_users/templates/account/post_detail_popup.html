@@ -1,0 +1,57 @@
+
+<!-- post_detail_popup.html -->
+<div class="detail-wrap">
+  <div class="detail-head">
+    <h3 class="detail-title">{{ post.name }}</h3>
+
+    {% if post.user == request.user %}
+    <div class="dropdown" style="display:inline-block;">
+      <button class="dropdown-toggle" aria-expanded="false" title="เมนู">⋮</button>
+      <div class="dropdown-menu" role="menu">
+        <a href="{% url 'create_post' %}?edit={{ post.pk }}">✏️ แก้ไขโพสต์</a>
+
+        <form action="{% url 'post_archive' post.pk %}" method="post" style="margin:0;">
+          {% csrf_token %}
+          <button type="submit" class="menu-btn">📦 จัดเก็บโพสต์</button>
+        </form>
+
+        <form action="{% url 'post_delete' post.pk %}" method="post" style="margin:0;" onsubmit="return confirm('ลบโพสต์นี้จริงหรือไม่?');">
+          {% csrf_token %}
+          <button type="submit" class="menu-btn">🗑️ ลบโพสต์</button>
+        </form>
+      </div>
+    </div>
+    {% endif %}
+
+  </div>
+
+  <div class="detail-image-wrap">
+    {% if post.image %}
+      <img src="{{ post.image.url }}" alt="{{ post.name }}" class="detail-image">
+    {% endif %}
+  </div>
+
+  <div class="detail-meta">
+    <div class="detail-score">⭐ {{ post.score }}/10</div>
+    <div class="detail-stats">
+      <span><i class="fa-regular fa-comment"></i> {{ post.comments.count }}</span>
+      <span style="margin-left:10px;"><i class="fa-regular fa-heart"></i> {{ post.likes.count }}</span>
+    </div>
+  </div>
+
+  <div class="detail-body">
+    <p>{{ post.content }}</p>
+  </div>
+
+  <hr>
+  <div class="detail-comments">
+    <h4>คอมเมนต์</h4>
+    {% for c in post.comments.all %}
+      <div class="comment-item"><b>{{ c.user.username }}</b>: {{ c.content }}</div>
+    {% empty %}
+      <p>ยังไม่มีคอมเมนต์</p>
+    {% endfor %}
+  </div>
+
+</div>
+

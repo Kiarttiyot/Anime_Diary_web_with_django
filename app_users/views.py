@@ -36,8 +36,9 @@ def search_user(request):
 
 def dashboard_view(request, username):
     # เอา user ที่เราต้องการแสดง ไม่ใช่ request.user
-    user_profile = get_object_or_404(User, username=username)
-    return render(request, "account/dashboard.html", {"user_profile": user_profile})
+    profile_user = get_object_or_404(User, username=username)
+    posts = Post.objects.filter(user=profile_user, is_archived=False).order_by('-created_at') 
+    return render(request, "account/dashboard.html", {"user_profile": profile_user,"posts": posts})
 
 @login_required
 def profile(request:HttpRequest):
@@ -112,7 +113,10 @@ def add_comment(request, post_id):
             comment.user = request.user
             comment.save()
             messages.success(request, "Your comment was added!")
+            
+
     return redirect('post_detail', pk=post.pk)
+    
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     return render(request, "account/post_detail.html", {"post": post})
