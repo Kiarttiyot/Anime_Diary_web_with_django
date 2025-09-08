@@ -43,7 +43,7 @@
     margin-bottom: 10px;
 }
 .post-image {
-    width: 500px;
+    width: 350px;
     height: 500px; /* fix height ให้เท่ากัน */
     overflow: hidden;
     margin-bottom: 10px;
@@ -85,7 +85,7 @@
     margin-left: 20px;
 }
 .comments-box {
-    width: 350px;
+    width: 450px;
     height: 400px;   /* จำกัดความสูง */
     overflow-y: auto;    /* มี scrollbar */
     border: 1px solid #ddd;
@@ -101,7 +101,7 @@
     margin-bottom: 8px;
 }
 .buc {
-    width: 280px;
+    width: 380px;
     padding: 6px 10px;
     background-color: #f5f5f5;
     border-radius: 6px;
