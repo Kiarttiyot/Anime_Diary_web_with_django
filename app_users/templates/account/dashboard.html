@@ -15,7 +15,7 @@
         <img src="{{ profile_user.profile.profile_image.url }}" alt="Profile Picture" class="profile-pic">
 
         <div class="profile-info">
-            <h2>Dashboard: {{ profile_user.username }}</h2>
+            <h2>{{ profile_user.username }}</h2>
             {% if request.user == profile_user %}
             
         {% endif %}
@@ -135,7 +135,7 @@
 
                 <small>{{ post.created_at }}</small>
             </div>
-        </div>
+        </div>  
         {% empty %}
             <p>ยังไม่มีโพสต์</p>
         {% endfor %}

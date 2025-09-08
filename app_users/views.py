@@ -113,9 +113,8 @@ def add_comment(request, post_id):
             comment.user = request.user
             comment.save()
             messages.success(request, "Your comment was added!")
-            
-
-    return redirect('post_detail', pk=post.pk)
+    
+    return redirect(request.META.get('HTTP_REFERER', '/'))
     
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
