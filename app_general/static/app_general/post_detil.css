@@ -1,0 +1,215 @@
+.container {
+    max-width: 900px;
+    margin: auto;
+    font-family: Arial, sans-serif;
+    
+}
+
+.post-box {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 30px;
+    background: #fff;
+    border: none;
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.post-header h4 {
+    margin: 0;
+}
+
+.rating i {
+    color: #c91971;
+    margin-right: 2px;
+}
+
+.rating-text {
+    margin-left: 5px;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+.mid  {
+    display: flex;
+    justify-content: space-between;
+    
+    margin-bottom: 10px;
+}
+.post-image {
+    width: 350px;
+    height: 500px; /* fix height ให้เท่ากัน */
+    overflow: hidden;
+    margin-bottom: 10px;
+    border-radius: 6px;
+}
+
+.post-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* รูปไม่เสียสัดส่วน */
+}
+
+.post-content {
+    margin-bottom: 10px;
+}
+
+.post-state {
+    font-style: italic;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.post-meta {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.post-meta span {
+    cursor: pointer;
+}
+
+.meta-separator {
+    width: 10px;
+}
+
+.comments {
+    margin-top: -25px;
+    margin-left: 20px;
+}
+.comments-box {
+    width: 450px;
+    height: 400px;   /* จำกัดความสูง */
+    overflow-y: auto;    /* มี scrollbar */
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 6px;
+    background: #ffffff;
+    margin-bottom: 10px;
+    border: none;
+}
+.comment {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+.buc {
+    width: 380px;
+    padding: 6px 10px;
+    background-color: #f5f5f5;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column; /* จัดเรียงเป็นแนวตั้ง */
+    align-items: flex-start; /* ชิดซ้าย */
+      /* บังคับตัดบรรทัด */
+    word-wrap: break-word;     /* รองรับเก่า */
+    overflow-wrap: break-word; /* รองรับใหม่ */
+    white-space: normal;       /* ให้ตัดบรรทัดอัตโนมัติ */    
+}
+.buc strong {
+    margin-bottom: 4px;  /* เว้นระยะกับข้อความ */
+    color: #333;
+}
+.buc p {
+    margin: 0;          /* ตัด margin default ของ p */
+    color: #555;                  /* ลบ margin เริ่มต้นของ p */
+    word-wrap: break-word;      /* บังคับให้คำยาว ๆ แตก */
+    overflow-wrap: break-word;  /* รองรับเบราว์เซอร์ใหม่ */
+    white-space: normal;      
+}
+
+.comment-pic {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 8px;
+}
+
+.comment-form {
+    display: flex;
+   
+
+}
+
+.comment-form input[type="text"] {
+    flex: 1;
+    padding: 8px 10px;
+    
+    border: 1px solid #ccc;
+}
+
+.comment-form button {
+    margin-left: 5px;
+    padding: 6px 12px;
+    border: none;
+    background-color: #e90027;
+    color: #fff;
+   
+    cursor: pointer;
+}
+
+.comment-form button:hover {
+    background-color: #a4165d;
+}
+
+
+
+
+/* ปุ่ม
+.dropbtn {
+  background-color: #3498db;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+/* Dropdown content ซ่อนโดย default *
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  border-radius: 4px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* ลิงก์ใน dropdown *
+.dropdown-content a {
+  color: black;
+  padding: 10px 15px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Hover effect สำหรับแต่ละ option *
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+.dropdown-content {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.show {
+  display: block;
+  opacity: 1;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background: white;
+    border: 1px solid #ddd;
+    padding: 10px;
+    z-index: 10000; /* ต้องมากกว่า modal-content */
+

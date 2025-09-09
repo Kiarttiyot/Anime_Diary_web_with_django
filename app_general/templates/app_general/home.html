@@ -2,7 +2,7 @@
 {% load static %}
 {% block site_title %}Anime Diary{% endblock %}
 {% block content %}
-
+<link rel="stylesheet" href="{% static 'app_general/comment.css' %}">
 {% if user.is_authenticated %}
     <h3>โพสต์จากทุกคน</h3>
     {% for post in all_posts %}
@@ -17,7 +17,8 @@
         <small>{{ post.created_at }}</small>
 
         <div class="comments">
-          <h4>Comments:</h4>
+
+          <h4 >Comments:</h4>
           {% for comment in post.comments.all %}
             <div class="comment">
               <strong>{{ comment.user.username }}:</strong> {{ comment.content }}

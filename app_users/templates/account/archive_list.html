@@ -1,11 +1,66 @@
-{% extends "base.html" %}
+{% extends 'app_general/components/base.html' %}
 {% load static %}
-
 {% block content %}
-<div class="container mt-4">
-    <h3>โพสต์ที่เก็บไว้ของ {{ profile_user.username }}</h3>
+<h2>คลังโพสต์</h2>
+<div class="posts-grid">
+    {% for post in posts %}
+        <div class="post-item">
+            {% if post.image %}
+                <img src="{{ post.image.url }}" alt="Post">
+            {% endif %}
+            <p>{{ post.name }}</p>
+            <small>{{ post.created_at }}</small>
 
-    <div class="posts-grid">
+            <!-- -- ปุ่มยกเลิกเก็บ -- -->
+            <div class="pp">
+                <button class="btn btn-secondary btn-sm">
+                    <a href="{% url 'post_unarchive' post.id %}">
+                    ยกเลิกเก็บ
+                    </a>
+                </button>
+            </div>
+        </div>
+    {% empty %}
+        <p>ยังไม่มีโพสต์ที่เก็บ</p>
+    {% endfor %}
+<style>
+    h2{
+        text-align: center;
+    }
+    .posts-grid{
+        width: 900px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 10px;
+        margin-top: 10px;
+        margin-bottom: 50px;
+    }
+    .post-item{
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        background: #fff;
+        padding: 5px;
+    }
+    .post-item img{
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+    }
+    .pp {
+        width: auto;
+        height: 25px;
+    }
+    .btn btn-secondary btn-sm{
+        text-align: center;
+    }
+</style>
+</div> 
+<!-- <div class="container mt-4">
+    <h3>โพสต์ที่เก็บไว้ของ {{ profile_user.username }}</h3> -->
+
+    <!-- <div class="posts-grid">
         {% for post in posts %}
             <div class="post-item">
                 {% if post.name %}
@@ -43,14 +98,14 @@
                 <small>{{ post.created_at }}</small>
 
                 <div class="post-actions mt-2">
-                    <!-- ปุ่มคืนโพสต์ (unarchive) -->
-                    <form method="post" action="{% url 'unarchive_post' post.id %}">
+                    <!-- ปุ่มคืนโพสต์ (unarchive) --
+                    <form method="post" action="{% url 'post_unarchive' post.id %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-sm btn-outline-primary">ย้ายกลับ</button>
                     </form>
 
-                    <!-- ปุ่มลบถาวร -->
-                    <form method="post" action="{% url 'delete_post' post.id %}" onsubmit="return confirm('ลบโพสต์นี้ถาวร?');">
+                    <!-- ปุ่มลบถาวร --
+                    <form method="post" action="{% url 'post_delete' post.id %}" onsubmit="return confirm('ลบโพสต์นี้ถาวร?');">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-sm btn-outline-danger">ลบ</button>
                     </form>
@@ -59,10 +114,9 @@
         {% empty %}
             <p>ยังไม่มีโพสต์ที่เก็บไว้</p>
         {% endfor %}
-    </div>
-</div>
+    </div> -->
 
-<style>
+<!-- <style>
 .posts-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -89,5 +143,5 @@
     display: inline-block;
     margin-right: 8px;
 }
-</style>
+</style> -->
 {% endblock %}

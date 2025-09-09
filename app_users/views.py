@@ -10,6 +10,10 @@ from .models import Post, Comment
 from .forms import PostForm, CommentForm
 from app_users.models import Profile
 from django.contrib import messages
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+import json
+from .models import Post, Like
 
 @login_required
 def dashboard(request: HttpRequest):
@@ -32,8 +36,9 @@ def search_user(request):
 
 def dashboard_view(request, username):
     # เอา user ที่เราต้องการแสดง ไม่ใช่ request.user
-    user_profile = get_object_or_404(User, username=username)
-    return render(request, "account/dashboard.html", {"user_profile": user_profile})
+    profile_user = get_object_or_404(User, username=username)
+    posts = Post.objects.filter(user=profile_user, is_archived=False).order_by('-created_at') 
+    return render(request, "account/dashboard.html", {"user_profile": profile_user,"posts": posts})
 
 @login_required
 def profile(request:HttpRequest):
@@ -88,6 +93,8 @@ def dashboard(request, username=None):
                 return redirect("my_dashboard")  # กลับมาหน้า dashboard ตัวเอง
         else:
             form = PostForm()
+    for post in posts:
+        post.is_liked = post.likes.filter(user=request.user).exists()
 
     return render(request, "account/dashboard.html", {
         "profile_user": profile_user,
@@ -106,7 +113,9 @@ def add_comment(request, post_id):
             comment.user = request.user
             comment.save()
             messages.success(request, "Your comment was added!")
-    return redirect('post_detail', pk=post.pk)
+    
+    return redirect(request.META.get('HTTP_REFERER', '/'))
+    
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     return render(request, "account/post_detail.html", {"post": post})
@@ -118,19 +127,45 @@ def post_delete(request, pk):
     messages.success(request, "ลบโพสต์เรียบร้อยแล้ว")
     return redirect("my_dashboard")
 
-
 @login_required
 def post_archive(request, pk):
     post = get_object_or_404(Post, pk=pk, user=request.user)
-    post.is_archived = not post.is_archived  # toggle
+    post.is_archived = True
     post.save()
-    if post.is_archived:
-        messages.info(request, "โพสต์ถูกเก็บแล้ว")
-    else:
-        messages.info(request, "โพสต์ถูกยกเลิกการเก็บแล้ว")
-    return redirect("my_dashboard")
+    messages.info(request, "โพสต์ถูกจัดเก็บแล้ว")
+    return  redirect("my_dashboard")
+
+@login_required
+def post_unarchive(request, pk):
+    post = get_object_or_404(Post, pk=pk, user=request.user)
+    post.is_archived = False
+    post.save()
+    messages.info(request, "ยกเลิกการเก็บโพสต์แล้ว")
+    return redirect("archive_list")
 
 @login_required
 def archive_list(request):
     posts = Post.objects.filter(user=request.user, is_archived=True).order_by('-created_at')
     return render(request, "account/archive_list.html", {"posts": posts})
+
+
+@login_required
+def toggle_like(request, post_id):
+    if request.method == "POST":
+        post = Post.objects.get(id=post_id)
+        user = request.user
+
+        liked = False
+        like_obj = Like.objects.filter(post=post, user=user)
+
+        if like_obj.exists():
+            like_obj.delete()
+        else:
+            Like.objects.create(post=post, user=user)
+            liked = True
+
+        return JsonResponse({
+            "liked": liked,
+            "like_count": post.likes.count()
+        })
+    return JsonResponse({"error": "Invalid request"}, status=400)
