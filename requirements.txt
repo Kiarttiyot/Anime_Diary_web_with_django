@@ -9,3 +9,5 @@ psycopg2-binary
 dotenv
 cryptography
 Pillow
+django-extensions
+pydot
