@@ -1,6 +1,7 @@
 from pathlib import Path
 from dotenv import load_dotenv
 import os
+import dj_database_url
 
 load_dotenv()
 
@@ -153,4 +154,12 @@ SOCIALACCOUNT_PROVIDERS = {
     'github': {
         'SCOPE': ['user', 'user:email'],
     },
+}
+
+DATABASES = {
+    "default": dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite'}",
+        conn_max_age=600,
+        ssl_require=not DEBUG,  # Render ใช้ SSL
+    )
 }
