@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import os
 import dj_database_url
 
+# โหลด .env
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -11,28 +12,35 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY', 'replace-me')
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-# ALLOWED_HOSTS
+# ---- ALLOWED_HOSTS ----
 hosts_env = os.getenv('ALLOWED_HOSTS', '')
 ALLOWED_HOSTS = [h.strip() for h in hosts_env.split(',') if h.strip()]
 
-if DEBUG or not ALLOWED_HOSTS:
-    ALLOWED_HOSTS += ["localhost", "127.0.0.1", "0.0.0.0", "anime-diary.onrender.com"]
+# สำหรับ dev / production defaults
+default_hosts = ["localhost", "127.0.0.1", "0.0.0.0"]
+if not DEBUG:
+    default_hosts.append("anime-diary.onrender.com")
 
+ALLOWED_HOSTS += default_hosts
 ALLOWED_HOSTS = list(dict.fromkeys(ALLOWED_HOSTS))  # ลบ host ซ้ำ
 
-# CSRF
+# ---- CSRF ----
 csrf_env = os.getenv('CSRF_TRUSTED_ORIGINS', '')
 CSRF_TRUSTED_ORIGINS = [o.strip() for o in csrf_env.split(',') if o.strip()]
 
-if DEBUG and not CSRF_TRUSTED_ORIGINS:
-    CSRF_TRUSTED_ORIGINS = [
+# สำหรับ dev เพิ่ม localhost
+if DEBUG:
+    CSRF_TRUSTED_ORIGINS += [
         "http://localhost:8000",
         "http://127.0.0.1:8000",
     ]
-else:
-    CSRF_TRUSTED_ORIGINS += [
-        "https://anime-diary.onrender.com"
-    ]
+
+# สำหรับ production / Render
+prod_domain = "https://anime-diary.onrender.com"
+if not DEBUG and prod_domain not in CSRF_TRUSTED_ORIGINS:
+    CSRF_TRUSTED_ORIGINS.append(prod_domain)
+
+CSRF_TRUSTED_ORIGINS = list(dict.fromkeys(CSRF_TRUSTED_ORIGINS))  # ลบซ้ำ
 
 # ---- Django / allauth ----
 SITE_ID = int(os.getenv('SITE_ID', '2'))
@@ -98,7 +106,7 @@ WSGI_APPLICATION = 'ProjectAnimeDiary.wsgi.application'
 DATABASES = {
     'default': dj_database_url.config(
         default=f"sqlite:///{BASE_DIR / 'db.sqlite'}",
-        conn_max_age=600,  # ใช้ connection pooling เวลาอยู่บน Render
+        conn_max_age=600,  # สำหรับ connection pooling บน Render
     )
 }
 
