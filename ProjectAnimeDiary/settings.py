@@ -24,18 +24,26 @@ if not DEBUG:
 ALLOWED_HOSTS += default_hosts
 ALLOWED_HOSTS = list(dict.fromkeys(ALLOWED_HOSTS))  # ลบ host ซ้ำ
 
-# ---- CSRF ----
+# ---- CSRF_TRUSTED_ORIGINS ----
 csrf_env = os.getenv('CSRF_TRUSTED_ORIGINS', '')
-CSRF_TRUSTED_ORIGINS = [o.strip() for o in csrf_env.split(',') if o.strip()]
+CSRF_TRUSTED_ORIGINS = []
 
-# สำหรับ dev เพิ่ม localhost
+for origin in csrf_env.split(','):
+    origin = origin.strip()
+    if origin:
+        # ถ้าไม่มี scheme ให้เติม https:// เป็น default
+        if not origin.startswith('http://') and not origin.startswith('https://'):
+            origin = 'https://' + origin
+        CSRF_TRUSTED_ORIGINS.append(origin)
+
+# dev localhost
 if DEBUG:
     CSRF_TRUSTED_ORIGINS += [
         "http://localhost:8000",
         "http://127.0.0.1:8000",
     ]
 
-# สำหรับ production / Render
+# production domain
 prod_domain = "https://anime-diary.onrender.com"
 if not DEBUG and prod_domain not in CSRF_TRUSTED_ORIGINS:
     CSRF_TRUSTED_ORIGINS.append(prod_domain)
