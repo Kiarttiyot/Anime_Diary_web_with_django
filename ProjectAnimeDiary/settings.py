@@ -157,9 +157,8 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 DATABASES = {
-    "default": dj_database_url.config(
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite'}",
-        conn_max_age=600,
-        ssl_require=not DEBUG,  # Render ใช้ SSL
+    'default': dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite'}"
     )
 }
+
