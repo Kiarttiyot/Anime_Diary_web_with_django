@@ -7,6 +7,7 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ---- Core envs ----
+# ---- Core envs ----
 SECRET_KEY = os.getenv('SECRET_KEY', 'replace-me')
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
@@ -15,18 +16,25 @@ hosts_env = os.getenv('ALLOWED_HOSTS', '')
 ALLOWED_HOSTS = [h.strip() for h in hosts_env.split(',') if h.strip()]
 
 if DEBUG or not ALLOWED_HOSTS:
-    ALLOWED_HOSTS += ["localhost", "127.0.0.1", "0.0.0.0"]
+    ALLOWED_HOSTS += ["localhost", "127.0.0.1", "0.0.0.0", "anime-diary.onrender.com"]
 
-ALLOWED_HOSTS = list(dict.fromkeys(ALLOWED_HOSTS))
+ALLOWED_HOSTS = list(dict.fromkeys(ALLOWED_HOSTS))  # ลบตัวซ้ำ
 
 # CSRF
 csrf_env = os.getenv('CSRF_TRUSTED_ORIGINS', '')
 CSRF_TRUSTED_ORIGINS = [o.strip() for o in csrf_env.split(',') if o.strip()]
-if (DEBUG and not CSRF_TRUSTED_ORIGINS):
+
+if DEBUG and not CSRF_TRUSTED_ORIGINS:
     CSRF_TRUSTED_ORIGINS = [
         "http://localhost:8000",
         "http://127.0.0.1:8000",
     ]
+else:
+    # Render ใช้ https เสมอ
+    CSRF_TRUSTED_ORIGINS += [
+        "https://anime-diary.onrender.com"
+    ]
+
 
 # ---- Django / allauth ----
 SITE_ID = int(os.getenv('SITE_ID', '2'))
