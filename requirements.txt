@@ -9,3 +9,5 @@ psycopg2-binary
 dotenv
 cryptography
 Pillow
+dj-database-url
+psycopg2-binary
