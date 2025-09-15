@@ -7,7 +7,8 @@
 
 <div class="container mt-5">
      <div class="box">
-        <h2 class="mb-4 text-center">โพสต์ใหม่</h2>
+        <div class="spaceeiei" style="height: 50px;"></div>
+        <h2 class="mb-4 text-center">New Post</h2>
 
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
@@ -28,7 +29,7 @@
             </div>
             {% endif %}
            <!-- Image -->
-            <div class="mb-3">
+            <div class="mb-2">
                 <!-- wrapper ของ input + preview -->
                 <div class="image-upload-wrapper" 
                     style="position: relative; width: 100%; max-width: 300px; height: 200px; border: 2px dashed #ccc; border-radius: 8px; display: flex; justify-content: center; align-items: center; overflow: hidden; cursor: pointer; background-color:#f8f8f8;">
@@ -80,13 +81,14 @@
             </div>
             <!-- State -->
             <div class="mb-3">
-                <label class="form-label">สถานะ</label>
+                <!-- <label class="form-label">สถานะ</label> -->
                 {{ form.state }}
             </div>
 
             <!-- Score -->
             <div class="mb-3">
             <label class="form-label">ให้คะแนน</label>
+            <div class="spaceeiei" style="height: 7px;"></div>
 
             <!-- แถวแสดงดาว -->
             <div id="star-rating" class="d-flex gap-1" style="cursor: pointer; font-size: 2rem; color: gold;">
@@ -143,12 +145,21 @@
 
 
 
-            <div class="spaceeiei" style="padding: 10px;"></div>
+            
             <!-- Buttons -->
-            <div class="d-flex justify-content-between mt-4">
+            <!-- <div class="mb-4">
                 <a href="{% url 'my_dashboard' %}" class="btn btn-secondary">ยกเลิก</a>
                 <button type="submit" class="btn btn-primary">โพสต์เลย</button>
-            </div>
+            </div> -->
+            <div class="spaceeiei" style="height: 20px;"></div>
+            <div class="mb-4">
+                <a href="{% url 'my_dashboard' %}" class="btn">ยกเลิก</a>
+
+                <span><a type="submit">
+                    <button class="abc">โพสต์เลย</button>
+                </a></span>   
+        </div>
+            <div class="spaceeiei" style="height: 150px;"></div>
         </form>
     </div>
 </div>
