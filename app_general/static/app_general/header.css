@@ -1,6 +1,6 @@
 /* โครงสร้างหลักของ Navbar */
 .top-header {
-    background-color: #06081d; /* น้ำเงินเข้ม */
+    background-color: #000000; /* น้ำเงินเข้ม */
     display: flex;
     align-items: center;
     padding: 15px 40px;
@@ -8,6 +8,7 @@
     gap: 20px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.4);
 }
+/* #06081d; */
 
 .search-form {
     display: flex;
@@ -101,7 +102,7 @@
 }
 
 .logoA {
-    color: #ff3366; /* แดงสด */
+    color: #FFCCEA; /* แดงสด */
 }
 
 .logoD {

@@ -4,6 +4,7 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'app_general/feed.css' %}">
 {% if user.is_authenticated %}
+<div class="mode">
     <h3>โพสต์จากทุกคน</h3>
     {% for post in all_posts %}
     <div class="feed">
@@ -12,7 +13,7 @@
             <p>{{ post.content }}</p>
         {% endif %}
         {% if post.image %}
-            <img src="{{ post.image.url }}" alt="Post Image" style="max-width:200px;">
+            <img src="{{ post.image.url }}" alt="Post Image" style="width:670px;">
         {% endif %}
         <small>{{ post.created_at }}</small>
 
@@ -36,6 +37,7 @@
     {% empty %}
         <p>ยังไม่มีโพสต์</p>
     {% endfor %}
+</div>    
 {% else %}
     <link rel="stylesheet" href="{% static 'app_general/home.css' %}">
 
@@ -75,8 +77,9 @@
 
 <!-- Buttons -->
 <div class="action-buttons">
-    <button class="btn-register">REGISTER</button>
-    <button class="btn-login">Login</button>
+    <a href="{% url 'account_signup' %}"><button class="btn-register">REGISTER</button></a>
+    <a href="{% url 'account_login' %}"><button class="btn-login">LOGIN</button></a>
+    
 </div>
 
 <!-- Footer -->

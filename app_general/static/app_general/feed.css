@@ -1,52 +1,62 @@
-/* .feed{
+/* /* .feed{
     border:1px solid #ccc;
     margin-bottom:10px;
     padding-left: 40%;
 
-    /* feed.css */
+    /* feed.css *
 
-/* จัดหน้า feed */
-h3 {
-    margin-left: 23%;
+/* จัดหน้า feed *
+body {
+    background-color: #fff;
+}
+.mode {
+    margin: 0 auto;
+    width: 700px;
+
+
+}
+@keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
 }
 .feed {
     margin: 0 auto;
-    width: 500px;
+
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 15px;
     margin-bottom: 20px;
-    background-color: #fafafa;
+    background-color: #ffff;
     box-shadow: 0 2px 6px rgba(58, 43, 43, 0.05);
 }
 
-/* ชื่อผู้ใช้ */
+/* ชื่อผู้ใช้ *
 .feed strong {
     font-size: 1.1em;
     color: #333;
 }
 
-/* เนื้อหาโพสต์ */
+/* เนื้อหาโพสต์ *
 .feed p {
     margin: 10px 0;
     color: #444;
 }
 
-/* รูปภาพในโพสต์ */
-/* รูปภาพในโพสต์ ให้เท่ากันทุกอัน */
+/* รูปภาพในโพสต์ *
+/* รูปภาพในโพสต์ ให้เท่ากันทุกอัน *
 .feed img {
     display: block;
     margin: 10px auto;
     border-radius: 8px;
-    width: 300px;          /* กว้างเต็ม feed */
-        /* จำกัดไม่ให้ใหญ่เกิน */
-    height: 300px;           /* fix ความสูงให้เท่ากัน */
-    object-fit: cover;       /* ครอบรูป ไม่บิดเบี้ยว */
-    background-color: #000;  /* เผื่อรูปเล็กจะได้มีพื้นหลังดำ */
+    width: 500px;          /* กว้างเต็ม feed *
+                             /* จำกัดไม่ให้ใหญ่เกิน *
+    height: 300px;           /* fix ความสูงให้เท่ากัน *
+    object-fit: cover;       /* ครอบรูป ไม่บิดเบี้ยว *
+    background-color: #000;  /* เผื่อรูปเล็กจะได้มีพื้นหลังดำ *
 }
 
-
-/* เวลาที่โพสต์ */
+/* เวลาที่โพสต์ *
 .feed small {
     display: block;
     margin-top: 8px;
@@ -54,32 +64,142 @@ h3 {
     color: #666;
 }
 
-/* ส่วนของคอมเมนต์ */
+/* ส่วนของคอมเมนต์ *
 .comment {
     background-color: #f0f2f5;
     padding: 8px 12px;
-    border-radius: 18px;     /* ให้โค้งเหมือน bubble */
+    border-radius: 18px;     /* ให้โค้งเหมือน bubble *
     margin-bottom: 6px;
     font-size: 0.9em;
-    display: inline-block;   /* ให้ฟีลเหมือนกล่องแชท */
-    max-width: 80%;          /* ไม่ให้คอมเมนต์ยาวเต็มบล็อค */
-    word-wrap: break-word;   /* ตัดคำถ้ายาวเกิน */
+    display: inline-block;   /* ให้ฟีลเหมือนกล่องแชท *
+    max-width: 80%;          /* ไม่ให้คอมเมนต์ยาวเต็มบล็อค *
+    word-wrap: break-word;   /* ตัดคำถ้ายาวเกิน *
 }
 
-/* หัวข้อคอมเมนต์ */
+/* หัวข้อคอมเมนต์ *
 .comments h4 {
     margin-bottom: 10px;
     font-size: 1em;
     color: #222;
 }
 
-/* แต่ละคอมเมนต์ */
+/* แต่ละคอมเมนต์ *
 .comment {
     background-color: #f0f0f0;
     padding: 8px 10px;
     border-radius: 5px;
     margin-bottom: 8px;
     font-size: 0.9em;
+}
+
+/* ฟอร์มคอมเมนต์ *
+.comments form {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+/* ช่องกรอกคอมเมนต์ *
+.comments input[type="text"] {
+    flex: 1;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* ปุ่มคอมเมนต์ *
+.comments button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.comments button:hover {
+    background-color: #0056b3;
+} */
+/* จัดหน้า feed */
+body {
+    background: linear-gradient(135deg, #FFFFFF, #F5F5F5);
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: #333333;
+}
+
+.mode {
+    margin: 0 auto;
+    width: 700px;
+}
+
+/* โพสต์ */
+.feed {
+    margin: 0 auto;
+    border: 1px solid #CCCCCC;
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 20px;
+    background-color: #FFFFFF;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.feed:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(0,0,0,0.1);
+}
+
+/* ชื่อผู้ใช้ */
+.feed strong {
+    font-size: 1.1em;
+    color: #000000;
+}
+
+/* เนื้อหาโพสต์ */
+.feed p {
+    margin: 10px 0;
+    color: #333333;
+}
+
+/* รูปภาพในโพสต์ */
+.feed img {
+    display: block;
+    margin: 12px auto;
+    border-radius: 10px;
+    width: 500px;
+    height: 300px;
+    object-fit: cover;
+    background-color: #000000; /* เผื่อรูปเล็ก */
+}
+
+/* เวลาที่โพสต์ */
+.feed small {
+    display: block;
+    margin-top: 8px;
+    font-size: 0.85em;
+    color: #666666;
+}
+
+/* ส่วนของคอมเมนต์ */
+.comments h4 {
+    margin-bottom: 10px;
+    font-size: 1em;
+    color: #000000;
+}
+
+/* กล่องคอมเมนต์ */
+.comment {
+    background: #F5F5F5;
+    padding: 8px 12px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    font-size: 0.9em;
+    display: inline-block;
+    max-width: 80%;
+    word-wrap: break-word;
+    border: 1px solid #CCCCCC;
+    color: #333333;
 }
 
 /* ฟอร์มคอมเมนต์ */
@@ -93,21 +213,29 @@ h3 {
 .comments input[type="text"] {
     flex: 1;
     padding: 6px 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border: 1px solid #CCCCCC;
+    border-radius: 6px;
+    outline: none;
+    background: #FFFFFF;
+    transition: border 0.2s;
+}
+
+.comments input[type="text"]:focus {
+    border: 1px solid #000000;
 }
 
 /* ปุ่มคอมเมนต์ */
 .comments button {
-    background-color: #007bff;
-    color: #fff;
+    background-color: #000000;
+    color: #FFFFFF;
     border: none;
-    padding: 6px 12px;
-    border-radius: 5px;
+    padding: 6px 14px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: background 0.3s, transform 0.2s;
 }
 
 .comments button:hover {
-    background-color: #0056b3;
+    background-color: #333333;
+    transform: scale(1.05);
 }
