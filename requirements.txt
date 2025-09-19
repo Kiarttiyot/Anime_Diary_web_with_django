@@ -11,3 +11,5 @@ cryptography
 Pillow
 django-extensions
 pydot
+dj-database-url
+psycopg2-binary

@@ -10,23 +10,25 @@
 }
 
 .search-form {
-    display: flex;
+    margin: 0;
+    /* display: flex;
     align-items: center;
-    background-color: #ffffff; /* สีพื้นหลังช่องค้นหา */
+    background-color: #ffffff; /* สีพื้นหลังช่องค้นหา 
     border-radius: 50px;    
     position: absolute;
-    overflow: hidden; /* ซ่อนส่วนที่เกินขอบ */
-    height: 30px; /* ความสูงของช่องค้นหา */
-    margin-left: 54%;
+    overflow: hidden; /* ซ่อนส่วนที่เกินขอบ 
+    height: 30px; /* ความสูงของช่องค้นหา 
+    margin-left: 54%; */
 }
 
 .search-input {
-    border: none;
+    margin: 0;
+    /* border: none;
     background: transparent;
     font-size: 14px;
     color: #000000;
-    outline: none; /* เอาเส้นขอบออกเมื่อถูกโฟกัส */
-    padding-left: 10px;
+    outline: none; /* เอาเส้นขอบออกเมื่อถูกโฟกัส
+    padding-left: 10px; */
 }
 
 /* Placeholder สีจางๆ */

@@ -2,11 +2,11 @@
 {% load static %}
 {% block site_title %}Anime Diary{% endblock %}
 {% block content %}
-<link rel="stylesheet" href="{% static 'app_general/comment.css' %}">
+<link rel="stylesheet" href="{% static 'app_general/feed.css' %}">
 {% if user.is_authenticated %}
     <h3>โพสต์จากทุกคน</h3>
     {% for post in all_posts %}
-    <div style="border:1px solid #ccc; margin-bottom:10px; padding:10px;">
+    <div class="feed">
         <strong>{{ post.user.username }}</strong><br>
         {% if post.content %}
             <p>{{ post.content }}</p>
