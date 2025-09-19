@@ -15,7 +15,7 @@ hosts_env = os.getenv('ALLOWED_HOSTS', '*')
 ALLOWED_HOSTS = [h.strip() for h in hosts_env.split(',') if h.strip()]
 
 if DEBUG or not ALLOWED_HOSTS:
-    ALLOWED_HOSTS += ["localhost", "127.0.0.1", "0.0.0.0"]
+    ALLOWED_HOSTS += ["localhost", "127.0.0.1", "0.0.0.0", "reports-psychiatry.gl.at.ply.gg:54264","147.185.221.31:54264"]
 
 ALLOWED_HOSTS = list(dict.fromkeys(ALLOWED_HOSTS))
 
