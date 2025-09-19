@@ -6,6 +6,7 @@
 {% if user.is_authenticated %}
 <div class="mode">
     <h3>โพสต์จากทุกคน</h3>
+    <h1 style="color: red;">kuy พวกอู้งาน ไปทำงานไอพวกแรงงานทาส สวะ!</h1>
     {% for post in all_posts %}
     <div class="feed">
         <strong>{{ post.user.username }}</strong><br>
