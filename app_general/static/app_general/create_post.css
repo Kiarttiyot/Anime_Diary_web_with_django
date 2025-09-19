@@ -1,4 +1,4 @@
-.box {
+/* .box {
     background-color: #ffffff;
     padding: 50px;
     max-width: 700px;
@@ -94,4 +94,77 @@ select:focus {
     #star-rating {
         font-size: 1.5rem;
     }
+} */
+.box {
+    max-width: 900px;
+    margin: 0 auto;
+    align-items: center;
+    justify-content: center;
 }
+h2{
+    text-align: center;
+    
+}
+.mb-2{
+    margin-left: 33%;
+}
+.mb-3{  
+    margin: 0 auto;
+    text-align: center;
+    margin-bottom: 25px;
+}
+.mb-4 {
+    text-align: center;
+}
+.mb-3 input,textarea {
+    width: 30%;
+    padding: 10px 15px;
+
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+.mb-3 select {
+    width: 34%;
+    padding: 10px 15px;
+  
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+input[type="text"]:focus,
+textarea:focus,
+select:focus {
+    border-color: #0d00ff;
+    box-shadow: 0 0 5px rgba(178, 178, 178, 0.3);
+    outline: none;
+}
+.btn {
+    margin: 0 auto;
+    padding: 5px 15px;
+    color: #000000;
+    background-color: rgb(255, 255, 255);
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+    margin-left: 15%;
+}
+.abc {
+    margin: 0 auto;
+    padding: 5px 17px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+    
+}
+.abc:hover {
+    background-color: #000000;
+    color: #ffffff;
+    transition: 0.3s;
+}
+
+/* .abc :hover{
+    background-color: #000000;
+    color: #ffffff;
+    transform: scale(1.03);
+    transition: 0.3s;
+} */

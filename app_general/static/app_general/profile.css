@@ -23,10 +23,10 @@
     cursor:pointer;
     margin: 10px auto;
 }
-.container button{
+.btn1 {
     width: 150px;
     padding: 16px;
-    background: #e74c3c; /* แดง */
+    background: #e74c3c; 
     color: #fff;
     font-weight: bold;
     border: none;
@@ -67,4 +67,9 @@
     padding: 70px 0;
     text-align: center;
     font-family: 'Segoe UI', sans-serif;
+}
+.btn2 {
+  background-color: #ffffff;
+  border: none;
+  margin-left: 20px;
 }
