@@ -1,6 +1,23 @@
 .feed{
     border:1px solid #ccc;
     margin-bottom:10px;
-    padding-left: 40%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+.feed img{
+    width: 50%;
+    height: auto;
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-left: 25%;
+}
 
+h3{
+    padding-left: 10px;
+}
+
+.feed h1 ,p,div{
+    padding-left: 10px;
+    padding: 10px;
 }
