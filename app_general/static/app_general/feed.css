@@ -131,6 +131,7 @@ body {
 .comments button:hover {
     background-color: #0056b3;
 } */
+ 
 /* จัดหน้า feed */
 body {
     background: linear-gradient(135deg, #FFFFFF, #F5F5F5);
@@ -205,7 +206,7 @@ body {
     border-radius: 10px;
     margin-bottom: 8px;
     font-size: 0.9em;
-    display: inline-block;
+    display: inline-flexbox;
     max-width: 80%;
     word-wrap: break-word;
     border: 1px solid #CCCCCC;
@@ -248,4 +249,81 @@ body {
 .comments button:hover {
     background-color: #333333;
     transform: scale(1.05);
+}
+
+
+                                    /* Popup */
+/* ปุ่ม */
+
+.btn {
+  padding: 8px 14px; 
+  border: 1px solid #ddd; 
+  border-radius: 8px; 
+  cursor: pointer;
+  background: #fff;
+}
+.btn:hover { 
+    box-shadow: 0 2px 8px rgba(0,0,0,.08); 
+}
+
+/* รูปฟีดให้คลิกได้ */
+.feed-image { 
+    width: 670px; 
+    max-width: 100%; 
+    border-radius: 12px; 
+    cursor: zoom-in; 
+}
+
+/* Modal base */
+.modal { 
+    position: fixed; 
+    inset: 0; 
+    display: none; 
+    z-index: 1000; 
+    overflow-y: auto;    /* มี scrollbar */
+}
+.modal.is-open { 
+    display: block; 
+}
+.modal-backdrop {
+  position: absolute; 
+  inset: 0; 
+  background: rgba(0,0,0,.5);
+}
+.modal-dialog {
+  position: relative; 
+  max-width: 920px; 
+  width: calc(100% - 24px);
+  margin: 40px auto; 
+  background: #fff; 
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0,0,0,.2); 
+  overflow: hidden;
+}
+.modal-close {
+  position: absolute; 
+  top: 8px; right: 12px; 
+  font-size: 28px;
+  background: transparent; 
+  border: 0; 
+  cursor: pointer; 
+  line-height: 1;
+}
+.modal-body { 
+    padding: 20px 22px 24px; 
+}
+.modal-image {
+  width: 100%; 
+  max-height: 60vh; 
+  object-fit: contain; 
+  border-radius: 12px;
+  background: #f6f6f6;
+}
+.modal-content { 
+    white-space: pre-wrap; 
+}
+
+/* ป้องกันหน้าหลังกระตุกตอนล็อกสกอร์ล */
+html.modal-lock, body.modal-lock { 
+    overflow: hidden; 
 }

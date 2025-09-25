@@ -3,42 +3,82 @@
 {% block site_title %}Anime Diary{% endblock %}
 {% block content %}
 <link rel="stylesheet" href="{% static 'app_general/feed.css' %}">
+<!-- ของใหม่-->
 {% if user.is_authenticated %}
 <div class="mode">
-    <h3>โพสต์จากทุกคน</h3>
-    <h1 style="color: red;">kuy พวกอู้งาน ไปทำงานไอพวกแรงงานทาส สวะ!</h1>
-    {% for post in all_posts %}
-    <div class="feed">
-        <strong>{{ post.user.username }}</strong><br>
-        {% if post.content %}
-            <p>{{ post.content }}</p>
-        {% endif %}
-        {% if post.image %}
-            <img src="{{ post.image.url }}" alt="Post Image" style="width:670px;">
-        {% endif %}
-        <small>{{ post.created_at }}</small>
+  <h3>โพสต์จากทุกคน</h3>
 
-        <div class="comments">
+  {% for post in all_posts %}
+  <div class="feed">
+    <div class="feed-header">
+      <strong>{{ post.user.username }}</strong>
+      <small class="created">{{ post.created_at|date:"Y-m-d H:i" }}</small>
+    </div>
 
-            <h4 >Comments:</h4>
+    {% if post.content %}
+      <p class="feed-content">
+        {{ post.content|truncatechars:180 }}
+        {% if post.content|length > 180 %}
+          … 
+        {% endif %}
+      </p>
+    {% endif %}
+
+    {% if post.image %}
+      <img class="feed-image js-open-modal" data-target="modal-{{ post.id }}"
+           src="{{ post.image.url }}" alt="Post Image" style="width:670px;">
+    {% endif %}
+
+    <div class="feed-actions">
+      <button class="btn js-open-modal" data-target="modal-{{ post.id }}">ดูรายละเอียด</button>
+    </div>
+  </div>
+
+  {# ---------- Modal ต่อโพสต์ ---------- #}
+  <div id="modal-{{ post.id }}" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modal-title-{{ post.id }}">
+    <div class="modal-backdrop js-close-modal" data-target="modal-{{ post.id }}"></div>
+    <div class="modal-dialog" role="document">
+      <button class="modal-close js-close-modal" data-target="modal-{{ post.id }}" aria-label="Close">&times;</button>
+
+        <div class="modal-body">
+            <h3 id="modal-title-{{ post.id }}">{{ post.user.username }}</h3>
+            <small class="created">{{ post.created_at|date:"Y-m-d H:i" }}</small>
+
+            {% if post.image %}
+            <img class="modal-image" src="{{ post.image.url }}" alt="Post Image" >
+            {% endif %}
+
+            {% if post.content %}
+            <p class="modal-content">{{ post.content }}</p>
+            {% endif %}
+            
+            <h4>Comments</h4>
+            <div class="comments">
             {% for comment in post.comments.all %}
                 <div class="comment">
                 <strong>{{ comment.user.username }}:</strong> {{ comment.content }}
                 </div>
             {% empty %}
-                <p>No comments yet.</p>
+                <p>ยังไม่มีคอมเมนต์</p>
             {% endfor %}
-            <form method="post" action="{% url 'add_comment' post.id %}">
-                {% csrf_token %}
-                <input type="text" name="content" placeholder="Add a comment..." required>
-                <button type="submit">Comment</button>
+            </div>
+
+            <form class="comment-form" method="post" action="{% url 'add_comment' post.id %}">
+            {% csrf_token %}
+            <input type="text" name="content" placeholder="Add a comment..." required>
+            <button type="submit" class="btn">Comment</button>
             </form>
         </div>
     </div>
-    {% empty %}
-        <p>ยังไม่มีโพสต์</p>
-    {% endfor %}
+  </div>
+  {# ---------- จบ Modal ---------- #}
+
+  {% empty %}
+    <p>ยังไม่มีโพสต์</p>
+  {% endfor %}
 </div>    
+<!---->
+
 {% else %}
     <link rel="stylesheet" href="{% static 'app_general/home.css' %}">
 
@@ -86,4 +126,173 @@
 <!-- Footer -->
 
 {%endif%}
+<!-- popup -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  function openModal(id) {
+    const m = document.getElementById(id);
+    if (!m) return;
+    m.classList.add('is-open');
+    document.documentElement.classList.add('modal-lock');
+    document.body.classList.add('modal-lock');
+    // โฟกัสปุ่มปิดเพื่อ accessibility
+    const closeBtn = m.querySelector('.modal-close');
+    if (closeBtn) closeBtn.focus();
+  }
+  function closeModal(id) {
+    const m = document.getElementById(id);
+    if (!m) return;
+    m.classList.remove('is-open');
+    document.documentElement.classList.remove('modal-lock');
+    document.body.classList.remove('modal-lock');
+  }
+
+  // เปิด
+  document.querySelectorAll('.js-open-modal').forEach(function(el) {
+    el.addEventListener('click', function() {
+      const target = el.getAttribute('data-target');
+      if (target) openModal(target);
+    });
+  });
+
+  // ปิด (คลิกปุ่ม × หรือพื้นที่มืด)
+  document.querySelectorAll('.js-close-modal').forEach(function(el) {
+    el.addEventListener('click', function() {
+      const target = el.getAttribute('data-target');
+      if (target) closeModal(target);
+    });
+  });
+
+  // ปิดด้วยปุ่ม ESC
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.modal.is-open').forEach(function(m) {
+        closeModal(m.id);
+      });
+    }
+  });
+});
+</script>
+<!---->
 {% endblock %}
+
+<!-- ของใหม่
+{lol % if user.is_authenticated %}
+<div class="mode">
+  <h3>โพสต์จากทุกคน</h3>
+
+  {% for post in all_posts %}
+  <div class="feed">
+    <div class="feed-header">
+      <strong>{{ post.user.username }}</strong>
+      <small class="created">{{ post.created_at|date:"Y-m-d H:i" }}</small>
+    </div>
+
+    {% if post.content %}
+      <p class="feed-content">
+        {{ post.content|truncatechars:180 }}
+        {% if post.content|length > 180 %}
+          … 
+        {% endif %}
+      </p>
+    {% endif %}
+
+    {% if post.image %}
+      <img class="feed-image js-open-modal" data-target="modal-{{ post.id }}"
+           src="{{ post.image.url }}" alt="Post Image" style="width:670px;">
+    {% endif %}
+
+    <div class="feed-actions">
+      <button class="btn js-open-modal" data-target="modal-{{ post.id }}">ดูรายละเอียด</button>
+    </div>
+  </div>
+
+  {# ---------- Modal ต่อโพสต์ ---------- #}
+  <div id="modal-{{ post.id }}" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modal-title-{{ post.id }}">
+    <div class="modal-backdrop js-close-modal" data-target="modal-{{ post.id }}"></div>
+    <div class="modal-dialog" role="document">
+      <button class="modal-close js-close-modal" data-target="modal-{{ post.id }}" aria-label="Close">&times;</button>
+
+      <div class="modal-body">
+        <h3 id="modal-title-{{ post.id }}">{{ post.user.username }}</h3>
+        <small class="created">{{ post.created_at|date:"Y-m-d H:i" }}</small>
+
+        {% if post.image %}
+          <img class="modal-image" src="{{ post.image.url }}" alt="Post Image" >
+        {% endif %}
+
+        {% if post.content %}
+          <p class="modal-content">{{ post.content }}</p>
+        {% endif %}
+
+        <hr>
+
+        <h4>Comments</h4>
+        <div class="comments">
+          {% for comment in post.comments.all %}
+            <div class="comment">
+              <strong>{{ comment.user.username }}:</strong> {{ comment.content }}
+            </div>
+          {% empty %}
+            <p>ยังไม่มีคอมเมนต์</p>
+          {% endfor %}
+        </div>
+
+        <form class="comment-form" method="post" action="{% url 'add_comment' post.id %}">
+          {% csrf_token %}
+          <input type="text" name="content" placeholder="Add a comment..." required>
+          <button type="submit" class="btn">Comment</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  {# ---------- จบ Modal ---------- #}
+
+  {% empty %}
+    <p>ยังไม่มีโพสต์</p>
+  {% endfor %}
+</div>    
+-->
+<!-- ของเก่า -->
+<!--
+{lol% if user.is_authenticated %}
+<div class="mode">
+    <h3>โพสต์จากทุกคน</h3>
+    <h1 style="color: red;">kuy พวกอู้งาน ไปทำงานไอพวกแรงงานทาส สวะ!</h1>
+    
+    {% for post in all_posts %}
+    <div class="feed">
+        <strong>{{ post.user.username }}</strong><br>
+        
+        {% if post.content %}
+            <p>{{ post.content }}</p>
+        {% endif %}
+        
+        {% if post.image %}
+            <img src="{{ post.image.url }}" alt="Post Image" style="width:670px;">
+        {% endif %}
+        <small>{{ post.created_at }}</small>
+
+        <div class="comments">
+
+            <h4 >Comments:</h4>
+            {% for comment in post.comments.all %}
+                <div class="comment">
+                <strong>{{ comment.user.username }}:</strong> {{ comment.content }}
+                </div>
+            {% empty %}
+                <p>No comments yet.</p>
+            {% endfor %}
+            
+            <form method="post" action="{% url 'add_comment' post.id %}">
+                {% csrf_token %}
+                <input type="text" name="content" placeholder="Add a comment..." required>
+                <button type="submit">Comment</button>
+            </form>
+        </div>
+    </div>
+    {% empty %}
+        <p>ยังไม่มีโพสต์</p>
+    {% endfor %}
+</div>    
+-->
