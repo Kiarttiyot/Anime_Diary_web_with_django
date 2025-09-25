@@ -48,7 +48,7 @@
     margin-top: 20px;
 }*/
 .footer {
-    background-color: #0d0e1a; /* เปลี่ยนสีพื้นหลังให้เข้มขึ้น */
+    background-color: #000000; /* เปลี่ยนสีพื้นหลังให้เข้มขึ้น */
     color: #ffffff;
     padding: 40px 0;
     font-family: 'Segoe UI', sans-serif;
@@ -71,7 +71,7 @@
 }
 
 .logA {
-    color: #ff3366; /* เปลี่ยนสีให้เป็นสีแดง */
+    color: #FFCCEA; /* เปลี่ยนสีให้เป็นสีแดง */
 }
 
 .logD {

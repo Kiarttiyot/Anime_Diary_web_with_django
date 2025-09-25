@@ -32,12 +32,12 @@
                 {% endif %}
                 {% csrf_token %}
                 <div class="field-col">
-                    <div class="field">
-                    {{ form.login }}
+                    <div class="form-group">
+                        {{ form.login }}
                     </div>
 
-                    <div class="field">
-                    {{ form.password }}
+                    <div class="form-group">
+                        {{ form.password }}
                     </div>
                 </div>
 
@@ -80,7 +80,7 @@
 </div>
 <div class="links">
     <h1>Dont't Have An Account?</h1>
-    <a href="{% url 'account_signup' %}" class="btn-primary">SignUP!</a>
+    <a href="{% url 'account_signup' %}" class="btn">SignUP!</a>
 </div>
 <div class="box"></div>
 {% endblock %}

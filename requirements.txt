@@ -9,5 +9,6 @@ psycopg2-binary
 dotenv
 cryptography
 Pillow
+django-extensions
+pydot
 dj-database-url
-psycopg2-binary
