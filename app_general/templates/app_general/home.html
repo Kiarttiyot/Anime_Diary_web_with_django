@@ -4,20 +4,21 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'app_general/feed.css' %}">
 {% if user.is_authenticated %}
+<div class="mode">
     <h3>โพสต์จากทุกคน</h3>
+    <h1 style="color: red;">kuy พวกอู้งาน ไปทำงานไอพวกแรงงานทาส สวะ!</h1>
     {% for post in all_posts %}
- 
-        <div class="feed">
-        <h1> <strong>{{ post.user.username }}</strong><br></h1>
-            {% if post.content %}
-                <p>{{ post.content }}</p>
-            {% endif %}
-            {% if post.image %}
-                <img src="{{ post.image.url }}" alt="Post Image" >
-            {% endif %}
-            
+    <div class="feed">
+        <strong>{{ post.user.username }}</strong><br>
+        {% if post.content %}
+            <p>{{ post.content }}</p>
+        {% endif %}
+        {% if post.image %}
+            <img src="{{ post.image.url }}" alt="Post Image" style="width:670px;">
+        {% endif %}
+        <small>{{ post.created_at }}</small>
 
-            <div class="comments">
+        <div class="comments">
 
             <h4 >Comments:</h4>
             {% for comment in post.comments.all %}
@@ -32,12 +33,12 @@
                 <input type="text" name="content" placeholder="Add a comment..." required>
                 <button type="submit">Comment</button>
             </form>
-            </div>
         </div>
-        {% empty %}
-            <p>ยังไม่มีโพสต์</p>
-        {% endfor %}
     </div>
+    {% empty %}
+        <p>ยังไม่มีโพสต์</p>
+    {% endfor %}
+</div>    
 {% else %}
     <link rel="stylesheet" href="{% static 'app_general/home.css' %}">
 
@@ -77,8 +78,9 @@
 
 <!-- Buttons -->
 <div class="action-buttons">
-    <button class="btn-register">REGISTER</button>
-    <button class="btn-login">Login</button>
+    <a href="{% url 'account_signup' %}"><button class="btn-register">REGISTER</button></a>
+    <a href="{% url 'account_login' %}"><button class="btn-login">LOGIN</button></a>
+    
 </div>
 
 <!-- Footer -->
