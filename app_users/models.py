@@ -50,3 +50,4 @@ class Like(models.Model):
 
     class Meta:
         unique_together = ("post", "user")  # 1 user กด like ได้ครั้งเดียว
+
