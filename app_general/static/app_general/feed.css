@@ -310,14 +310,21 @@ body {
   line-height: 1;
 }
 .modal-body { 
-    padding: 20px 22px 24px; 
+    padding: 20px 22px 24px;
 }
 .modal-image {
-  width: 100%; 
-  max-height: 60vh; 
-  object-fit: contain; 
-  border-radius: 12px;
-  background: #f6f6f6;
+    width: 400px;        /* กำหนดความกว้างคงที่ */
+    height: 350px;       /* กำหนดความสูงคงที่ */
+    overflow: hidden;    /* ซ่อนส่วนเกิน */
+    border-radius: 10px; /* มุมโค้งนิดหน่อย */
+    flex-shrink: 0;      /* ไม่ให้ถูกบีบเล็กลง */
+}
+
+.modal-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;   /* ครอบรูปให้พอดีกับกรอบ ไม่บีบ */
+    display: block;
 }
 .modal-content { 
     white-space: pre-wrap; 
@@ -326,4 +333,28 @@ body {
 /* ป้องกันหน้าหลังกระตุกตอนล็อกสกอร์ล */
 html.modal-lock, body.modal-lock { 
     overflow: hidden; 
+}
+.comments-only {
+    flex: 1;
+    width: 400px;
+    height: 250px;   /* จำกัดความสูง */
+    overflow-y: auto;    /* มี scrollbar */
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 6px;
+    background: #ffffff;
+    margin-bottom: 10px;
+    border: none;
+}
+.image-comments{
+    display: flex;
+    gap: 20px;
+}
+.comments-box h4{
+    margin: 0;
+    margin-bottom: 5px;
+}
+.comment-form{
+    padding-left: 90px;
+    margin-top: 20px;
 }

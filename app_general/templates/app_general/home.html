@@ -42,32 +42,41 @@
 
         <div class="modal-body">
             <h3 id="modal-title-{{ post.id }}">{{ post.user.username }}</h3>
-            <small class="created">{{ post.created_at|date:"Y-m-d H:i" }}</small>
-
-            {% if post.image %}
-            <img class="modal-image" src="{{ post.image.url }}" alt="Post Image" >
-            {% endif %}
-
             {% if post.content %}
             <p class="modal-content">{{ post.content }}</p>
             {% endif %}
             
-            <h4>Comments</h4>
-            <div class="comments">
-            {% for comment in post.comments.all %}
-                <div class="comment">
-                <strong>{{ comment.user.username }}:</strong> {{ comment.content }}
-                </div>
-            {% empty %}
-                <p>ยังไม่มีคอมเมนต์</p>
-            {% endfor %}
-            </div>
+            <div class="image-comments">
 
-            <form class="comment-form" method="post" action="{% url 'add_comment' post.id %}">
-            {% csrf_token %}
-            <input type="text" name="content" placeholder="Add a comment..." required>
-            <button type="submit" class="btn">Comment</button>
-            </form>
+              <div class="image-box">
+                {% if post.image %}
+                <img class="modal-image" src="{{ post.image.url }}" alt="Post Image" >
+                {% endif %}
+              </div>
+
+              <div class="comments-box">
+                <h4>Comments</h4>
+                <div class="comments-only">
+
+                  <div class="comments">
+                  {% for comment in post.comments.all %}
+                      <div class="comment">
+                      <strong>{{ comment.user.username }}:</strong> {{ comment.content }}
+                      </div>
+                  {% empty %}
+                      <p>ยังไม่มีคอมเมนต์</p>
+                  {% endfor %}
+                  </div>
+                </div>
+              
+                <form class="comment-form" method="post" action="{% url 'add_comment' post.id %}">
+                {% csrf_token %}
+                <input type="text" name="content" placeholder="Add a comment..." required>
+                <button type="submit" class="btn">Comment</button>
+                </form>
+              </div>
+
+            </div>
         </div>
     </div>
   </div>
