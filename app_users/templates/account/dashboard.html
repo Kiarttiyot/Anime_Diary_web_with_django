@@ -90,55 +90,57 @@
     <!-- Posts Grid -->
     <div class="posts-grid">
         {% for post in posts %}
-        <div class="post-item" onclick="openPostPopup('{{ post.pk }}')">
-            <!-- Post Image -->
-            {% if post.image %}
-                <img src="{{ post.image.url }}" alt="Post" style="max-width:300px;">
-            {% endif %}
-            
-            <div style="padding: 5px;"></div>
-            <div class="post-tex">
-                <!-- Post Meta (Likes & Comments) -->
-                <div class="post-meta">
-                    <span class="like-btn" onclick="toggleLike('{{ post.pk }}', event)">
-                        {% if post.is_liked %}
-                            <i class="fa-solid fa-heart" style="color:red;"></i>
-                        {% else %}
-                            <i class="fa-regular fa-heart"></i>
-                        {% endif %}
-                        <span id="like-count-{{ post.pk }}">{{ post.likes.count }}</span>
-                    </span>
-                    <span style="padding: 10px;"></span>
-                    <span><i class="fa-regular fa-comment"></i> {{ post.comments.count }}</span>
-                </div>
-
-                <!-- Post State -->
-                {% if post.state %}
-                    <div class="post-state">
-                        <p>{{ post.state }}</p>
-                    </div>
+        <div class="post-item">
+            <a href="{% url 'post_detail' post.pk %}" class="post-link">
+                <!-- Post Image -->
+                {% if post.image %}
+                    <img src="{{ post.image.url }}" alt="Post" style="max-width:300px;">
                 {% endif %}
-
-                <!-- Rating -->
-                <div class="rating" aria-label="คะแนน {{ post.score }}/10">
-                    {% for _ in "12345" %}
-                        {% with threshold=forloop.counter|add:forloop.counter %}
-                        {% with half=threshold|add:"-1" %}
-                            {% if post.score >= threshold %}
-                                <i class="fa-solid fa-star" style="color: rgb(201, 25, 113);"></i>
-                            {% elif post.score == half %}
-                                <i class="fa-solid fa-star-half-stroke" style="color: rgb(201, 25, 113);"></i>
+                
+                <div style="padding: 5px;"></div>
+                <div class="post-tex">
+                    <!-- Post Meta (Likes & Comments) -->
+                    <div class="post-meta">
+                        <span class="like-btn" onclick="toggleLike('{{ post.pk }}', event)">
+                            {% if post.is_liked %}
+                                <i class="fa-solid fa-heart" style="color:red;"></i>
                             {% else %}
-                                <i class="fa-regular fa-star" style="color: rgb(201, 25, 113);"></i>
+                                <i class="fa-regular fa-heart"></i>
                             {% endif %}
-                        {% endwith %}
-                        {% endwith %}
-                    {% endfor %}
-                    <span class="rating-text">{{ post.score }}/10</span>
-                </div>
+                            <span id="like-count-{{ post.pk }}">{{ post.likes.count }}</span>
+                        </span>
+                        <span style="padding: 10px;"></span>
+                        <span><i class="fa-regular fa-comment"></i> {{ post.comments.count }}</span>
+                    </div>
 
-                <small>{{ post.created_at }}</small>
-            </div>
+                    <!-- Post State -->
+                    {% if post.state %}
+                        <div class="post-state">
+                            <p>{{ post.state }}</p>
+                        </div>
+                    {% endif %}
+
+                    <!-- Rating -->
+                    <div class="rating" aria-label="คะแนน {{ post.score }}/10">
+                        {% for _ in "12345" %}
+                            {% with threshold=forloop.counter|add:forloop.counter %}
+                            {% with half=threshold|add:"-1" %}
+                                {% if post.score >= threshold %}
+                                    <i class="fa-solid fa-star" style="color: rgb(255, 219, 14);"></i>
+                                {% elif post.score == half %}
+                                    <i class="fa-solid fa-star-half-stroke" style="color: rgb(255, 219, 14);"></i>
+                                {% else %}
+                                    <i class="fa-regular fa-star" style="color: rgb(184, 184, 184);"></i>
+                                {% endif %}
+                            {% endwith %}
+                            {% endwith %}
+                        {% endfor %}
+                        <span class="rating-text">{{ post.score }}/10</span>
+                    </div>
+
+                    <small>{{ post.created_at }}</small>
+                </div>
+            </a>
         </div>  
         {% empty %}
             <p>ยังไม่มีโพสต์</p>
