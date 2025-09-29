@@ -5,7 +5,8 @@
 </head>
 <header class="top-header">
     <a href="{% url 'home' %}" class="menu-logo">
-        <span class="logoA">Anime</span><span class="logoD">Diary</span>
+        <img src="{% static 'app_general/logostar.png' %}" alt="Logo" class="logo-image">
+        <!-- <span class="logoA">Anime</span><span class="logoD">Diary</span> -->
     </a>
     <!-- <a href="{% url 'home'%}" class="menu-items">Home</a> -->
     <!-- <a href="{% url 'myanimes'%}" class="menu-items">MyDiary</a>
@@ -19,7 +20,7 @@
           <img src="{% static 'app_general/search.png' %}" alt="Search">
         </button>
     </form>
-    <a href="{% url 'dashboard' %}" class="user-icon">
+    <a href="{% url 'dashboard' %}" class="menu-items">
         <img src="{% static 'app_general/person.png' %}" alt="User Profile">
     </a>
     
