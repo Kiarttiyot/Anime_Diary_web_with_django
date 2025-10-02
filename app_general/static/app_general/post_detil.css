@@ -18,7 +18,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 10px
 }
 
 .post-header h4 {
@@ -58,6 +58,10 @@
 
 .post-content {
     margin-bottom: 10px;
+    word-wrap: break-word;      /* บังคับให้คำยาว ๆ แตก */
+    overflow-wrap: break-word;  /* รองรับเบราว์เซอร์ใหม่ */
+    white-space: normal;      
+
 }
 
 .post-state {
