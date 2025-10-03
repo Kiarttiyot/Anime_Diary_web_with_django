@@ -11,7 +11,7 @@
     <!-- <a href="{% url 'myanimes'%}" class="menu-items">MyDiary</a>
     <a href="{% url 'about'%}" class="menu-items">About</a> -->
   {% if user.is_authenticated %}
-
+    
     <form class="search-form" action="{% url 'friend' %}" method="post">
       {% csrf_token %} 
       <input type="text" class="search-input" name="name_friend" placeholder="search...">

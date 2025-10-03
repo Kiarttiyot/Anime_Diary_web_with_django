@@ -13,8 +13,8 @@ from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
-from .models import Post, Like
-
+from .models import Post, Like,Follow
+from django.views.decorators.http import require_POST
 @login_required
 def dashboard(request: HttpRequest):
     return render(request,"account/dashboard.html")
@@ -22,7 +22,7 @@ def dashboard(request: HttpRequest):
 @login_required
 def dashboard(request: HttpRequest):
     return render(request,"account/dashboard.html")
-
+@login_required
 def search_user(request):
     q = request.GET.get("q")
     if q:
@@ -38,7 +38,7 @@ def dashboard_view(request, username):
     # เอา user ที่เราต้องการแสดง ไม่ใช่ request.user
     profile_user = get_object_or_404(User, username=username)
     posts = Post.objects.filter(user=profile_user, is_archived=False).order_by('-created_at') 
-    return render(request, "account/dashboard.html", {"user_profile": profile_user,"posts": posts})
+    return render(request, "account/dashboard.html", {"profile_user": profile_user,"posts": posts})
 
 @login_required
 def profile(request:HttpRequest):
@@ -82,6 +82,9 @@ def dashboard(request, username=None):
     # ดึงโพสต์ของ user
     posts = Post.objects.filter(user=profile_user, is_archived=False).order_by('-created_at')
 
+    # 1. ดึงจำนวนผู้ติดตามและกำลังติดตาม
+    followers_count = profile_user.followers.count()
+    following_count = profile_user.following.count()
     form = None
     if profile_user == request.user:  # เฉพาะของตัวเอง
         if request.method == "POST":
@@ -90,7 +93,7 @@ def dashboard(request, username=None):
                 new_post = form.save(commit=False)
                 new_post.user = request.user
                 new_post.save()
-                return redirect("my_dashboard")  # กลับมาหน้า dashboard ตัวเอง
+                return redirect("dashboard")  # กลับมาหน้า dashboard ตัวเอง
         else:
             form = PostForm()
     for post in posts:
@@ -100,6 +103,9 @@ def dashboard(request, username=None):
         "profile_user": profile_user,
         "posts": posts,
         "form": form,
+        # 2. ส่งค่าจำนวนผู้ติดตาม/กำลังติดตามไปยัง Template
+        'followers_count': followers_count,
+        'following_count': following_count,
     })
 
 @login_required
@@ -169,3 +175,93 @@ def toggle_like(request, post_id):
             "like_count": post.likes.count()
         })
     return JsonResponse({"error": "Invalid request"}, status=400)
+
+@login_required
+def follow_toggle(request, username):
+    target_user = get_object_or_404(User, username=username)
+
+    if request.method != "POST":
+        # เปิดด้วย GET ก็พากลับไปหน้าโปรไฟล์ของเค้าแทน
+        return redirect('dashboard', username=target_user.username)
+
+    rel, created = Follow.objects.get_or_create(
+        follower=request.user,
+        following=target_user
+    )
+    if not created:
+        rel.delete()
+        action = 'unfollowed'
+        messages.info(request, f"คุณเลิกติดตาม {username} แล้ว")
+    else:
+        action = 'followed'
+        messages.success(request, f"คุณเริ่มติดตาม {username} แล้ว")
+
+    # ถ้าเป็น AJAX ให้ตอบ JSON เพื่ออัปเดตปุ่ม/ตัวเลขบนหน้า
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse({
+            'ok': True,
+            'action': action,
+            'followers_count': target_user.followers.count()
+        })
+
+    # ไม่ใช่ AJAX → กลับหน้าที่มาก่อน, ถ้าไม่มี referer ให้ตกไปหน้าโปรไฟล์ของ target
+    return redirect(request.META.get('HTTP_REFERER') or
+                    reverse('dashboard', kwargs={'username': target_user.username}))
+
+@login_required
+def follower_list(request, username):
+    user = get_object_or_404(User, username=username)
+    followers = []
+    
+    for follow_obj in user.followers.select_related('follower').all():
+        follower_user = follow_obj.follower
+        
+        # *** FIX: กรอง User ที่ไม่มี username ออกไป ***
+        if not follower_user.username:
+            continue
+            
+        # FIX: คำนวณสถานะ is_following และส่งเป็น List of Dicts
+        is_following_current_user = Follow.objects.filter(
+            follower=request.user, 
+            following=follower_user
+        ).exists() if request.user.is_authenticated and request.user != follower_user else False
+        
+        followers.append({
+            'user': follower_user,
+            'is_following': is_following_current_user
+        })
+    
+    return render(request, "account/follow_list.html", {
+        "profile_user": user,
+        "user_list": followers,
+        "list_type": "ผู้ติดตาม"
+    })
+
+@login_required
+def following_list(request, username):
+    user = get_object_or_404(User, username=username)
+    following = []
+
+    for follow_obj in user.following.select_related('following').all():
+        following_user = follow_obj.following
+        
+        # *** FIX: กรอง User ที่ไม่มี username ออกไป ***
+        if not following_user.username:
+            continue
+            
+        # FIX: คำนวณสถานะ is_following และส่งเป็น List of Dicts
+        is_following_current_user = Follow.objects.filter(
+            follower=request.user, 
+            following=following_user
+        ).exists() if request.user.is_authenticated and request.user != following_user else False
+        
+        following.append({
+            'user': following_user,
+            'is_following': is_following_current_user
+        })
+
+    return render(request, "account/follow_list.html", {
+        "profile_user": user,
+        "user_list": following,
+        "list_type": "กำลังติดตาม"
+    })

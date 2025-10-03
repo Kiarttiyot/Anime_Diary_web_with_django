@@ -3,93 +3,11 @@
 
 {% block content %}
 <link rel="stylesheet" href="{% static 'app_general/dashboard.css' %}">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
 
-<div class="dashboard">
-
-  <!-- Header -->
-  <div class="profile-header">
-    {% if profile_user.profile and profile_user.profile.profile_image %}
-      <img src="{{ profile_user.profile.profile_image.url }}" alt="Profile Picture" class="profile-pic">
-    {% else %}
-      <img src="{% static 'app_general/default-avatar.png' %}" alt="Profile Picture" class="profile-pic">
-    {% endif %}
-
-    <div class="profile-info">
-      <h2>Dashboard: {{ profile_user.username }}</h2>
-
-      {% if query %}
-        <p class="muted">มาจากการค้นหา: "{{ query }}"</p>
-      {% endif %}
-
-      {% if profile_user.profile and profile_user.profile.address %}
-        <p>{{ profile_user.profile.address }}</p>
-      {% endif %}
-
-      <div class="stats">
-        <span><b>{{ posts|length }}</b> posts</span>
-      </div>
-    </div>
-
-    {% if request.user == profile_user %}
-      <div class="btn-group" style="display:flex; gap:8px;">
-        <a href="{% url 'create_post' %}" class="btn">
-          <img src="{% static 'app_general/plus.png' %}" alt="สร้างโพสต์" style="width:25px;height:25px;vertical-align:middle;">
-          <span style="margin-left:6px;">สร้างโพสต์</span>
-        </a>
-        <a href="{% url 'profile' %}" class="btn">edit profile</a>
-      </div>
-    {% endif %}
-  </div>
-
-  <hr>
-
-  <!-- Posts Grid -->
-  <div class="posts-grid">
-    {% for post in posts %}
-      <a href="{% url 'post_detail' post.pk %}" class="post-link">
-        <div class="post-item">
-          {% if post.name %}
-            <h4>{{ post.name }}</h4>
-          {% endif %}
-
-          {% if post.image %}
-            <img src="{{ post.image.url }}" alt="Post" style="max-width:300px;">
-          {% endif %}
-
-          <div style="padding: 10px;"></div>
-
-          {% if post.state %}
-            <p>สถานะ: {{ post.state }}</p>
-          {% endif %}
-
-          {% if post.score is not None %}
-          <div class="rating" aria-label="คะแนน {{ post.score }}/10">
-            {# แปลงคะแนน 0–10 เป็นดาว 0–5 (รองรับครึ่งดาวที่ 1,3,5,7,9) #}
-            {% for _ in "12345" %}
-              {% with threshold=forloop.counter|add:forloop.counter %}
-              {% with half=threshold|add:"-1" %}
-                {% if post.score >= threshold %}
-                  <i class="fa-solid fa-star"></i>
-                {% elif post.score == half %}
-                  <i class="fa-solid fa-star-half-stroke"></i>
-                {% else %}
-                  <i class="fa-regular fa-star"></i>
-                {% endif %}
-              {% endwith %}
-              {% endwith %}
-            {% endfor %}
-            <span class="rating-text">{{ post.score }}/10</span>
-          </div>
-          {% endif %}
-
-          <small>{{ post.created_at|date:"Y-m-d H:i" }}</small>
-        </div>
-      </a>
-    {% empty %}
-      <p>ยังไม่มีโพสต์</p>
-    {% endfor %}
-  </div>
-
+<div class="not-found" style="text-align:center; padding:50px;">
+  <img src="{% static 'app_general/user-not-found.png' %}" alt="Not Found" style="width:120px; opacity:0.7;">
+  <h2 style="margin-top:20px; color:#444;">หาผู้ใช้นี้ไม่เจอ</h2>
+  <p style="color:#777;">กรุณาตรวจสอบชื่อผู้ใช้อีกครั้ง</p>
 </div>
+
 {% endblock %}

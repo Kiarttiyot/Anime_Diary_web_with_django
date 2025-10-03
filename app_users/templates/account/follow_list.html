@@ -1,0 +1,64 @@
+{% extends 'app_general/components/base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'app_general/dashboard.css' %}">
+<div class="follow-list-container">
+    <h2>{{ list_type }} ของ {{ profile_user.username }}</h2>
+    <hr>
+    
+    <div class="user-list">
+        {% for item in user_list %}
+        <div class="user-item">
+            {% if item.user.username %}
+                <a href="{% url 'dashboard' username=item.user.username %}" class="user-link">
+                    {% if item.user.profile.profile_image %}
+                        <img src="{{ item.user.profile.profile_image.url }}" alt="Profile Picture" class="profile-thumb">
+                    {% else %}
+                        <img src="{% static 'app_general/default-avatar.png' %}" alt="Default Picture" class="profile-thumb">
+                    {% endif %}
+                    <div class="user-info">
+                        <strong>@{{ item.user.username }}</strong>
+                        <small>{{ item.user.first_name }} {{ item.user.last_name }}</small>
+                    </div>
+                </a>
+            {% else %}
+                <span class="user-link">
+                    <img src="{% static 'app_general/default-avatar.png' %}" alt="Default Picture" class="profile-thumb">
+                    <div class="user-info">
+                        <strong>(ผู้ใช้ไม่ระบุชื่อ)</strong>
+                    </div>
+                </span>
+            {% endif %}
+            
+            {% if request.user.is_authenticated and request.user != item.user and item.user.username %}
+                <form method="POST" action="{% url 'follow_toggle' username=item.user.username %}" class="ms-auto">
+                    {% csrf_token %}
+                    {% if item.is_following %}
+                        <button type="submit" class="btn btn-sm btn-danger">เลิกติดตาม</button>
+                    {% else %}
+                        <button type="submit" class="btn btn-sm btn-primary">ติดตาม</button>
+                    {% endif %}
+                </form>
+            {% endif %}
+        </div>
+        {% empty %}
+            <p>ยังไม่มีผู้ใช้ในรายการ <strong>{{ list_type }}</strong> นี้</p>
+        {% endfor %}
+    </div>
+
+    <div style="margin-top:20px;">
+            <a href="{% url 'dashboard' %}">← กลับไปหน้าโปรไฟล์</a>
+    </div>
+</div>
+
+<style>
+.follow-list-container { max-width: 600px; margin: 40px auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;}
+.user-item { display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee;}
+.user-item:last-child { border-bottom: none; }
+.user-link { text-decoration: none; color: inherit; display: flex; align-items: center; flex-grow: 1; }
+.profile-thumb { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin-right: 15px;}
+.user-info { margin-left: 0; display: flex; flex-direction: column;}
+.ms-auto { margin-left: auto; }
+</style>
+{% endblock %}

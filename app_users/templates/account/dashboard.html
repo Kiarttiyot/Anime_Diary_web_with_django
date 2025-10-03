@@ -23,8 +23,16 @@
                 <p>{{ profile_user.profile.address }}</p>
             {% endif %}
 
-            <div class="stats">
-                <span><b>{{ posts.count }}</b> posts</span>
+           <div class="stats">
+                <span><b>{{ posts|length }}</b> posts</span>
+        
+                <a href="{% url 'follower_list' username=profile_user.username %}" class="link-unstyled" style="text-decoration:none; color:inherit;">
+                    <span class="ms-3"><b>{{ followers_count }}</b> ผู้ติดตาม</span>
+                </a>
+        
+                <a href="{% url 'following_list' username=profile_user.username %}" class="link-unstyled" style="text-decoration:none; color:inherit;">
+                    <span class="ms-3"><b>{{ following_count }}</b> กำลังติดตาม</span>
+                </a>
             </div>
         </div>
         <div class="profile-actions">

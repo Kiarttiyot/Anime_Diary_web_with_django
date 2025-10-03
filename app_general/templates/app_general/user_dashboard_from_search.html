@@ -7,7 +7,6 @@
 
 <div class="dashboard">
 
-  <!-- Header -->
   <div class="profile-header">
     {% if profile_user.profile and profile_user.profile.profile_image %}
       <img src="{{ profile_user.profile.profile_image.url }}" alt="Profile Picture" class="profile-pic">
@@ -27,24 +26,45 @@
       {% endif %}
 
       <div class="stats">
-        <span><b>{{ posts|length }}</b> posts</span>
+                <span><b>{{ posts|length }}</b> posts</span>
+        
+                <a href="{% url 'follower_list' username=profile_user.username %}" class="link-unstyled" style="text-decoration:none; color:inherit;">
+                    <span class="ms-3"><b>{{ followers_count }}</b> ผู้ติดตาม</span>
+                </a>
+        
+                <a href="{% url 'following_list' username=profile_user.username %}" class="link-unstyled" style="text-decoration:none; color:inherit;">
+                    <span class="ms-3"><b>{{ following_count }}</b> กำลังติดตาม</span>
+                </a>
       </div>
+      
+      {% if request.user.is_authenticated and request.user != profile_user %}
+        <form method="post" action="{% url 'follow_toggle' username=profile_user.username %}" class="ms-auto">
+          {% csrf_token %}
+          {% if is_following == True %}
+            <button type="submit" class="btn btn-sm btn-danger">เลิกติดตาม</button>
+          {% else %}
+            <button type="submit" class="btn btn-sm btn-primary">ติดตาม</button>
+          {% endif %}
+        </form>
+      {% endif %}
+
     </div>
 
-    {% if request.user == profile_user %}
-      <div class="btn-group" style="display:flex; gap:8px;">
-        <a href="{% url 'create_post' %}" class="btn">
-          <img src="{% static 'app_general/plus.png' %}" alt="สร้างโพสต์" style="width:25px;height:25px;vertical-align:middle;">
-          <span style="margin-left:6px;">สร้างโพสต์</span>
-        </a>
-        <a href="{% url 'profile' %}" class="btn">edit profile</a>
-      </div>
-    {% endif %}
-  </div>
+    </div>
+
+  {% if request.user == profile_user %}
+    <div class="btn-group profile-actions-group">
+      <a href="{% url 'create_post' %}" class="btn">
+        <img src="{% static 'app_general/plus.png' %}" alt="สร้างโพสต์" style="width:25px;height:25px;vertical-align:middle;">
+        <span style="margin-left:6px;">สร้างโพสต์</span>
+      </a>
+      <a href="{% url 'profile' %}" class="btn">edit profile</a>
+      <a href="{% url 'archive_list' %}" class="btn">Archive</a> 
+    </div>
+  {% endif %}
 
   <hr>
 
-  <!-- Posts Grid -->
   <div class="posts-grid">
     {% for post in posts %}
       <a href="{% url 'post_detail' post.pk %}" class="post-link">
