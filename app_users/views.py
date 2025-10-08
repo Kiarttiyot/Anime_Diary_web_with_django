@@ -169,3 +169,6 @@ def toggle_like(request, post_id):
             "like_count": post.likes.count()
         })
     return JsonResponse({"error": "Invalid request"}, status=400)
+
+def test(request):
+    return render(request, "account/test.html")

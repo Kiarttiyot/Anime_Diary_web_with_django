@@ -18,4 +18,5 @@ urlpatterns = [
     path("post/<int:pk>/unarchive/", views.post_unarchive, name="post_unarchive"),
     path('post/<int:pk>/like/', views.toggle_like, name='toggle_like'),
     path('toggle-like/<int:post_id>/', views.toggle_like, name='toggle_like'),
+    path('test/', views.test, name='test'),
 ]

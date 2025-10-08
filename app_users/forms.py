@@ -4,7 +4,22 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from app_users.models import Profile
 from .models import Post, Comment
+# from django.contrib.auth.forms import AuthenticationForm
 
+# class CustomLoginForm(AuthenticationForm):
+#     username = forms.CharField(
+#         widget=forms.TextInput(attrs={
+#             'class': 'form-input',
+#             'placeholder': 'm@example.com',
+#             'id': 'loginEmail'
+#         })
+#     )
+#     passworde = forms.CharField(
+#         widget=forms.PasswordInput(attrs={
+#             'class': 'form-input',
+#             'id': 'loginPassword'
+#         })
+#     )
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = User
