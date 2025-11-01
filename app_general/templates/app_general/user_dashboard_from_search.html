@@ -6,8 +6,6 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
 
 <div class="dashboard">
-
-  <!-- Header -->
   <div class="profile-header">
     {% if profile_user.profile and profile_user.profile.profile_image %}
       <img src="{{ profile_user.profile.profile_image.url }}" alt="Profile Picture" class="profile-pic">
@@ -26,33 +24,61 @@
         <p>{{ profile_user.profile.address }}</p>
       {% endif %}
 
-      <div class="stats">
+      <div class="stats" id="stats">
         <span><b>{{ posts|length }}</b> posts</span>
-      </div>
-    </div>
 
-    {% if request.user == profile_user %}
-      <div class="btn-group" style="display:flex; gap:8px;">
-        <a href="{% url 'create_post' %}" class="btn">
-          <img src="{% static 'app_general/plus.png' %}" alt="สร้างโพสต์" style="width:25px;height:25px;vertical-align:middle;">
-          <span style="margin-left:6px;">สร้างโพสต์</span>
+        <a href="{% url 'follower_list' username=profile_user.username %}" class="link-unstyled" style="text-decoration:none; color:inherit;">
+          <span class="ms-3"><b id="followers-count">{{ followers_count }}</b> ผู้ติดตาม</span>
         </a>
-        <a href="{% url 'profile' %}" class="btn">edit profile</a>
+
+        <a href="{% url 'following_list' username=profile_user.username %}" class="link-unstyled" style="text-decoration:none; color:inherit;">
+          <span class="ms-3"><b id="following-count">{{ following_count }}</b> กำลังติดตาม</span>
+        </a>
       </div>
-    {% endif %}
+
+      {% if request.user.is_authenticated %}
+        {% if request.user == profile_user %}
+          <!-- ✅ ถ้าเป็นผู้ใช้ตัวเอง ให้แสดงปุ่ม Dashboard เต็ม -->
+          <div class="profile-actions">
+                <span><a href="{% url 'profile' %}">
+                    <button class="btn">Edit profile</button>
+                </a></span>
+                <span><a href="{% url 'archive_list' %}">
+                    <button class="btn">Archive</button>
+                </a></span>
+                </a>
+                <a href="{% url 'create_post' %}" class="btn">
+                    <img src="{% static 'app_general/plus.png' %}" alt="สร้างโพสต์" style="width:20px;height:20px;">
+                </a>      
+        </div>
+        {% else %}
+          <!-- ✅ ถ้าเป็นผู้อื่น แสดงปุ่มติดตาม -->
+          {% csrf_token %}
+          <button
+            id="follow-btn"
+            class="btn btn-sm {% if is_following %}btn-danger{% else %}btn-primary{% endif %}"
+            data-url="{% url 'follow_toggle' username=profile_user.username %}">
+            {% if is_following %}เลิกติดตาม{% else %}ติดตาม{% endif %}
+          </button>
+        {% endif %}
+      {% endif %}
+    </div>
   </div>
 
   <hr>
 
-  <!-- Posts Grid -->
   <div class="posts-grid">
     {% for post in posts %}
       <a href="{% url 'post_detail' post.pk %}" class="post-link">
         <div class="post-item">
           {% if post.name %}<h4>{{ post.name }}</h4>{% endif %}
-          {% if post.image %}<img src="{{ post.image.url }}" alt="Post" style="max-width:300px;">{% endif %}
+          {% if post.image %}
+            <img src="{{ post.image.url }}" alt="Post" style="max-width:300px;">
+          {% endif %}
           <div style="padding:10px;"></div>
-          {% if post.state %}<p>สถานะ: {{ post.state }}</p>{% endif %}
+          {% if post.state %}
+            <p>สถานะ: {{ post.state }}</p>
+          {% endif %}
 
           {% if post.score is not None %}
           <div class="rating" aria-label="คะแนน {{ post.score }}/10">
@@ -80,8 +106,48 @@
     {% endfor %}
   </div>
 
-  <div style="margin-top:16px;">
-    <a href="{% url 'friend' %}">← กลับไปหน้าค้นหา</a>
-  </div>
+  <div style="margin-top:16px;"></div>
 </div>
+
+<!-- ✅ AJAX สำหรับ follow toggle -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const followBtn = document.getElementById("follow-btn");
+  const followersCountEl = document.getElementById("followers-count");
+  const followingCountEl = document.getElementById("following-count");
+
+  if (!followBtn) return;
+
+  followBtn.addEventListener("click", async () => {
+    const url = followBtn.dataset.url;
+    const csrftoken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "X-CSRFToken": csrftoken,
+          "X-Requested-With": "XMLHttpRequest"
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+
+        // ✅ เปลี่ยนข้อความปุ่ม
+        followBtn.textContent = data.is_following ? "เลิกติดตาม" : "ติดตาม";
+        followBtn.className = data.is_following ? "btn btn-sm btn-danger" : "btn btn-sm btn-primary";
+
+        // ✅ อัปเดตจำนวนผู้ติดตาม / กำลังติดตาม
+        if (followersCountEl) followersCountEl.textContent = data.followers_count;
+        if (followingCountEl) followingCountEl.textContent = data.following_count;
+      } else {
+        console.error("Follow toggle failed:", response.status);
+      }
+    } catch (err) {
+      console.error("Network error:", err);
+    }
+  });
+});
+</script>
 {% endblock %}

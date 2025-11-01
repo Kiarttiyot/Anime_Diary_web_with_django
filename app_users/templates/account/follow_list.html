@@ -1,0 +1,82 @@
+{% extends 'app_general/components/base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'app_general/dashboard.css' %}">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
+<div class="follow-list-container" style="max-width:800px; margin:40px auto;">
+  <h2 style="text-align:center;">
+    {% if list_type == "ผู้ติดตาม" %}
+      👥 รายชื่อผู้ติดตามของ {{ profile_user.username }}
+    {% else %}
+      ➡️ รายชื่อที่ {{ profile_user.username }} กำลังติดตาม
+    {% endif %}
+  </h2>
+  <hr>
+
+  {% if user_list %}
+    {% csrf_token %}
+    <ul class="follow-list" style="list-style:none; padding:0;">
+      {% for item in user_list %}
+        <li style="display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid #ddd;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            {% if item.user.profile and item.user.profile.profile_image %}
+              <img src="{{ item.user.profile.profile_image.url }}" alt="{{ item.user.username }}" class="profile-pic" style="width:50px; height:50px; border-radius:50%;">
+            {% else %}
+              <img src="{% static 'app_general/default-avatar.png' %}" alt="avatar" style="width:50px; height:50px; border-radius:50%;">
+            {% endif %}
+
+            <div>
+              <a href="{% url 'user_dashboard_from_search' username=item.user.username %}?q={{ item.user.username }}"
+                 style="text-decoration:none; color:#333; font-weight:bold;">
+                {{ item.user.username }}
+              </a>
+            </div>
+          </div>
+
+          {% if request.user.is_authenticated and request.user != item.user %}
+            <button
+              class="btn btn-sm {% if item.is_following %}btn-danger{% else %}btn-primary{% endif %}"
+              data-url="{% url 'follow_toggle' username=item.user.username %}"
+              onclick="toggleFollow(this)">
+              {% if item.is_following %}เลิกติดตาม{% else %}ติดตาม{% endif %}
+            </button>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p style="text-align:center; color:#666;">ยังไม่มีรายการ</p>
+  {% endif %}
+</div>
+
+<script>
+async function toggleFollow(button) {
+  const url = button.dataset.url;
+  const csrftoken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": csrftoken,
+        "X-Requested-With": "XMLHttpRequest"
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+
+      // ✅ เปลี่ยนปุ่มทันที
+      button.textContent = data.is_following ? "เลิกติดตาม" : "ติดตาม";
+      button.className = data.is_following ? "btn btn-sm btn-danger" : "btn btn-sm btn-primary";
+    } else {
+      console.error("Follow toggle failed:", response.status);
+    }
+  } catch (err) {
+    console.error("Network error:", err);
+  }
+}
+</script>
+{% endblock %}

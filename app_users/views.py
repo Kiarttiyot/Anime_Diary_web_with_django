@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.urls import reverse
+from django.urls import reverse, NoReverseMatch
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse,HttpResponseRedirect
 from django.contrib.auth.models import User
@@ -13,7 +13,11 @@ from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
-from .models import Post, Like
+from .models import Post, Like,Follow
+from django.views.decorators.http import require_POST
+from django.contrib import messages
+from urllib.parse import urlencode
+
 
 @login_required
 def dashboard(request: HttpRequest):
@@ -22,23 +26,24 @@ def dashboard(request: HttpRequest):
 @login_required
 def dashboard(request: HttpRequest):
     return render(request,"account/dashboard.html")
-
+@login_required
 def search_user(request):
     q = request.GET.get("q")
     if q:
         try:
             user_obj = User.objects.get(username=q)
-            return redirect("dashboard", username=user_obj.username)
+            base = reverse("user_dashboard_from_search", kwargs={"username": user_obj.username})
+            return redirect(f"{base}?{urlencode({'q': q})}")
         except User.DoesNotExist:
-            # ส่ง error message กลับไปหน้า home (หรือหน้าเดิม)
-            return render(request, "appgenral/home.html", {"error": "User not found"})
-    return redirect("home")  # ถ้าไม่ได้พิมพ์อะไรเลย
+            # กลับหน้า friend (not-found) ตามที่คุณตั้งไว้
+            return render(request, "friend.html", {"error": "User not found"})
+    return redirect("home")
 
 def dashboard_view(request, username):
     # เอา user ที่เราต้องการแสดง ไม่ใช่ request.user
     profile_user = get_object_or_404(User, username=username)
     posts = Post.objects.filter(user=profile_user, is_archived=False).order_by('-created_at') 
-    return render(request, "account/dashboard.html", {"user_profile": profile_user,"posts": posts})
+    return render(request, "account/dashboard.html", {"profile_user": profile_user,"posts": posts})
 
 @login_required
 def profile(request:HttpRequest):
@@ -74,25 +79,28 @@ def create_post(request):
 
 @login_required
 def dashboard(request, username=None):
-    if username:
-        profile_user = get_object_or_404(User, username=username)
-    else:
-        profile_user = request.user
+    # ✅ ถ้าไม่มี username (เช่นเข้าผ่าน /users/dashboard/)
+    if not username:
+        username = request.user.username
 
-    # ดึงโพสต์ของ user
+    profile_user = get_object_or_404(User, username=username)
     posts = Post.objects.filter(user=profile_user, is_archived=False).order_by('-created_at')
 
+    followers_count = profile_user.followers.count()
+    following_count = profile_user.following.count()
     form = None
-    if profile_user == request.user:  # เฉพาะของตัวเอง
+
+    if profile_user == request.user:
         if request.method == "POST":
             form = PostForm(request.POST, request.FILES)
             if form.is_valid():
                 new_post = form.save(commit=False)
                 new_post.user = request.user
                 new_post.save()
-                return redirect("my_dashboard")  # กลับมาหน้า dashboard ตัวเอง
+                return redirect("dashboard")
         else:
             form = PostForm()
+
     for post in posts:
         post.is_liked = post.likes.filter(user=request.user).exists()
 
@@ -100,7 +108,10 @@ def dashboard(request, username=None):
         "profile_user": profile_user,
         "posts": posts,
         "form": form,
+        "followers_count": followers_count,
+        "following_count": following_count,
     })
+
 
 @login_required
 def add_comment(request, post_id):
@@ -169,3 +180,113 @@ def toggle_like(request, post_id):
             "like_count": post.likes.count()
         })
     return JsonResponse({"error": "Invalid request"}, status=400)
+
+@login_required
+def user_dashboard_from_search(request, username):
+    profile_user = get_object_or_404(User, username=username)
+    posts = Post.objects.filter(user=profile_user, is_archived=False).order_by('-created_at')
+    followers_count = profile_user.followers.count()
+    following_count = profile_user.following.count()
+    query = request.GET.get("q") or request.POST.get("q") or ""
+
+    is_following = False
+    if request.user.is_authenticated and request.user != profile_user:
+        is_following = Follow.objects.filter(follower=request.user, following=profile_user).exists()
+
+    # ✅ ใช้ path เต็มที่ตรงกับโฟลเดอร์จริง
+    return render(request, "app_general/user_dashboard_from_search.html", {
+        "profile_user": profile_user,
+        "posts": posts,
+        "followers_count": followers_count,
+        "following_count": following_count,
+        "is_following": is_following,
+        "query": query,
+    })
+
+
+@require_POST
+@login_required
+def follow_toggle(request, username):
+    target = get_object_or_404(User, username=username)
+
+    if target == request.user:
+        return JsonResponse({"error": "ไม่สามารถติดตามตัวเองได้"}, status=400)
+
+    follow, created = Follow.objects.get_or_create(follower=request.user, following=target)
+
+    if not created:
+        # ถ้ามีอยู่แล้ว → เลิกติดตาม
+        follow.delete()
+        following = False
+    else:
+        following = True
+
+    # ✅ ส่งข้อมูลใหม่กลับไป
+    followers_count = Follow.objects.filter(following=target).count()
+    following_count = Follow.objects.filter(follower=target).count()
+
+    return JsonResponse({
+        "is_following": following,
+        "followers_count": followers_count,
+        "following_count": following_count,
+    })
+
+
+@login_required
+def follower_list(request, username):
+    user = get_object_or_404(User, username=username)
+    followers = []
+    
+    for follow_obj in user.followers.select_related('follower').all():
+        follower_user = follow_obj.follower
+        
+        # *** FIX: กรอง User ที่ไม่มี username ออกไป ***
+        if not follower_user.username:
+            continue
+            
+        # FIX: คำนวณสถานะ is_following และส่งเป็น List of Dicts
+        is_following_current_user = Follow.objects.filter(
+            follower=request.user, 
+            following=follower_user
+        ).exists() if request.user.is_authenticated and request.user != follower_user else False
+        
+        followers.append({
+            'user': follower_user,
+            'is_following': is_following_current_user
+        })
+    
+    return render(request, "account/follow_list.html", {
+        "profile_user": user,
+        "user_list": followers,
+        "list_type": "ผู้ติดตาม"
+    })
+
+@login_required
+def following_list(request, username):
+    user = get_object_or_404(User, username=username)
+    following = []
+
+    for follow_obj in user.following.select_related('following').all():
+        following_user = follow_obj.following
+        
+        # *** FIX: กรอง User ที่ไม่มี username ออกไป ***
+        if not following_user.username:
+            continue
+            
+        # FIX: คำนวณสถานะ is_following และส่งเป็น List of Dicts
+        is_following_current_user = Follow.objects.filter(
+            follower=request.user, 
+            following=following_user
+        ).exists() if request.user.is_authenticated and request.user != following_user else False
+        
+        following.append({
+            'user': following_user,
+            'is_following': is_following_current_user
+        })
+
+    return render(request, "account/follow_list.html", {
+        "profile_user": user,
+        "user_list": following,
+        "list_type": "กำลังติดตาม"
+    })
+    
