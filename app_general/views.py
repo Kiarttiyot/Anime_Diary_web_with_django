@@ -12,6 +12,9 @@ from app_users.models import Profile,Post,Follow
 from django.db.models import Q
 from django.contrib.auth import get_user_model
 from django.db.models import Prefetch
+from urllib.parse import urlencode
+from django.http import HttpResponseRedirect, QueryDict
+
 # Create your views here.
 def home(request):
     all_posts = Post.objects.all().order_by('-created_at')

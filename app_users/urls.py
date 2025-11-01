@@ -21,5 +21,5 @@ urlpatterns = [
     path('follow_toggle/<str:username>/', views.follow_toggle, name='follow_toggle'),
     path('<str:username>/followers/', views.follower_list, name='follower_list'),
     path('<str:username>/following/', views.following_list, name='following_list'),
-    
+    path("<str:username>/from-search/", views.user_dashboard_from_search, name="user_dashboard_from_search"),
 ]
