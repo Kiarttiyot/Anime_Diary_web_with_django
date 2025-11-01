@@ -274,7 +274,7 @@ body {
     cursor: zoom-in; 
 }
 
-/* Modal base */
+/* Modal base PopUp */
 .modal { 
     position: fixed; 
     inset: 0; 
@@ -312,6 +312,7 @@ body {
 .modal-body { 
     padding: 20px 22px 24px;
 }
+/* รูป popup */
 .modal-image {
     width: 400px;        /* กำหนดความกว้างคงที่ */
     height: 350px;       /* กำหนดความสูงคงที่ */

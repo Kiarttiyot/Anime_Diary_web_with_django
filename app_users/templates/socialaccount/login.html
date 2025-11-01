@@ -1,31 +1,51 @@
-{% load i18n %}
-{% load socialaccount %}
+{% load i18n socialaccount %}
 
 {% block content %}
 <div style="text-align:center; padding:40px;margin-top:150px">
-    <div class="bg-white p-8 rounded-2xl shadow-lg max-w-md w-full text-center">
-        
-        <h1 class="text-2xl font-bold text-gray-800 mb-4">
-            {% blocktrans with provider_name=account.get_provider.name %}
-                ลงชื่อเข้าใช้ผ่าน {{ provider_name }}
-            {% endblocktrans %}
-        </h1>
-        
-        <p class="text-gray-600 mb-6">
-            {% blocktrans with provider_name=account.get_provider.name site_name=site.name %}
-                คุณกำลังจะลงชื่อเข้าใช้โดยใช้บัญชีจาก {{ provider_name }}
-            {% endblocktrans %}
-        </p>
+  <div class="bg-white p-8 rounded-2xl shadow-lg max-w-md w-full text-center">
 
-        <form method="post">
-            {% csrf_token %}
-            <button type="submit" style="padding:10px 20px; background:#e74c3c; color:white; border:none; border-radius:5px;">
-                ดำเนินการต่อ
-            </button>
-            <a href="{% url 'account_login' %}"style="margin-left:10px;">
-            ยกเลิก
-        </a>
-        </form>
-    </div>
+    {% comment %} ดึงชื่อผู้ให้บริการแบบเผื่อทุกกรณี {% endcomment %}
+    {% if account %}
+      {% with provider_name=account.get_provider.name %}
+        <h1 class="text-2xl font-bold text-gray-800 mb-4">
+          {% blocktrans with provider_name=provider_name %}ลงชื่อเข้าใช้ผ่าน {{ provider_name }}{% endblocktrans %}
+        </h1>
+        <p class="text-gray-600 mb-6">
+          {% blocktrans with provider_name=provider_name site_name=site.name %}คุณกำลังจะลงชื่อเข้าใช้โดยใช้บัญชีจาก {{ provider_name }}{% endblocktrans %}
+        </p>
+      {% endwith %}
+    {% elif sociallogin %}
+      {% with provider_name=sociallogin.account.get_provider.name %}
+        <h1 class="text-2xl font-bold text-gray-800 mb-4">
+          {% blocktrans with provider_name=provider_name %}ลงชื่อเข้าใช้ผ่าน {{ provider_name }}{% endblocktrans %}
+        </h1>
+        <p class="text-gray-600 mb-6">
+          {% blocktrans with provider_name=provider_name site_name=site.name %}คุณกำลังจะลงชื่อเข้าใช้โดยใช้บัญชีจาก {{ provider_name }}{% endblocktrans %}
+        </p>
+      {% endwith %}
+    {% elif provider %}
+      {% with provider_name=provider.name %}
+        <h1 class="text-2xl font-bold text-gray-800 mb-4">
+          {% blocktrans with provider_name=provider_name %}ลงชื่อเข้าใช้ผ่าน {{ provider_name }}{% endblocktrans %}
+        </h1>
+        <p class="text-gray-600 mb-6">
+          {% blocktrans with provider_name=provider_name site_name=site.name %}คุณกำลังจะลงชื่อเข้าใช้โดยใช้บัญชีจาก {{ provider_name }}{% endblocktrans %}
+        </p>
+      {% endwith %}
+    {% else %}
+      {# Fallback เผื่อไม่มีตัวแปรใด ๆ จริง #}
+      <h1 class="text-2xl font-bold text-gray-800 mb-4">ลงชื่อเข้าใช้ผ่าน ผู้ให้บริการภายนอก</h1>
+      <p class="text-gray-600 mb-6">คุณกำลังจะลงชื่อเข้าใช้โดยใช้บัญชีจากผู้ให้บริการภายนอก</p>
+    {% endif %}
+
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" style="padding:10px 20px; background:#e74c3c; color:white; border:none; border-radius:5px;">
+        ดำเนินการต่อ
+      </button>
+      <a href="{% url 'account_login' %}" style="margin-left:10px;">ยกเลิก</a>
+    </form>
+
+  </div>
 </div>
 {% endblock %}
