@@ -161,25 +161,23 @@ def archive_list(request):
 
 
 @login_required
+@require_POST
 def toggle_like(request, post_id):
-    if request.method == "POST":
-        post = Post.objects.get(id=post_id)
-        user = request.user
+    post = get_object_or_404(Post, id=post_id)
+    user = request.user
 
+    like_obj = Like.objects.filter(post=post, user=user)
+    if like_obj.exists():
+        like_obj.delete()
         liked = False
-        like_obj = Like.objects.filter(post=post, user=user)
+    else:
+        Like.objects.create(post=post, user=user)
+        liked = True
 
-        if like_obj.exists():
-            like_obj.delete()
-        else:
-            Like.objects.create(post=post, user=user)
-            liked = True
-
-        return JsonResponse({
-            "liked": liked,
-            "like_count": post.likes.count()
-        })
-    return JsonResponse({"error": "Invalid request"}, status=400)
+    return JsonResponse({
+        "liked": liked,
+        "like_count": post.likes.count(),
+    })
 
 @login_required
 def user_dashboard_from_search(request, username):

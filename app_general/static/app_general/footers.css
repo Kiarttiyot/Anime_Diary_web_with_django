@@ -72,10 +72,12 @@
 
 .logA {
     color: #FFCCEA; /* เปลี่ยนสีให้เป็นสีแดง */
+    text-decoration: none; /* ไม่มีขีดเส้นใต้ */
 }
 
 .logD {
     color: #ffffff;
+    text-decoration: none; /* ไม่มีขีดเส้นใต้ */
 }
 
 /* จัดสไตล์ลิงก์ใน Footer */
