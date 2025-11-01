@@ -23,4 +23,7 @@ urlpatterns = [
     path("<str:username>/from-search/", views.user_dashboard_from_search, name="user_dashboard_from_search"),
     path("post/<int:pk>/edit/", views.edit_post, name="edit_post"),
     path("post/<int:post_id>/like/", views.toggle_like, name="toggle_like"),
+    path("post/<int:post_id>/comment/ajax/", views.add_comment_ajax, name="add_comment_ajax"),
+    path("comment/<int:comment_id>/delete/", views.delete_comment, name="delete_comment"),
+
 ]

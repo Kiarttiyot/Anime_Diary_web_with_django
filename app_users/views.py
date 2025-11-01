@@ -303,3 +303,43 @@ def edit_post(request, pk):
 
     return render(request, "account/edit_post.html", {"form": form, "post": post})
 
+# ========== AJAX COMMENT & DELETE ==========
+from django.views.decorators.http import require_POST
+from django.utils.html import escape
+
+@login_required
+@require_POST
+def add_comment_ajax(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    content = request.POST.get("content", "").strip()
+    if not content:
+        return JsonResponse({"error": "Empty comment"}, status=400)
+
+    comment = Comment.objects.create(
+        post=post,
+        user=request.user,
+        content=escape(content)
+    )
+
+    return JsonResponse({
+        "id": comment.id,
+        "user": comment.user.username,
+        "content": comment.content,
+        "profile_image": (
+            comment.user.profile.profile_image.url
+            if comment.user.profile.profile_image
+            else "/static/app_general/default-avatar.png"
+        ),
+        "created_at": comment.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+        "can_delete": True
+    })
+
+
+@login_required
+@require_POST
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+    if comment.user == request.user or comment.post.user == request.user:
+        comment.delete()
+        return JsonResponse({"success": True})
+    return JsonResponse({"error": "Permission denied"}, status=403)
