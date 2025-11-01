@@ -1,13 +1,14 @@
 from pathlib import Path
-from dotenv import load_dotenv
 import os
+from dotenv import load_dotenv
 
+# ✅ โหลด .env ก่อนประกาศค่าอื่น ๆ
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ---- Core envs ----
-SECRET_KEY = os.getenv('SECRET_KEY', 'replace-me')
+SECRET_KEY = os.getenv('SECRET_KEY', 'default-secret-key')
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
 # ALLOWED_HOSTS
@@ -15,7 +16,9 @@ hosts_env = os.getenv('ALLOWED_HOSTS', '*')
 ALLOWED_HOSTS = [h.strip() for h in hosts_env.split(',') if h.strip()]
 
 if DEBUG or not ALLOWED_HOSTS:
-    ALLOWED_HOSTS += ["localhost", "127.0.0.1", "0.0.0.0", "reports-psychiatry.gl.at.ply.gg:54264","147.185.221.31:54264"]
+    ALLOWED_HOSTS += ["localhost", "127.0.0.1", "0.0.0.0", 
+                      "103.253.72.244", 
+                      "satayu-tech-company.me", "www.satayu-tech-company.me",]
 
 ALLOWED_HOSTS = list(dict.fromkeys(ALLOWED_HOSTS))
 
@@ -26,8 +29,11 @@ if (DEBUG and not CSRF_TRUSTED_ORIGINS):
     CSRF_TRUSTED_ORIGINS = [
         "http://localhost:8000",
         "http://127.0.0.1:8000",
+        "https://satayu-tech-company.me",
+        "https://www.satayu-tech-company.me",
     ]
-
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 # ---- Django / allauth ----
 SITE_ID = int(os.getenv('SITE_ID', '2'))
 
@@ -55,6 +61,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -63,6 +70,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
     'allauth.account.middleware.AccountMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'ProjectAnimeDiary.urls'
@@ -89,14 +97,16 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'ProjectAnimeDiary.wsgi.application'
+# ---- Database (SQLite persistent) ----
+DB_PATH = os.getenv("DB_PATH", str(BASE_DIR / "data" / "db.sqlite"))
 
-# ---- Database ----
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": DB_PATH,
     }
 }
+
 
 # ---- Password validators ----
 AUTH_PASSWORD_VALIDATORS = [
@@ -116,6 +126,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static'] if (BASE_DIR / 'static').exists() else []
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -162,3 +173,6 @@ EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER)
 EMAIL_TIMEOUT = int(os.getenv("EMAIL_TIMEOUT", "30"))
 SERVER_EMAIL = os.getenv("SERVER_EMAIL", DEFAULT_FROM_EMAIL)
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True

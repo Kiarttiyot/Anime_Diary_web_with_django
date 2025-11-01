@@ -2,10 +2,19 @@ services:
   web:
     build: .
     container_name: django_app
-    env_file:
-      - .env
+    command: >
+      gunicorn ProjectAnimeDiary.wsgi:application
+      --bind 0.0.0.0:8000
+      --workers 1
+      --threads 2
+      --timeout 120
+      --graceful-timeout 30
+      --max-requests 1000
+      --max-requests-jitter 200
+    env_file: .env
     ports:
       - "8000:8000"
     volumes:
-      - .:/app
-    restart: unless-stopped
+      - ./data:/app/data      # << เก็บ db.sqlite ถาวร
+      - ./media:/app/media    # << (แนะนำ) เก็บไฟล์อัปโหลดถาวร
+    restart: always

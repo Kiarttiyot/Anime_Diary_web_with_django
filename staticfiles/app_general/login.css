@@ -1,0 +1,259 @@
+/* พื้นหลังรวม */
+
+body {
+    /*background-color: #0a0d2e;*/
+    background-color: #f7f9fc; /* น้ำเงินเข้ม */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #fff;
+    
+}
+
+.header {
+    position: relative;
+    text-align: center;
+}
+.header img {
+    width: 100%;
+    max-height: 250px;
+    object-fit: cover;
+    filter: brightness(0.2);
+    
+}
+.header-sing {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #ffffff;
+}
+
+.container-flex{
+    margin-top: 50px;
+}
+
+/* กล่องฟอร์ม */
+.Login-container {
+    max-width: 400px;
+    margin: 60px auto;
+    padding: 30px;
+    background-color: #f7f9fc; /* น้ำเงินเข้มกว่า */
+    color: #000;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.4);   
+    
+}
+
+/* หัวข้อ */
+.Login-container h1 {
+    /*text-align: center;*/
+    margin-bottom: 25px;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+/* ช่องกรอก */
+.Login-container input {
+    width: 350px;
+    padding: 16px;
+    margin-top: 15px;
+    border-radius: 50px;
+    border-color: #b1b1b1;
+    /*border-radius: 5px;*/
+    background: #fff;
+    color: #333;
+    font-size: 14px;
+}
+
+/* ปุ่มสมัคร */
+.Login-container button {
+    width: 150px;
+    padding: 16px;
+    background: #e74c3c; /* แดง */
+    color: #fff;
+    font-weight: bold;
+    border-radius: 50px;
+    border: 50px;
+    border: none;
+    /*border-radius: 5px;*/
+    margin-top: 15px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.Login-container button:hover {
+    background: #a53225;
+}
+
+/* ลิงก์เข้าสู่ระบบ */
+.Login-container p {
+    /*text-align: center;*/
+    margin-top: 20px;
+}
+
+.Login-container a {
+    color: #e01717;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.Login-container a:hover {
+    text-decoration: underline;
+}
+
+.forget {
+    margin-left: 55px;
+}
+
+.blocklang {
+    /*text-align: center;*/
+    margin-top: 20px;
+}
+
+.blocklang{
+    max-width: 400px;
+    margin: 60px auto;
+    padding: 30px;
+    background-color: #f7f9fc; /* น้ำเงินเข้มกว่า */
+    color: #000;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.4);
+    
+}
+
+/* เส้นแบ่งตรงกลาง */
+.center-line {
+    width: 1px;               /* ความหนาของเส้น */
+    background-color: #8a8a8a;   /* สีเส้น */
+    margin: 0 20px;           /* ระยะห่างซ้าย-ขวากับกล่อง */
+}
+
+/* ให้เส้นเต็มความสูงของ container-flex */
+.container-flex {
+    display: flex;
+    align-items: stretch;     /* ให้เส้นและกล่องสูงเท่ากัน */
+}
+
+
+.divider {
+    font-size: 26px;
+   
+}
+.btn-google {
+    display: flex;
+    gap: 10px;
+    background: #ff5243;
+    color: white;
+    text-align: center;
+    padding: 12px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-top: 15px;
+    padding-left: 30px
+}
+
+.btn-google:hover {
+    background: #c33d2e;
+}
+.btn-google img {
+    width: 25px;
+    height: 25px;
+    object-fit: contain;
+    margin-right: 60px; 
+}
+
+/* ปุ่ม GitHub */
+.btn-github {
+    display: flex;             
+    align-items: center;       
+    background: #ffffff;
+    border-radius: 50px;
+    color: rgb(0, 0, 0);
+    padding: 12px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    margin-top: 40px;
+    text-decoration: none;
+    padding-left: 30px
+}
+.btn-github:hover {
+    background: #f0f0f0; /* A slightly darker shade of white */
+    border-color: #000;
+}
+
+/* ไอคอนในปุ่ม */
+.btn-github img {
+    width: 25px;
+    height: 25px;
+    object-fit: contain;
+    margin-right: 60px; 
+}
+
+/* wrapper flex container */
+.container-flex {
+    display: flex;
+    justify-content: center; /* จัดกึ่งกลางหน้า */
+    gap: 40px; /* ระยะห่างระหว่างกล่อง */
+    margin-top: 40px;
+    flex-wrap: wrap; /* ให้มือถือหรือจอเล็กๆ ซ้อนลง */
+}
+
+.Login-container,
+.blocklang {
+    margin: 0; /* เอา auto ออก */
+    flex: 1;
+    max-width: 400px;
+}
+
+.Login-container.hidden-frame,
+.blocklang.hidden-frame {
+    background: transparent;   /* ลบพื้นหลัง */
+    
+    box-shadow: none;          /* ลบเงา */
+}
+.box {
+    background-color: #f7f9fc;
+    color: #ffffff;
+    padding: 70px 0;
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+}
+/*.space{
+    background-color: #0a0d2e;
+    color: #ffffff;
+    padding: 30px 0;
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+}*/
+.links {
+    width: 100%;
+    padding: 10px;
+    height: 150px;
+    background-color: #f7f9fc  ;
+    text-align: center;
+    color: #000;
+}
+.links h1 {
+    margin-bottom: 25px;
+}
+.btn {
+    display: block;
+    padding: 16px;
+    width: 130px;
+    background: #e74c3c;
+    color: #fff;
+    border-radius: 50px;
+    border: none;
+    /* border-radius: 5px; */
+    cursor: pointer;
+    transition: background 0.3s ease;
+    text-decoration: dashed;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+.btn:hover {
+    background: #a53225;
+}
