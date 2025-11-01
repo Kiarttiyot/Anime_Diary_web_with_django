@@ -150,4 +150,40 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 });
 </script>
+<script>
+async function toggleLike(postId, event) {
+  event.preventDefault();
+  const likeIcon = document.querySelector(`#like-icon-${postId}`) || event.target.closest('.like-btn').querySelector('i');
+  const countSpan = document.querySelector(`#like-count-${postId}`);
+  const csrftoken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+
+  try {
+    const response = await fetch(`/users/post/${postId}/like/`, {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": csrftoken,
+        "X-Requested-With": "XMLHttpRequest"
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      if (data.liked) {
+        likeIcon.classList.remove("fa-regular");
+        likeIcon.classList.add("fa-solid");
+        likeIcon.style.color = "red";
+      } else {
+        likeIcon.classList.remove("fa-solid");
+        likeIcon.classList.add("fa-regular");
+        likeIcon.style.color = "black";
+      }
+      if (countSpan) countSpan.textContent = data.like_count;
+    } else {
+      console.error("Error toggling like:", response.status);
+    }
+  } catch (err) {
+    console.error("Network error:", err);
+  }
+}
+</script>
 {% endblock %}
