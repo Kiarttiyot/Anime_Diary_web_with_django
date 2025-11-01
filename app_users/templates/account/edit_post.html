@@ -1,0 +1,149 @@
+{% extends 'app_general/components/base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'app_general/create_post.css' %}">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
+<div class="container mt-5">
+  <div class="box">
+    <div class="spaceeiei" style="height: 50px;"></div>
+    <h2 class="mb-4 text-center">Edit Post</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <!-- Error messages -->
+      {% if form.errors %}
+      <div class="alert alert-danger">
+        <ul>
+          {% for field in form %}
+            {% for error in field.errors %}
+              <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+            {% endfor %}
+          {% endfor %}
+          {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
+      <!-- Image แสดงอย่างเดียว -->
+      <div class="mb-2 text-center">
+        {% if post.image %}
+          <img src="{{ post.image.url }}" alt="Post Image"
+               style="max-width:300px; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.2);">
+        {% else %}
+          <p style="color:#888;">(ไม่มีรูปภาพในโพสต์นี้)</p>
+        {% endif %}
+      </div>
+
+      <!-- Post name -->
+      <div class="mb-3">
+        {{ form.name }}
+      </div>
+
+      <!-- Content -->
+      <div class="mb-3">
+        {{ form.content }}
+      </div>
+
+      <!-- State -->
+      <div class="mb-3">
+        {{ form.state }}
+      </div>
+
+      <!-- Score -->
+      <div class="mb-3">
+        <label class="form-label">ให้คะแนน</label>
+        <div class="spaceeiei" style="height: 7px;"></div>
+
+        <!-- แถวแสดงดาว -->
+        <div id="star-rating" class="d-flex gap-1"
+          style="cursor:pointer; font-size:2rem; color:gold;">
+          <i class="fa-regular fa-star star" data-value="2"></i>
+          <i class="fa-regular fa-star star" data-value="4"></i>
+          <i class="fa-regular fa-star star" data-value="6"></i>
+          <i class="fa-regular fa-star star" data-value="8"></i>
+          <i class="fa-regular fa-star star" data-value="10"></i>
+        </div>
+
+        {{ form.score }}
+      </div>
+
+      <script>
+        document.addEventListener("DOMContentLoaded", () => {
+          const stars = document.querySelectorAll("#star-rating .star");
+          const scoreInput = document.getElementById("id_score");
+          let selectedValue = parseInt(scoreInput.value) || 0;
+
+          function highlightStars(value) {
+            stars.forEach((s, i) => {
+              const starValue = (i + 1) * 2;
+              s.classList.remove("fa-solid", "fa-star-half-stroke", "fa-regular", "fa-star");
+              if (value >= starValue) s.classList.add("fa-solid", "fa-star");
+              else if (value === starValue - 1) s.classList.add("fa-solid", "fa-star-half-stroke");
+              else s.classList.add("fa-regular", "fa-star");
+            });
+          }
+
+          highlightStars(selectedValue);
+
+          stars.forEach((star, index) => {
+            star.addEventListener("mousemove", (e) => {
+              const rect = star.getBoundingClientRect();
+              const isLeft = e.clientX - rect.left < rect.width / 2;
+              const value = isLeft ? (index * 2 + 1) : (index * 2 + 2);
+              highlightStars(value);
+            });
+
+            star.addEventListener("mouseleave", () => highlightStars(selectedValue));
+
+            star.addEventListener("click", (e) => {
+              const rect = star.getBoundingClientRect();
+              const isLeft = e.clientX - rect.left < rect.width / 2;
+              selectedValue = isLeft ? (index * 2 + 1) : (index * 2 + 2);
+              scoreInput.value = selectedValue;
+              highlightStars(selectedValue);
+            });
+          });
+        });
+      </script>
+
+      <!-- Buttons -->
+      <div class="spaceeiei" style="height: 20px;"></div>
+      <div class="mb-4 text-center">
+        <a href="{% url 'post_detail' post.pk %}" class="btn">ยกเลิก</a>
+        <span><button type="submit" class="abc">บันทึกการแก้ไข</button></span>
+      </div>
+
+      <div class="spaceeiei" style="height: 100px;"></div>
+    </form>
+  </div>
+</div>
+
+<style>
+  .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+  }
+  .btn:hover {
+      background-color: #ddd;
+  }
+  .abc {
+      background-color: #007bff;
+      color: white;
+      border-radius: 6px;
+      padding: 8px 16px;
+      border: none;
+      cursor: pointer;
+  }
+  .abc:hover {
+      background-color: #0056b3;
+  }
+</style>
+
+{% endblock %}

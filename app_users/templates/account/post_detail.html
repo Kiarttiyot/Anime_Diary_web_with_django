@@ -29,7 +29,40 @@
                 {% endfor %}
                 <span class="rating-text">{{ post.score }}/10</span>
             </div>
+            {% if request.user.is_authenticated and request.user == post.user %}
+            <div class="dropdown" style="position: relative; display: inline-block; ">
+                <button onclick="toggleDropdown()" class="dropbtn" style="background: none; border: none; cursor: pointer;">
+                    <i class="fa-solid fa-ellipsis-vertical" style="font-size: 20px;"></i>
+                </button>
 
+                <div id="myDropdown" class="dropdown-content" 
+                    style="display: none; position: absolute; right: 0; background-color: #fff; 
+                        min-width: 150px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); border-radius: 6px; z-index: 100;">
+                    <!-- ปุ่ม Edit -->
+                    <a href="{% url 'edit_post' post.pk %}" class="dropdown-item" style="display:block; padding:8px 12px; text-decoration:none; color:#333;">
+                        Edit
+                    </a>
+
+                    <!-- ปุ่ม Archive -->
+                    <form action="{% url 'post_archive' post.pk %}" method="post" style="margin:0;">
+                        {% csrf_token %}
+                        <button type="submit" class="dropdown-item" 
+                            style="width:100%; text-align:left; background:none; border:none; padding:8px 12px; cursor:pointer;">
+                            Archive
+                        </button>
+                    </form>
+
+                    <!-- ปุ่ม Delete -->
+                    <form action="{% url 'post_delete' post.pk %}" method="post" style="margin:0;"
+                        onsubmit="return confirm('แน่ใจหรือไม่ว่าต้องการลบโพสต์นี้?');">
+                        {% csrf_token %}
+                        <button type="submit" class="dropdown-item" 
+                            style="width:100%; text-align:left; background:none; border:none; color:red; padding:8px 12px; cursor:pointer;">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
         <div class="mid">
             {% if post.image %}
@@ -99,8 +132,8 @@
             <span class="meta-separator"></span>
             <span><i class="fa-regular fa-comment"></i> {{ post.comments.count }}</span>
         </div>
-        {% if request.user.is_authenticated and request.user == post.user %}
-            <!-- ปุ่มที่ใช้ได้เฉพาะเจ้าของโพสต์ -->
+        <!-- {% if request.user.is_authenticated and request.user == post.user %}
+            <!-- ปุ่มที่ใช้ได้เฉพาะเจ้าของโพสต์ -
             <div class="www"  style="display: flex; justify-content: flex-end; gap: 10px;">
                 <form action="{% url 'post_delete' post.pk %}" method="post">
                     {% csrf_token %}
@@ -113,8 +146,24 @@
                     <button type="submit">Archive</button>
                 </form>
             </div>   
+        {% endif %} -->
+        
+
+        <script>
+        function toggleDropdown() {
+            const dropdown = document.getElementById("myDropdown");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        }
+
+        // ปิด dropdown เมื่อคลิกข้างนอก
+        window.onclick = function(event) {
+            if (!event.target.closest('.dropdown')) {
+                document.getElementById("myDropdown").style.display = "none";
+            }
+        }
+        </script>
         {% endif %}
-            
+    
         
         
     

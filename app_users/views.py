@@ -290,3 +290,18 @@ def following_list(request, username):
         "list_type": "กำลังติดตาม"
     })
     
+@login_required
+def edit_post(request, pk):
+    post = get_object_or_404(Post, pk=pk, user=request.user)  # ✅ เจ้าของเท่านั้น
+
+    if request.method == "POST":
+        form = PostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "แก้ไขโพสต์เรียบร้อยแล้ว ✅")
+            return redirect("post_detail", pk=post.pk)
+    else:
+        form = PostForm(instance=post)
+
+    return render(request, "account/edit_post.html", {"form": form, "post": post})
+
