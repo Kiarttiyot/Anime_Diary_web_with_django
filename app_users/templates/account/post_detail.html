@@ -88,14 +88,14 @@
         {% endif %}
 
         <div class="post-meta">
-            <span class="like-btn" onclick="toggleLike('{{ post.pk }}', event)">
+            <span class="like-btn" onclick="toggleLike('{{ post.id }}', event)">
                 {% if post.is_liked %}
-                    <i id="like-icon-{{ post.pk }}" class="fa-solid fa-heart" style="color:red;"></i>
+                <i id="like-icon-{{ post.id }}" class="fa-solid fa-heart" style="color:red;"></i>
                 {% else %}
-                    <i id="like-icon-{{ post.pk }}" class="fa-regular fa-heart"></i>
+                <i id="like-icon-{{ post.id }}" class="fa-regular fa-heart"></i>
                 {% endif %}
-                <span id="like-count-{{ post.pk }}">{{ post.likes.count }}</span>
-            </span>
+            <span id="like-count-{{ post.id }}">{{ post.likes.count }}</span>
+</span>
             <span class="meta-separator"></span>
             <span><i class="fa-regular fa-comment"></i> {{ post.comments.count }}</span>
         </div>
@@ -161,3 +161,39 @@
 //         }
 //     }
 // } -->
+<script>
+async function toggleLike(postId, event) {
+  event.preventDefault();
+  const likeIcon = document.querySelector(`#like-icon-${postId}`) || event.target.closest('.like-btn').querySelector('i');
+  const countSpan = document.querySelector(`#like-count-${postId}`);
+  const csrftoken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+
+  try {
+    const response = await fetch(`/users/post/${postId}/like/`, {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": csrftoken,
+        "X-Requested-With": "XMLHttpRequest"
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      if (data.liked) {
+        likeIcon.classList.remove("fa-regular");
+        likeIcon.classList.add("fa-solid");
+        likeIcon.style.color = "red";
+      } else {
+        likeIcon.classList.remove("fa-solid");
+        likeIcon.classList.add("fa-regular");
+        likeIcon.style.color = "black";
+      }
+      if (countSpan) countSpan.textContent = data.like_count;
+    } else {
+      console.error("Error toggling like:", response.status);
+    }
+  } catch (err) {
+    console.error("Network error:", err);
+  }
+}
+</script>

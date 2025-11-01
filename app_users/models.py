@@ -50,3 +50,13 @@ class Like(models.Model):
 
     class Meta:
         unique_together = ("post", "user")  # 1 user กด like ได้ครั้งเดียว
+
+class Follow(models.Model):
+    follower = models.ForeignKey(User,related_name="following",on_delete=models.CASCADE)
+    following = models.ForeignKey(User,related_name="followers", on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        unique_together = ("follower", "following")  # ป้องกันฟอลซ้ำ
+
+    def __str__(self):
+        return f"{self.follower.username} follows {self.following.username}"

@@ -1,8 +1,9 @@
 {% extends 'app_general/components/base.html' %}
 {% load static %}
 
-
 {% block content %}
+
+{% csrf_token %}  {# ✅ จำเป็นสำหรับ AJAX like #}
 
 <!-- CSS & Font Awesome -->
 <link rel="stylesheet" href="{% static 'app_general/dashboard.css' %}">
@@ -12,115 +13,76 @@
 
     <!-- Profile Header -->
     <div class="profile-header">
-        <img src="{{ profile_user.profile.profile_image.url }}" alt="Profile Picture" class="profile-pic">
+        {% if profile_user.profile.profile_image %}
+            <img src="{{ profile_user.profile.profile_image.url }}" alt="Profile Picture" class="profile-pic">
+        {% else %}
+            <img src="{% static 'app_general/default-avatar.png' %}" alt="Profile Picture" class="profile-pic">
+        {% endif %}
 
         <div class="profile-info">
             <h2>{{ profile_user.username }}</h2>
-            {% if request.user == profile_user %}
-            
-        {% endif %}
             {% if profile_user.profile.address %}
                 <p>{{ profile_user.profile.address }}</p>
             {% endif %}
 
             <div class="stats">
-                <span><b>{{ posts.count }}</b> posts</span>
+                <span><b>{{ posts|length }}</b> posts</span>
+        
+                <a href="{% url 'follower_list' username=profile_user.username %}" class="link-unstyled" style="text-decoration:none; color:inherit;">
+                    <span class="ms-3"><b>{{ followers_count }}</b> ผู้ติดตาม</span>
+                </a>
+        
+                <a href="{% url 'following_list' username=profile_user.username %}" class="link-unstyled" style="text-decoration:none; color:inherit;">
+                    <span class="ms-3"><b>{{ following_count }}</b> กำลังติดตาม</span>
+                </a>
             </div>
         </div>
+
+        {% if request.user == profile_user %}
         <div class="profile-actions">
-                <span><a href="{% url 'profile' %}">
-                    <button class="btn">Edit profile</button>
-                </a></span>
-                <span><a href="{% url 'archive_list' %}">
-                    <button class="btn">Archive</button>
-                </a></span>
-                </a>
-                <a href="{% url 'create_post' %}" class="btn">
-                    <img src="{% static 'app_general/plus.png' %}" alt="สร้างโพสต์" style="width:20px;height:20px;">
-                </a>      
+            <span><a href="{% url 'profile' %}"><button class="btn">Edit profile</button></a></span>
+            <span><a href="{% url 'archive_list' %}"><button class="btn">Archive</button></a></span>
+            <a href="{% url 'create_post' %}" class="btn">
+                <img src="{% static 'app_general/plus.png' %}" alt="สร้างโพสต์" style="width:20px;height:20px;">
+            </a>
         </div>
+        {% endif %}
     </div>
-    <!-- <span style="padding: 30px;margin-right: auto;">
-        <a href="{% url 'create_post' %}">
-            <img src="{% static 'app_general/plus.png' %}" alt="สร้างโพสต์" style="width:25px;height:25px;margin-left: auto;">
-        </a>
-    </span> -->
-    
-    <!-- {% if request.user == profile_user %}
-            <div class="profile-actions">
-                <a href="{% url 'profile' %}" class="btn">
-                    <img src="{% static 'app_general/plus.png' %}" alt="สร้างโพสต์" style="width:20px;height:20px;">
-                </a>
-                <a href="{% url 'create_post' %}" class="btn">
-                    <img src="{% static 'app_general/plus.png' %}" alt="สร้างโพสต์" style="width:20px;height:20px;">
-                </a>
-                <a href="{% url 'archive_list' %}" class="btn">
-                    <img src="{% static 'app_general/lock (1).png' %}" alt="สร้างโพสต์" style="width:20px;height:20px;">
-                </a> -->
 
-                <!-- <span class="btn"><a href="{% url 'create_post' %}">create_post</a></span> -->
-                <!-- <span class="btn"><a href="{% url 'profile' %}">Edit Profile</a></span>
-                <span class="btn"><a href="{% url 'archive_list' %}">Archive List</a></span>        -->
-                <!-- <a href="{% url 'create_post' %}" class="btn">
-                    <img src="{% static 'app_general/plus.png' %}" alt="สร้างโพสต์" style="width:25px;height:25px;">
-                </a>
-                <button><a href="{% url 'profile' %}">Edit Profile</a></button>
-                <button><a href="{% url 'archive_list' %}">Archive List</a></button> --
-            </div>
-        {% endif %} -->
     <hr>
-    <!-- <div class="container">
-        <button type="submit" class="btn" onclick="openPopup()">Test</button>
-        <div class="popup" id="popup">
-            !-- post_detail --
-            <button class="btn" onclick="closePopup()">Close</button>
-        </div>
-    </div>
-    <script>
-    let popup = document.getElementById("popup");
 
-    function openPopup() {
-        popup.classList.add("open-popup");
-    }
-    function closePopup() {
-        popup.classList.remove("open-popup");
-    }
-    </script> -->
-   
     <!-- Posts Grid -->
     <div class="posts-grid">
         {% for post in posts %}
         <div class="post-item">
             <a href="{% url 'post_detail' post.pk %}" class="post-link">
-                <!-- Post Image -->
                 {% if post.image %}
                     <img src="{{ post.image.url }}" alt="Post" style="max-width:300px;">
                 {% endif %}
                 
                 <div style="padding: 5px;"></div>
                 <div class="post-tex">
+
                     <!-- Post Meta (Likes & Comments) -->
                     <div class="post-meta">
-                        <span class="like-btn" onclick="toggleLike('{{ post.pk }}', event)">
+                        <span class="like-btn" onclick="toggleLike('{{ post.id }}', event)">
                             {% if post.is_liked %}
-                                <i class="fa-solid fa-heart" style="color:red;"></i>
+                                <i id="like-icon-{{ post.id }}" class="fa-solid fa-heart" style="color:red;"></i>
                             {% else %}
-                                <i class="fa-regular fa-heart"></i>
+                                <i id="like-icon-{{ post.id }}" class="fa-regular fa-heart"></i>
                             {% endif %}
-                            <span id="like-count-{{ post.pk }}">{{ post.likes.count }}</span>
+                            <span id="like-count-{{ post.id }}">{{ post.likes.count }}</span>
                         </span>
                         <span style="padding: 10px;"></span>
                         <span><i class="fa-regular fa-comment"></i> {{ post.comments.count }}</span>
                     </div>
 
-                    <!-- Post State -->
                     {% if post.state %}
                         <div class="post-state">
                             <p>{{ post.state }}</p>
                         </div>
                     {% endif %}
 
-                    <!-- Rating -->
                     <div class="rating" aria-label="คะแนน {{ post.score }}/10">
                         {% for _ in "12345" %}
                             {% with threshold=forloop.counter|add:forloop.counter %}
@@ -137,8 +99,7 @@
                         {% endfor %}
                         <span class="rating-text">{{ post.score }}/10</span>
                     </div>
-
-                    <small>{{ post.created_at }}</small>
+                    <small>{{ post.created_at|date:"Y-m-d H:i" }}</small>
                 </div>
             </a>
         </div>  
@@ -146,47 +107,67 @@
             <p>ยังไม่มีโพสต์</p>
         {% endfor %}
     </div>
-    <div class="modal" id="postPopup">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closePostPopup()">&times;</span>
-            <div id="postPopupBody">
-                <!-- Content will be loaded here by JavaScript -->
-            </div>
-        </div>
-    </div>
-    
 
     <script>
-    function openPostPopup(postId) {
-        fetch(`/users/post/${postId}/`)
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('postPopupBody').innerHTML = html;
-                document.getElementById('postPopup').style.display = 'flex';
+    async function toggleLike(postId, event) {
+        event.preventDefault();
+        const likeIcon = document.querySelector(`#like-icon-${postId}`);
+        const countSpan = document.querySelector(`#like-count-${postId}`);
+        const csrftoken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+
+        try {
+            const response = await fetch(`/users/post/${postId}/like/`, {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": csrftoken,
+                    "X-Requested-With": "XMLHttpRequest"
+                },
             });
-    }
-    function closePostPopup() {
-        document.getElementById('postPopup').style.display = 'none';
+
+            if (response.ok) {
+                const data = await response.json();
+                if (data.liked) {
+                    likeIcon.classList.remove("fa-regular");
+                    likeIcon.classList.add("fa-solid");
+                    likeIcon.style.color = "red";
+                } else {
+                    likeIcon.classList.remove("fa-solid");
+                    likeIcon.classList.add("fa-regular");
+                    likeIcon.style.color = "black";
+                }
+                if (countSpan) countSpan.textContent = data.like_count;
+            } else {
+                console.error("Error toggling like:", response.status);
+            }
+        } catch (err) {
+            console.error("Network error:", err);
+        }
     }
     </script>
+
     <style>
-    .modal { display: none; position: fixed;z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5);}
-    .modal-content { background: #fff; margin: 5% auto; padding: 20px; width: 50%; border-radius: 8px;position: relative;z-index: 1001; }
-    .close-btn { float: right; font-size: 28px; cursor: pointer;}
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+    }
+    .modal-content {
+        background: #fff;
+        margin: 5% auto;
+        padding: 20px;
+        width: 50%;
+        border-radius: 8px;
+        position: relative;
+        z-index: 1001;
+    }
+    .close-btn { float: right; font-size: 28px; cursor: pointer; }
     </style>
+
     <div class="space" style="height: 300px;"></div>
 </div>  
-
-
 {% endblock %}
-                    <!--{% if request.user == profile_user %}
-                        <form action="{% url 'post_delete' post.pk %}" method="post" style="display:inline;">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
-                        <form action="{% url 'post_archive' post.pk %}" method="post" style="display:inline;">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-warning">Archive/Unarchive</button>
-                        </form>
-                    {% endif %}-->
-<!-- <a href="{% url 'post_detail' post.pk %}" class="post-link"> -->
