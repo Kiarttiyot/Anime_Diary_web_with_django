@@ -58,7 +58,7 @@ body {
     padding: 16px;
     margin-top: 15px;
     border-color: #d3d3d3;
-    border-radius: 50px;
+    border-radius: 5px;
     background: #fff;
     color: #333;
     font-size: 14px;
@@ -72,7 +72,7 @@ body {
     color: #fff;
     font-weight: bold;
     border: none;
-    border-radius: 50px;
+    border-radius: 5px;
     margin-top: 15px;
     cursor: pointer;
     transition: background 0.3s ease;
@@ -141,7 +141,7 @@ body {
     color: white;
     text-align: center;
     padding: 12px;
-    border-radius: 50px;
+    border-radius: 5px;
     text-decoration: none;
     font-weight: bold;
     border-color: #000;
@@ -170,7 +170,7 @@ body {
     border-color: #000;
     background: #ffffff;
     color: rgb(0, 0, 0);
-    border-radius: 50px;
+    border-radius: 5px;
     padding: 12px;
     font-weight: bold;
     margin-bottom: 10px;
