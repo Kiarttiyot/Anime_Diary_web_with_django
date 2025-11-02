@@ -161,6 +161,7 @@
     padding: 8px 12px;
     border-radius: 4px;
     transition: background 0.3s ease, color 0.3s ease;
+    margin-top: -3px;
 }
 .menu-item-log:hover {
     background-color: #ff3366; /* แดง */

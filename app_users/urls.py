@@ -20,10 +20,10 @@ urlpatterns = [
     path('follow_toggle/<str:username>/', views.follow_toggle, name='follow_toggle'),
     path('<str:username>/followers/', views.follower_list, name='follower_list'),
     path('<str:username>/following/', views.following_list, name='following_list'),
+    path('remove_follower/<str:username>/', views.remove_follower, name='remove_follower'),
     path("<str:username>/from-search/", views.user_dashboard_from_search, name="user_dashboard_from_search"),
     path("post/<int:pk>/edit/", views.edit_post, name="edit_post"),
     path("post/<int:post_id>/like/", views.toggle_like, name="toggle_like"),
     path("post/<int:post_id>/comment/ajax/", views.add_comment_ajax, name="add_comment_ajax"),
     path("comment/<int:comment_id>/delete/", views.delete_comment, name="delete_comment"),
-
 ]

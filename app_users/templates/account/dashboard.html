@@ -4,182 +4,374 @@
 {% block content %}
 {% csrf_token %}
 
-<!-- CSS & Font Awesome -->
+<!-- ✅ CSS & Font Awesome -->
 <link rel="stylesheet" href="{% static 'app_general/dashboard.css' %}">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
 
-<div class="dashboard">
+<main> 
+  <div class="dashboard">
 
-    <!-- Profile Header -->
-    <div class="profile-header">
-        {% if profile_user.profile.profile_image %}
-            <img src="{{ profile_user.profile.profile_image.url }}" alt="Profile Picture" class="profile-pic">
-        {% else %}
-            <img src="{% static 'app_general/default-avatar.png' %}" alt="Profile Picture" class="profile-pic">
-        {% endif %}
+    <!-- =================== PROFILE HEADER =================== -->
+  <div class="profile-header">
+    <div class="profile-image">
+      {% if profile_user.profile.profile_image %}
+        <img src="{{ profile_user.profile.profile_image.url }}" alt="Profile Picture">
+      {% else %}
+        <img src="{% static 'app_general/default-avatar.png' %}" alt="Profile Picture">
+      {% endif %}
+    </div>
 
-        <div class="profile-info">
-            <h2>{{ profile_user.username }}</h2>
-            {% if profile_user.profile.address %}
-                <p>{{ profile_user.profile.address }}</p>
-            {% endif %}
-            <div class="stats">
-                <span><b>{{ posts|length }}</b> posts</span>
-                <a href="{% url 'follower_list' username=profile_user.username %}" style="text-decoration:none; color:inherit;">
-                    <span class="ms-3"><b>{{ followers_count }}</b> ผู้ติดตาม</span>
-                </a>
-                <a href="{% url 'following_list' username=profile_user.username %}" style="text-decoration:none; color:inherit;">
-                    <span class="ms-3"><b>{{ following_count }}</b> กำลังติดตาม</span>
-                </a>
-            </div>
+    <div class="profile-info">
+      <h2>{{ profile_user.username }}</h2>
+      <div class="stats">
+          <span><b>{{ posts|length }}</b> posts</span>
+
+          <!-- 👥 ผู้ติดตาม -->
+          <span class="ms-3 follow-link"
+                onclick="openFollowPopup('{{ profile_user.username }}', 'followers')">
+            <b>{{ followers_count }}</b> followers
+          </span>
+
+          <!-- 👉 กำลังติดตาม -->
+          <span class="ms-3 follow-link"
+                onclick="openFollowPopup('{{ profile_user.username }}', 'following')">
+            <b>{{ following_count }}</b> following
+          </span>
         </div>
-
-        {% if request.user == profile_user %}
+        {% if profile_user.profile.address %}
+          <p class="bio">{{ profile_user.profile.address }}</p>
+        {% endif %}
+      {% if request.user == profile_user %}
         <div class="profile-actions">
-            <a href="{% url 'profile' %}" class="btn">Edit profile</a>
-            <a href="{% url 'archive_list' %}" class="btn">Archive</a>
-            <a href="{% url 'create_post' %}" class="btn">
-                <img src="{% static 'app_general/plus.png' %}" alt="สร้างโพสต์" style="width:20px;height:20px;">
-            </a>
+          <a href="{% url 'profile' %}" class="action-btn">Edit profile</a>
+          <a href="{% url 'archive_list' %}" class="action-btn">View archive</a>
+          <a href="{% url 'create_post' %}" class="action-btn">New post</a>
         </div>
-        {% endif %}
+      {% endif %}
     </div>
+  </div>
 
-    <hr>
 
-    <!-- Posts Grid -->
-    <div class="posts-grid">
-        {% for post in posts %}
-        <div class="post-item" onclick="openPostPopup('{{ post.pk }}')">
 
-            {% if post.image %}
-                <img src="{{ post.image.url }}" alt="Post" style="max-width:300px;">
-            {% endif %}
-            
-            <div style="padding: 5px;"></div>
-            <div class="post-tex">
-                <div class="post-meta">
-                    <span class="like-btn" onclick="toggleLike('{{ post.id }}', event)">
-                        {% if post.is_liked %}
-                            <i id="like-icon-{{ post.id }}" class="fa-solid fa-heart" style="color:red;"></i>
-                        {% else %}
-                            <i id="like-icon-{{ post.id }}" class="fa-regular fa-heart"></i>
-                        {% endif %}
-                        <span id="like-count-{{ post.id }}">{{ post.likes.count }}</span>
-                    </span>
-                    <span style="padding: 10px;"></span>
-                    <span><i class="fa-regular fa-comment"></i> {{ post.comments.count }}</span>
-                </div>
+  <hr>
 
-                {% if post.state %}
-                    <div class="post-state">
-                        <p>{{ post.state }}</p>
-                    </div>
-                {% endif %}
+  <!-- =================== POSTS GRID =================== -->
+  <div class="posts-grid">
+      {% for post in posts %}
+      <div class="post-item" onclick="openPostPopup('{{ post.pk }}')">
 
-                <div class="rating" aria-label="คะแนน {{ post.score }}/10">
-                    {% for _ in "12345" %}
-                        {% with threshold=forloop.counter|add:forloop.counter %}
-                        {% with half=threshold|add:"-1" %}
-                            {% if post.score >= threshold %}
-                                <i class="fa-solid fa-star" style="color: gold;"></i>
-                            {% elif post.score == half %}
-                                <i class="fa-solid fa-star-half-stroke" style="color: gold;"></i>
-                            {% else %}
-                                <i class="fa-regular fa-star" style="color: gray;"></i>
-                            {% endif %}
-                        {% endwith %}
-                        {% endwith %}
-                    {% endfor %}
-                    <span class="rating-text">{{ post.score }}/10</span>
-                </div>
-                <small>{{ post.created_at|date:"Y-m-d H:i" }}</small>
-            </div>
-        </div>  
-        {% empty %}
-            <p>ยังไม่มีโพสต์</p>
-        {% endfor %}
+          {% if post.image %}
+              <img src="{{ post.image.url }}" alt="Post" style="max-width:300px;">
+          {% endif %}
+          
+          <div style="padding: 5px;"></div>
+          <div class="post-tex">
+              <div class="post-meta">
+                  <span class="like-btn" onclick="toggleLike('{{ post.id }}', event)">
+                      {% if post.is_liked %}
+                          <i id="like-icon-{{ post.id }}" class="fa-solid fa-heart" style="color:red;"></i>
+                      {% else %}
+                          <i id="like-icon-{{ post.id }}" class="fa-regular fa-heart"></i>
+                      {% endif %}
+                      <span id="like-count-{{ post.id }}">{{ post.likes.count }}</span>
+                  </span>
+                  <span style="padding: 10px;"></span>
+                  <span><i class="fa-regular fa-comment"></i> {{ post.comments.count }}</span>
+              </div>
+
+              {% if post.state %}
+                  <div class="post-state">
+                      <p>{{ post.state }}</p>
+                  </div>
+              {% endif %}
+
+              <div class="rating" aria-label="คะแนน {{ post.score }}/10">
+                  {% for _ in "12345" %}
+                      {% with threshold=forloop.counter|add:forloop.counter %}
+                      {% with half=threshold|add:"-1" %}
+                          {% if post.score >= threshold %}
+                              <i class="fa-solid fa-star" style="color: gold;"></i>
+                          {% elif post.score == half %}
+                              <i class="fa-solid fa-star-half-stroke" style="color: gold;"></i>
+                          {% else %}
+                              <i class="fa-regular fa-star" style="color: gray;"></i>
+                          {% endif %}
+                      {% endwith %}
+                      {% endwith %}
+                  {% endfor %}
+                  <span class="rating-text">{{ post.score }}/10</span>
+              </div>
+              <small>{{ post.created_at|date:"Y-m-d H:i" }}</small>
+          </div>
+      </div>  
+      {% empty %}
+          <p>ยังไม่มีโพสต์</p>
+      {% endfor %}
+  </div>
+
+  <!-- ✅ POPUP POST DETAIL -->
+  <div class="modal" id="postPopup" onclick="backgroundClose(event)">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closePostPopup()">&times;</span>
+      <div id="postPopupBody"><!-- HTML โพสต์จะโหลดมาที่นี่ --></div>
     </div>
+  </div>
 
-    <!-- ✅ Popup Overlay -->
-    <div class="modal" id="postPopup" onclick="backgroundClose(event)">
-      <div class="modal-content">
-        <span class="close-btn" onclick="closePostPopup()">&times;</span>
-        <div id="postPopupBody"><!-- HTML โพสต์จะโหลดมาที่นี่ --></div>
+  <!-- ✅ POPUP FOLLOWERS / FOLLOWING -->
+  <div class="modal" id="followPopup" onclick="closeFollowPopup(event)">
+    <div class="modal-follow-content">
+      <div class="modal-header">
+        <h3 id="followPopupTitle">Followers</h3>
+        <span class="close-btn" onclick="closeFollowPopup(event)">&times;</span>
+      </div>
+      <div class="modal-body" id="followPopupBody">
+        <p style="text-align:center;">⏳ กำลังโหลด...</p>
       </div>
     </div>
+  </div>
 
 </div> <!-- /dashboard -->
+</main>
 
-<!-- ===================== Scripts ===================== -->
+
+<!-- ======================= JAVASCRIPT ======================= -->
 <script>
-/* ======================= เปิด/ปิด Popup ======================= */
+/* =================== POPUP FOLLOWERS / FOLLOWING =================== */
+async function openFollowPopup(username, type) {
+  const popup = document.getElementById("followPopup");
+  const popupBody = document.getElementById("followPopupBody");
+  const title = document.getElementById("followPopupTitle");
+
+  title.textContent = type === "followers" ? "Followers" : "Following";
+  popupBody.innerHTML = "<p style='text-align:center;'>⏳ กำลังโหลด...</p>";
+  popup.style.display = "flex";
+  document.body.style.overflow = "hidden";
+
+  try {
+    const url = `/users/${username}/${type}/`;
+    const response = await fetch(url);
+    const html = await response.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+    const list = doc.querySelector(".follow-list-container");
+    popupBody.innerHTML = list ? list.innerHTML : "<p>ไม่พบข้อมูล</p>";
+
+    // ✅ ติด event ให้ทุกปุ่มใน popup
+    popupBody.addEventListener("click", async function (e) {
+      const followBtn = e.target.closest("button[data-url]");
+      const removeBtn = e.target.closest("button[data-remove-url]");
+      const csrftoken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+
+      // 🟢 Toggle follow/unfollow
+      if (followBtn) {
+        const url = followBtn.dataset.url;
+        try {
+          const res = await fetch(url, {
+            method: "POST",
+            headers: {
+              "X-CSRFToken": csrftoken,
+              "X-Requested-With": "XMLHttpRequest"
+            },
+          });
+          if (res.ok) {
+            const data = await res.json();
+            followBtn.textContent = data.is_following ? "เลิกติดตาม" : "ติดตาม";
+            followBtn.className = data.is_following
+              ? "btn btn-sm btn-danger"
+              : "btn btn-sm btn-primary";
+          }
+        } catch (err) {
+          console.error("Follow toggle error:", err);
+        }
+      }
+
+      // 🔴 Remove follower
+      if (removeBtn) {
+        const url = removeBtn.dataset.removeUrl;
+        const confirmDel = confirm("ต้องการลบผู้ติดตามคนนี้หรือไม่?");
+        if (!confirmDel) return;
+        try {
+          const res = await fetch(url, {
+            method: "POST",
+            headers: {
+              "X-CSRFToken": csrftoken,
+              "X-Requested-With": "XMLHttpRequest"
+            },
+          });
+          const data = await res.json();
+          if (data.removed) {
+            removeBtn.closest("li").remove(); // ลบแถวออกเลย
+          }
+        } catch (err) {
+          console.error("Remove follower error:", err);
+        }
+      }
+    });
+  } catch (err) {
+    popupBody.innerHTML = "<p>เกิดข้อผิดพลาดในการโหลด</p>";
+  }
+}
+
+function closeFollowPopup(event) {
+  const popup = document.getElementById("followPopup");
+  if (!event || event.target === popup || event.target.classList.contains("close-btn")) {
+    popup.style.display = "none";
+    document.body.style.overflow = "auto";
+  }
+}
+
+/* =================== POPUP POST DETAIL =================== */
+/* =================== POPUP POST DETAIL =================== */
 function openPostPopup(postId) {
   fetch(`/users/post/${postId}/`)
-    .then(response => response.text())
+    .then(r => r.text())
     .then(html => {
-      const popupBody = document.getElementById('postPopupBody');
-      popupBody.innerHTML = html;
+      const body = document.getElementById("postPopupBody");
+      body.innerHTML = html;
 
-      // ✅ Attach Event ให้ฟังก์ชันใน popup ใช้งานได้
-      attachCommentHandlers(popupBody);
-      attachLikeHandlers(popupBody);
-
-      // ✅ ให้ script ภายใน popup (จาก Django template) ทำงาน
-      popupBody.querySelectorAll("script").forEach(oldScript => {
+      // ✅ รัน script ภายใน popup (ถ้ามี)
+      body.querySelectorAll("script").forEach(oldScript => {
         const newScript = document.createElement("script");
         newScript.text = oldScript.text;
         document.body.appendChild(newScript);
         document.body.removeChild(newScript);
       });
 
-      // ✅ แสดง popup
-      const popup = document.getElementById('postPopup');
-      popup.style.display = 'flex';
-      document.body.style.overflow = 'hidden';
-    })
-    .catch(err => console.error("Popup load error:", err));
+      // ✅ bind ฟังก์ชัน "ส่งคอมเมนต์" แบบ AJAX
+      const form = body.querySelector("#commentForm");
+      const commentsBox = body.querySelector("#commentsBox");
+      if (form) {
+        form.onsubmit = async function (e) {
+          e.preventDefault();
+          const postId = form.dataset.postId;
+          const content = form.querySelector("input[name='content']").value.trim();
+          if (!content) return;
+          const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+          const response = await fetch(`/users/post/${postId}/comment/ajax/`, {
+            method: "POST",
+            headers: {
+              "X-CSRFToken": csrfToken,
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: `content=${encodeURIComponent(content)}`
+          });
+
+          const data = await response.json();
+          if (response.ok) {
+            const newComment = document.createElement("div");
+            newComment.classList.add("comment");
+            newComment.id = `comment-${data.id}`;
+            newComment.innerHTML = `
+              <img src="${data.profile_image}" class="comment-pic">
+              <div class="buc">
+                <strong>${data.user}:</strong>
+                <p>${data.content}</p>
+              </div>
+              <div class="comment-dropdown">
+                <button class="comment-dropbtn"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                <div class="comment-dropdown-content">
+                  <button class="delete-comment" data-id="${data.id}">ลบคอมเมนต์</button>
+                </div>
+              </div>
+            `;
+            commentsBox.appendChild(newComment);
+            form.reset();
+          } else {
+            alert(data.error || "Error posting comment");
+          }
+        };
+      }
+
+      // ✅ ใช้ event delegation แบบเดียว — ไม่มีซ้ำหลายรอบ
+      body.onclick = async function (e) {
+        // 🔻 toggle dropdown
+        if (e.target.closest(".comment-dropbtn")) {
+          e.preventDefault();
+          e.stopPropagation();
+          const dropdown = e.target.closest(".comment-dropdown");
+          dropdown.classList.toggle("show");
+          return;
+        }
+
+        // 🔻 ลบคอมเมนต์
+        if (e.target.classList.contains("delete-comment")) {
+          e.preventDefault();
+          e.stopPropagation();
+          const id = e.target.dataset.id;
+          const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+          const confirmDel = confirm("ต้องการลบความคิดเห็นนี้หรือไม่?");
+          if (!confirmDel) return;
+
+          try {
+            const res = await fetch(`/users/comment/${id}/delete/`, {
+              method: "POST",
+              headers: { "X-CSRFToken": csrfToken }
+            });
+            const data = await res.json();
+            if (res.ok) {
+              const el = document.getElementById(`comment-${id}`);
+              if (el) {
+                el.classList.add("fade-out");
+                setTimeout(() => el.remove(), 400);
+              }
+            } else {
+              alert(data.error || "เกิดข้อผิดพลาดในการลบคอมเมนต์");
+            }
+          } catch (err) {
+            console.error("Network error:", err);
+          }
+          return;
+        }
+
+        // 🔻 ปิด dropdown เมื่อคลิกนอก
+        body.querySelectorAll(".comment-dropdown.show").forEach(d => d.classList.remove("show"));
+      };
+
+      // ✅ เปิด popup
+      document.getElementById("postPopup").style.display = "flex";
+      document.body.style.overflow = "hidden";
+    });
 }
 
+// ✅ ปิด popup
 function closePostPopup() {
-  document.getElementById('postPopup').style.display = 'none';
-  document.body.style.overflow = 'auto';
+  document.getElementById("postPopup").style.display = "none";
+  document.body.style.overflow = "auto";
 }
 
+// ✅ ปิดเมื่อคลิกข้างนอก (ยกเว้น dropdown)
 function backgroundClose(event) {
-  const modal = document.getElementById('postPopup');
-  const content = document.querySelector('.modal-content');
-  if (!content.contains(event.target)) {
+  const modal = document.getElementById("postPopup");
+  const content = document.querySelector(".modal-content");
+  if (!content.contains(event.target) && !event.target.closest(".comment-dropdown")) {
     closePostPopup();
   }
 }
 
-/* ======================= ❤️ Toggle Like (ในหน้าหลัก) ======================= */
+
+/* =================== LIKE =================== */
 async function toggleLike(postId, event) {
-  event.stopPropagation(); // ✅ กันคลิกแล้วเปิด popup ซ้อน
+  event.stopPropagation();
   const likeIcon = document.querySelector(`#like-icon-${postId}`);
   const countSpan = document.querySelector(`#like-count-${postId}`);
   const csrftoken = document.querySelector("[name=csrfmiddlewaretoken]").value;
 
   try {
-    const response = await fetch(`/users/post/${postId}/like/`, {
+    const res = await fetch(`/users/post/${postId}/like/`, {
       method: "POST",
       headers: {
         "X-CSRFToken": csrftoken,
         "X-Requested-With": "XMLHttpRequest"
       },
     });
-
-    if (response.ok) {
-      const data = await response.json();
+    if (res.ok) {
+      const data = await res.json();
       if (data.liked) {
-        likeIcon.classList.remove("fa-regular");
-        likeIcon.classList.add("fa-solid", "heart-pop");
+        likeIcon.classList.replace("fa-regular", "fa-solid");
         likeIcon.style.color = "red";
-        setTimeout(() => likeIcon.classList.remove("heart-pop"), 300);
       } else {
-        likeIcon.classList.remove("fa-solid");
-        likeIcon.classList.add("fa-regular");
+        likeIcon.classList.replace("fa-solid", "fa-regular");
         likeIcon.style.color = "black";
       }
       if (countSpan) countSpan.textContent = data.like_count;
@@ -189,119 +381,13 @@ async function toggleLike(postId, event) {
   }
 }
 
-/* ======================= 💬 Comment Handler (ใน popup) ======================= */
-function attachCommentHandlers(popupBody) {
-  const form = popupBody.querySelector("#commentForm");
-  const commentsBox = popupBody.querySelector("#commentsBox");
-
-  if (!form || !commentsBox) return;
-
-  // ✅ เพิ่มคอมเมนต์
-  form.addEventListener("submit", async function(e) {
-    e.preventDefault();
-    const postId = form.dataset.postId;
-    const content = form.querySelector("input[name='content']").value.trim();
-    const csrfToken = popupBody.querySelector('[name=csrfmiddlewaretoken]').value;
-
-    if (!content) return;
-
-    const response = await fetch(`/users/post/${postId}/comment/ajax/`, {
-      method: "POST",
-      headers: {
-        "X-CSRFToken": csrfToken,
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: `content=${encodeURIComponent(content)}`
-    });
-
-    const data = await response.json();
-    if (response.ok) {
-      const newComment = document.createElement("div");
-      newComment.classList.add("comment");
-      newComment.id = `comment-${data.id}`;
-      newComment.innerHTML = `
-        <img src="${data.profile_image}" class="comment-pic">
-        <div class="buc">
-          <strong>${data.user}:</strong>
-          <p>${data.content}</p>
-        </div>
-        <button class="delete-comment" data-id="${data.id}">🗑️</button>
-      `;
-      commentsBox.appendChild(newComment);
-      form.reset();
-    } else {
-      alert(data.error || "Error posting comment");
-    }
-  });
-
-  // ✅ ลบคอมเมนต์ใน popup
-  commentsBox.addEventListener("click", async function(e) {
-    if (e.target.classList.contains("delete-comment")) {
-      const id = e.target.dataset.id;
-      const csrfToken = popupBody.querySelector('[name=csrfmiddlewaretoken]').value;
-      if (!confirm("ลบความคิดเห็นนี้หรือไม่?")) return;
-
-      const response = await fetch(`/users/comment/${id}/delete/`, {
-        method: "POST",
-        headers: { "X-CSRFToken": csrfToken }
-      });
-      const data = await response.json();
-      if (response.ok) {
-        const commentEl = document.getElementById(`comment-${id}`);
-        commentEl.classList.add("fade-out");
-        setTimeout(() => commentEl.remove(), 400);
-      } else {
-        alert(data.error || "เกิดข้อผิดพลาด");
-      }
-    }
-  });
-}
-
-/* ======================= ❤️ Like Handler (ใน popup) ======================= */
-function attachLikeHandlers(popupBody) {
-  popupBody.querySelectorAll(".like-btn").forEach(btn => {
-    btn.addEventListener("click", async function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-
-      const postId = this.dataset.postId || this.getAttribute("data-post-id");
-      const likeIcon = this.querySelector("i");
-      const countSpan = this.querySelector(".like-count");
-      const csrfToken = popupBody.querySelector("[name=csrfmiddlewaretoken]").value;
-
-      try {
-        const response = await fetch(`/users/post/${postId}/like/`, {
-          method: "POST",
-          headers: {
-            "X-CSRFToken": csrfToken,
-            "X-Requested-With": "XMLHttpRequest"
-          },
-        });
-        if (response.ok) {
-          const data = await response.json();
-          if (data.liked) {
-            likeIcon.classList.remove("fa-regular");
-            likeIcon.classList.add("fa-solid", "heart-pop");
-            likeIcon.style.color = "red";
-            setTimeout(() => likeIcon.classList.remove("heart-pop"), 300);
-          } else {
-            likeIcon.classList.remove("fa-solid");
-            likeIcon.classList.add("fa-regular");
-            likeIcon.style.color = "black";
-          }
-          if (countSpan) countSpan.textContent = data.like_count;
-        }
-      } catch (err) {
-        console.error("Like toggle error:", err);
-      }
-    });
-  });
-}
 </script>
 
 
-<!-- ===================== CSS ===================== -->
+
+<!-- ======================= CSS ======================= -->
 <style>
+/* ===== Overlay ===== */
 .modal {
   display: none;
   position: fixed;
@@ -315,6 +401,7 @@ function attachLikeHandlers(popupBody) {
   align-items: center;
 }
 
+/* ===== Post Popup ===== */
 .modal-content {
   background: #fff;
   border-radius: 12px;
@@ -328,21 +415,90 @@ function attachLikeHandlers(popupBody) {
   animation: popupShow 0.25s ease;
 }
 
-.close-btn {
-  position: absolute;
-  top: 10px;
-  right: 20px;
-  font-size: 26px;
-  cursor: pointer;
-  color: #333;
+/* ===== Follow Popup ===== */
+.modal-follow-content {
+  position: relative;
+  background: #fff;
+  border-radius: 12px;
+  width: 600px;
+  height: 50vh;
+  overflow-y: auto;
+  animation: popupShow 0.25s ease;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 }
 
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+  background: #fafafa;
+  border-radius: 12px 12px 0 0;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #444;
+  
+}
+
+.modal-body {
+  padding: 0;
+  background: #fff;
+}
+
+/* ===== Follow List ===== */
+/* เอา margin/padding เริ่มต้นของ ul ออก */
+.follow-list {
+  margin: 0;
+  padding: 15px 20px;
+  list-style: none;
+}
+
+/* ปรับแถวให้ชิดขอบและสวย */
+.follow-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.follow-list li img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.follow-list li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
+}
+
+.follow-link {
+  cursor: pointer;
+
+}
+
+.follow-link:hover {
+  
+  text-decoration: none;
+}
+
+
+.stats span {
+  margin-right: 15px;
+}
+/* ===== Animations ===== */
 @keyframes popupShow {
   from { opacity: 0; transform: scale(0.95) translateY(10px); }
   to   { opacity: 1; transform: scale(1) translateY(0); }
 }
 
-/* ปุ่มหัวใจเด้งเบาๆ */
 @keyframes pop {
   0% { transform: scale(1); }
   50% { transform: scale(1.4); }
@@ -352,12 +508,6 @@ function attachLikeHandlers(popupBody) {
   animation: pop 0.3s ease;
 }
 
-/* คอมเมนต์ค่อยๆ หายตอนลบ */
-.fade-out {
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
 </style>
 
-<div class="space" style="height: 300px;"></div>
 {% endblock %}

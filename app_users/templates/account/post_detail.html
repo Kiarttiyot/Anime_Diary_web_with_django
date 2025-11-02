@@ -84,10 +84,19 @@
                     <strong>{{ comment.user.username }}:</strong>
                     <p>{{ comment.content }}</p>
                     </div>
+                   
+                   <!-- ✅ Dropdown สำหรับลบคอมเมนต์ -->
+                    <div class="comment-dropdown">
+                      <button class="comment-dropbtn">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                      </button>
+                      <div class="comment-dropdown-content">
+                        <button class="delete-comment" data-id="{{ comment.id }}">ลบคอมเมนต์</button>
+                      </div>
+                    </div>
 
-                    {% if comment.user == request.user or post.user == request.user %}
-                    <button class="delete-comment" data-id="{{ comment.id }}">🗑️</button>
-                    {% endif %}
+
+
                 </div>
                 {% empty %}
                 <p>No comments yet.</p>
@@ -145,7 +154,17 @@
             </div>   
         {% endif %} -->
         
-
+        <script>
+          document.addEventListener("click", function(e) {
+            // toggle เปิดปิด dropdown
+            if (e.target.closest(".comment-dropbtn")) {
+              const dropdown = e.target.closest(".comment-dropdown");
+              dropdown.classList.toggle("show");
+            } else {
+              document.querySelectorAll(".comment-dropdown.show").forEach(d => d.classList.remove("show"));
+            }
+          });
+        </script>
         <script>
         function toggleDropdown() {
             const dropdown = document.getElementById("myDropdown");

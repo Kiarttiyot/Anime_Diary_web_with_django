@@ -5,9 +5,27 @@
 <link rel="stylesheet" href="{% static 'app_general/dashboard.css' %}">
 
 <div class="not-found" style="text-align:center; padding:50px;">
-  <img src="{% static 'app_general/user-not-found.png' %}" alt="Not Found" style="width:120px; opacity:0.7;">
+  <img src="{% static 'app_general/logostar.png' %}" alt="Not Found" style="width:120px; opacity:0.7;">
   <h2 style="margin-top:20px; color:#444;">หาผู้ใช้นี้ไม่เจอ</h2>
   <p style="color:#777;">กรุณาตรวจสอบชื่อผู้ใช้อีกครั้ง</p>
 </div>
+<style>
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
 
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f9f9f9;
+}
+
+main, .not-found {
+  flex: 1 0 auto; /* ✅ ยืดตามเนื้อหา แต่มีขั้นต่ำเต็มจอ */
+}
+
+</style>
 {% endblock %}

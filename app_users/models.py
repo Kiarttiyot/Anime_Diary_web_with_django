@@ -29,7 +29,7 @@ class Profile(models.Model):
     bio = models.TextField(default="", blank=True)
     address = models.TextField(default="", blank=True)
     phone = models.CharField(max_length=15, default="", blank=True)
-    profile_image = models.ImageField(upload_to='profile_images/', default='default.png')
+    profile_image = models.ImageField(upload_to='profile_images/', default='profile_images/default.png')
     favorite_genres = models.CharField(max_length=255, default="", blank=True)  # แนวอนิเมะที่ชอบ
     def __str__(self):
         return self.user.username

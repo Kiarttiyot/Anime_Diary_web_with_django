@@ -44,7 +44,7 @@
 }
 .post-image {
     width: 400px;
-    height: 350px; /* fix height ให้เท่ากัน */
+    height: 400px; /* fix height ให้เท่ากัน */
     overflow: hidden;
     margin-bottom: 10px;
     border-radius: 6px;
@@ -86,7 +86,7 @@
 }
 .comments-box {
     width: 400px;
-    height: 250px;   /* จำกัดความสูง */
+    height: 300px;   /* จำกัดความสูง */
     overflow-y: auto;    /* มี scrollbar */
     border: 1px solid #ddd;
     padding: 10px;
@@ -158,6 +158,49 @@
 
 .comment-form button:hover {
     background-color: #a4165d;
+}
+.comment-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.comment-dropbtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #444;
+}
+
+.comment-dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background-color: #fff;
+  min-width: 130px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  border-radius: 6px;
+  z-index: 99;
+}
+
+.comment-dropdown-content button {
+  background: none;
+  border: none;
+  color: red;
+  padding: 8px 12px;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.comment-dropdown-content button:hover {
+  background-color: #ffeaea;
+}
+
+.comment-dropdown.show .comment-dropdown-content {
+  display: block;
 }
 
 

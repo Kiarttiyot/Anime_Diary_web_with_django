@@ -210,7 +210,10 @@ def follow_toggle(request, username):
     if target == request.user:
         return JsonResponse({"error": "ไม่สามารถติดตามตัวเองได้"}, status=400)
 
-    follow, created = Follow.objects.get_or_create(follower=request.user, following=target)
+    follow, created = Follow.objects.get_or_create(
+        follower=request.user,
+        following=target
+    )
 
     if not created:
         # ถ้ามีอยู่แล้ว → เลิกติดตาม
@@ -219,14 +222,36 @@ def follow_toggle(request, username):
     else:
         following = True
 
-    # ✅ ส่งข้อมูลใหม่กลับไป
-    followers_count = Follow.objects.filter(following=target).count()
-    following_count = Follow.objects.filter(follower=target).count()
+    # ✅ แก้ให้คำนวณถูกฝั่ง
+    followers_count = Follow.objects.filter(following=target).count()      # คนที่ติดตาม target
+    following_count = Follow.objects.filter(follower=request.user).count()  # คนที่เรากำลังติดตาม
 
     return JsonResponse({
         "is_following": following,
         "followers_count": followers_count,
         "following_count": following_count,
+    })
+
+@require_POST
+@login_required
+def remove_follower(request, username):
+    """ลบผู้ติดตามของเราออก (เช่นเขาฟอลเราอยู่ แต่เราไม่อยากให้เขาฟอลเราแล้ว)"""
+    target = get_object_or_404(User, username=username)
+
+    # ลบความสัมพันธ์ที่เขาฟอลเรา (เราคือ following)
+    follow_relation = Follow.objects.filter(follower=target, following=request.user)
+
+    if follow_relation.exists():
+        follow_relation.delete()
+        removed = True
+    else:
+        removed = False
+
+    followers_count = Follow.objects.filter(following=request.user).count()
+
+    return JsonResponse({
+        "removed": removed,
+        "followers_count": followers_count
     })
 
 

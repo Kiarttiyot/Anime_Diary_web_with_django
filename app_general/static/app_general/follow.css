@@ -1,0 +1,86 @@
+/* ===== Layout base ===== */
+html, body {
+  height: 100%;
+  margin: 0 !important;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  display: flex !important;
+  flex-direction: column;
+  background-color: #f9f9f9 !important;
+}
+
+/* ===== Follow list container ===== */
+.follow-list-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  flex: 1 0 auto;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.follow-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.follow-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.follow-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-pic {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.username-link {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  transition: color 0.2s;
+}
+
+.username-link:hover {
+  color: #6b46c1; /* สีม่วงอ่อน */
+}
+
+.no-follow {
+  text-align: center;
+  color: #666;
+  padding: 20px 0;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .follow-list-container {
+    max-width: 100%;
+    padding: 10px;
+  }
+
+  .follow-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .follow-item button {
+    margin-top: 8px;
+  }
+}
