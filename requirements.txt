@@ -12,3 +12,4 @@ Pillow
 django-extensions
 pydot
 dj-database-url
+whitenoise

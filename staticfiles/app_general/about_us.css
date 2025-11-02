@@ -1,0 +1,108 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #d7d7d7;
+    color: #ffffff;
+    margin: 0;  
+    padding: 0;
+}
+.Anime {
+    color: #ff3366; /* แดงสด */
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.Diary {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+}
+.page-header   {
+    position: relative;
+    text-align: center;
+}
+
+.page-header img {
+    width: 100%;
+    max-height: 250px;
+    object-fit: cover;
+    filter: brightness(0.2);
+}
+
+.header-title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    padding: 50px 20px;
+    
+
+}
+.space {
+    height: 50px;
+}
+.space2 {
+    height: 25px;
+}
+/*.border-bottom {
+    border-bottom: 4px solid #ffffff;  /*แดงสด *
+    width: 100%;
+}*/
+
+.team-section {
+    display: flex;
+    flex-wrap: wrap; /* ทำให้การ์ดขึ้นบรรทัดใหม่ได้เมื่อหน้าจอมีขนาดเล็ก */
+    justify-content: center; /* จัดให้การ์ดอยู่ตรงกลาง */
+    gap: 20px; /* ระยะห่างระหว่างการ์ด */
+    padding: 40px 20px;
+}
+
+.team-section2 {
+    display: flex;
+    flex-wrap: wrap; /* ทำให้การ์ดขึ้นบรรทัดใหม่ได้เมื่อหน้าจอมีขนาดเล็ก */
+    justify-content: center; /* จัดให้การ์ดอยู่ตรงกลาง */
+    gap: 20px; /* ระยะห่างระหว่างการ์ด */
+    padding: 40px 20px;
+    
+}
+.member-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    width: 250px; /* ความกว้างของการ์ด */
+    height: 450px; /* ความสูงของการ์ด */
+    transition: transform 0.3s ease-in-out;
+}
+
+.member-card:hover {
+    transform: translateY(-5px); /* ยกการ์ดขึ้นเล็กน้อยเมื่อเมาส์ชี้ */
+}
+
+.member-photo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%; /* ทำให้รูปภาพเป็นวงกลม */
+    object-fit: cover; /* ปรับให้รูปภาพพอดีกับกรอบ */
+    border: 3px solid #ddd;
+}
+
+.member-name {
+    color: #333;
+    font-size: 1.5em;
+    margin: 15px 0 5px;
+}
+
+.member-role {
+    color: #555;
+    font-style: italic;
+}
+    
+.member-bio {
+    font-size: 0.9em;
+    color: #777;
+    margin-top: 10px;
+}

@@ -1,0 +1,118 @@
+/*.footer {
+    background-color: #06081d;
+    color: #ffffff;
+    padding: 40px 0;
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logA{
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #531abd;
+}   
+ .logD{
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #ffffff;
+}
+.contact-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+}
+
+.contact-list li {
+    margin: 10px 0;
+}
+
+.contact-list a {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+.contact-list a:hover {
+    color: #ffcc00;
+}
+
+.footer .copyright {
+    font-size: 14px;
+    color: #aaaaaa;
+    margin-top: 20px;
+}*/
+.footer {
+    background-color: #000000; /* เปลี่ยนสีพื้นหลังให้เข้มขึ้น */
+    color: #ffffff;
+    padding: 40px 0;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex; /* ใช้ Flexbox เพื่อจัดเรียงองค์ประกอบในแนวนอน */
+    justify-content: space-between; /* กระจายช่องว่างระหว่างองค์ประกอบ */
+    align-items: center; /* จัดให้อยู่กึ่งกลางแนวตั้ง */
+}
+
+/* ปรับขนาดและสีของโลโก้ */
+.footer-logo {
+    display: flex; /* ทำให้โลโก้สองส่วนอยู่ติดกัน */
+    font-size: 28px;
+    font-weight: bold;
+    gap: 0;
+}
+
+.logA {
+    color: #FFCCEA; /* เปลี่ยนสีให้เป็นสีแดง */
+    text-decoration: none; /* ไม่มีขีดเส้นใต้ */
+}
+
+.logD {
+    color: #ffffff;
+    text-decoration: none; /* ไม่มีขีดเส้นใต้ */
+}
+
+/* จัดสไตล์ลิงก์ใน Footer */
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex; /* ใช้ Flexbox สำหรับลิงก์ */
+    gap: 30px; /* ระยะห่างระหว่างลิงก์ */
+}
+
+.footer-links a {
+    color: #ffffff;
+    text-decoration: none; /* ไม่มีขีดเส้นใต้ */
+    font-size: 16px;
+    opacity: 0.8; /* ทำให้ดูจางลงเล็กน้อย */
+}
+
+.footer-links a:hover {
+    color: #ff3366; /* เปลี่ยนสีเมื่อเอาเมาส์ไปชี้ */
+    opacity: 1;
+}
+
+/* จัดสไตล์ข้อความลิขสิทธิ์ */
+.footer-copyright {
+    display: flex; /* ใช้ Flexbox เพื่อจัดเรียงข้อความ */
+    flex-direction: column; /* จัดเรียงในแนวตั้ง */
+    text-align: right; /* จัดข้อความให้ชิดขวา */
+    font-size: 14px;
+    color: #aaaaaa;
+    line-height: 1.5; /* เพิ่มระยะห่างระหว่างบรรทัด */
+    margin: 0;
+}
+
+.footer-copyright a {
+    color: #ff3366;
+    text-decoration: none;
+}

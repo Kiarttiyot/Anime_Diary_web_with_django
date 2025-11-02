@@ -1,0 +1,28 @@
+/*.menu-logo{
+    display:inline-block;
+    font-size: 40px;
+    color: white;
+    padding: 0;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 0;
+    width: 500px;
+    text-align: center;
+}
+.logoA, .logoD {
+    font-size: 40px;
+    display: inline;
+    margin: 0;
+    padding: 0;
+    letter-spacing: 0;
+}
+.logoA{
+    color:#FFFFFF;
+}
+.logoD{
+    color:#FF0040;
+}
+html{
+    font-family: 'Mitr',sans-serif;
+}
+*/

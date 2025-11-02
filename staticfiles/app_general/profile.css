@@ -1,0 +1,75 @@
+.container{
+    width: 100%;
+    height: 120vh;
+    display: flex;
+    align-items: 30vh;
+    justify-content: center;
+}
+.container h5 ,h1{
+    text-align: center;
+    margin-bottom: 20px;
+}
+.profile-image-wrapper{
+    position: relative;
+    width:150px; 
+    height:150px; 
+    border:2px dashed #ccc; 
+    border-radius:50%; 
+    overflow:hidden; 
+    display:flex; 
+    justify-content:center; 
+    align-items:center; 
+    background-color:#f8f8f8; 
+    cursor:pointer;
+    margin: 10px auto;
+}
+.btn1 {
+    width: 150px;
+    padding: 16px;
+    background: #e74c3c; 
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    /*border-radius: 5px;*/
+    margin-top: 15px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+.field { margin-bottom: 14px; }
+.field label { display: block; font-weight: 600; margin-bottom: 6px; color: #0f172a; }
+
+.field input[type="text"],
+.field input[type="tel"],
+.field textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  background: #fff;
+  font-size: 15px;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+.field textarea { min-height: 96px; resize: vertical; }
+.field input:focus,
+.field textarea:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+}
+
+.field-error {
+  margin-top: 6px;
+  color: #b91c1c;
+  font-size: 13px;
+}
+.box {
+    color: #ffffff;
+    padding: 70px 0;
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+}
+.btn2 {
+  background-color: #ffffff;
+  border: none;
+  margin-left: 20px;
+}
